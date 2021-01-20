@@ -1,4 +1,5 @@
-const bodyParser = require("body-parser"),
+const appInsights = require("applicationinsights"),
+    bodyParser = require("body-parser"),
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     express = require("express"),
@@ -29,6 +30,10 @@ process.on("unhandledRejection", (reason) => {
 (async function startup() {
     Log.log("Starting up...");
 
+    // Setup application insights.
+    appInsights.setup().setAutoCollectRequests(false);
+    appInsights.start();
+
     // Set title.
     if (process.platform === "win32") {
         process.title = "Six Gaming";
@@ -38,6 +43,9 @@ process.on("unhandledRejection", (reason) => {
 
     // Setup express app.
     const app = express();
+
+    // Remove powered by.
+    app.disable("x-powered-by");
 
     // Get the router.
     const router = new Router();
@@ -71,7 +79,7 @@ process.on("unhandledRejection", (reason) => {
 
     // Set req.ip.
     app.use((req, res, next) => {
-        req.ip = (req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"].toString() : void 0) || req.ip;
+        req.ip = (req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"].toString() : void 0) || req.ip || req.connection.remoteAddress;
         next();
     });
 

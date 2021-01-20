@@ -28,11 +28,11 @@ process.on("unhandledRejection", (reason) => {
  * Starts up the application.
  */
 (async function startup() {
-    Log.log("Starting up...");
-
     // Setup application insights.
     appInsights.setup().setAutoCollectRequests(false);
     appInsights.start();
+
+    Log.log("Starting up...");
 
     // Set title.
     if (process.platform === "win32") {

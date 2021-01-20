@@ -1,0 +1,16 @@
+div#members {
+    display: grid;
+    grid-template-columns: repeat(3, max-content) auto;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 3px;
+}
+
+div#members .member {
+    grid-column-end: span 2;
+}
+
+div#members .avatar, div#members .connection {
+    width: 32px;
+    height: 32px;
+}

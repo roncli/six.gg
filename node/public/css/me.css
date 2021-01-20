@@ -1,0 +1,28 @@
+.section img {
+    vertical-align: middle;
+    width: 64px;
+    height: 64px;
+}
+
+#connections img {
+    vertical-align: middle;
+    width: 32px;
+    height: 32px;
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+#profile {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 5px;
+    row-gap: 2px;
+    align-items: center;
+}
+
+#profile > div:nth-child(2n+1) {
+    text-align: right;
+}

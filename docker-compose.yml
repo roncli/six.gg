@@ -1,0 +1,217 @@
+version: "3.7"
+
+services:
+
+  logging:
+    container_name: sixgg-logging
+    build: ./logging
+    ports:
+      - "12201:12201/udp"
+    environment:
+      PORT: 12201
+      APPINSIGHTS_INSTRUMENTATIONKEY: /run/secrets/APPINSIGHTS_INSTRUMENTATIONKEY
+      APPLICATION: six.gg
+    secrets:
+      - APPINSIGHTS_INSTRUMENTATIONKEY
+    restart: always
+    entrypoint: /var/logging/start.sh
+
+  db:
+    container_name: sixgg-db
+    build: ./db
+    depends_on:
+      - logging
+    networks:
+      - six.gg-network
+    ports:
+      - "27017:27017"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    environment:
+      MONGO_INITDB_DATABASE: sixgg
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/MONGO_INITDB_ROOT_USERNAME_FILE
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
+      WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
+    volumes:
+      - /mnt/mongodb:/data/db
+    secrets:
+      - MONGO_INITDB_ROOT_USERNAME_FILE
+      - MONGO_INITDB_ROOT_PASSWORD_FILE
+      - WEB_SIXGG_PASSWORD_FILE
+    restart: always
+    entrypoint: /var/mongo/start.sh
+    privileged: true
+
+  redis:
+    container_name: sixgg-redis
+    build: ./redis
+    depends_on:
+      - logging
+    networks:
+      - six.gg-network
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    environment:
+      REDIS_PASSWORD_FILE: /run/secrets/REDIS_PASSWORD_FILE
+      REDIS_PORT: 6379
+    secrets:
+      - REDIS_PASSWORD_FILE
+    restart: always
+    entrypoint: /var/redis/start.sh
+    privileged: true
+
+  node:
+    container_name: sixgg-node
+    build: ./node
+    depends_on:
+      - logging
+      - db
+      - redis
+    networks:
+      - six.gg-network
+    ports:
+      - "8443:8443"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    environment:
+      APPINSIGHTS_INSTRUMENTATIONKEY: /run/secrets/APPINSIGHTS_INSTRUMENTATIONKEY
+      DEFAULT_TIMEZONE: America/Los_Angeles
+      DISCORD_ADMIN_USERNAME: roncli
+      DISCORD_ADMIN_DISCRIMINATOR: 1409
+      DISCORD_CLIENTID_FILE: /run/secrets/DISCORD_CLIENTID_FILE
+      DISCORD_CLIENTSECRET_FILE: /run/secrets/DISCORD_CLIENTSECRET_FILE
+      DISCORD_GUILD: Six Gaming
+      DISCORD_REDIRECT_URI: https://six.gg/oauth/discord
+      DISCORD_TOKEN_FILE: /run/secrets/DISCORD_TOKEN_FILE
+      DISCORD_USERSCOPES: identify connections guilds
+      DOMAIN: six.gg
+      ENCRYPTION_KEY_FILE: /run/secrets/ENCRYPTION_KEY_FILE
+      MINIFY_CACHE: 1
+      MINIFY_ENABLED: 1
+      NODE_ENV: production
+      PORT: 3030
+      REDIS_ENABLED: 1
+      REDIS_PASSWORD_FILE: /run/secrets/REDIS_PASSWORD_FILE
+      REDIS_PORT: 6379
+      REDIS_PREFIX: six
+      SIXGG_DISCORD_URL: https://ronc.li/six-discord
+      TWITCH_BOT_ACCESSTOKEN_FILE: /run/secrets/TWITCH_BOT_ACCESSTOKEN_FILE
+      TWITCH_BOT_REFRESHTOKEN_FILE: /run/secrets/TWITCH_BOT_REFRESHTOKEN_FILE
+      TWITCH_BOT_SCOPES: chat:read chat:edit
+      TWITCH_CHANNEL: sixgaminggg
+      TWITCH_CHANNEL_ACCESSTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_ACCESSTOKEN_FILE
+      TWITCH_CHANNEL_REFRESHTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_REFRESHTOKEN_FILE
+      TWITCH_CHANNEL_SCOPES: channel_editor channel_subscriptions channel_check_subscription chat_login bits:read chat:read chat:edit channel:moderate channel:read:subscriptions whispers:read whispers:edit channel:read:redemptions
+      TWITCH_CLIENTID_FILE: /run/secrets/TWITCH_CLIENTID_FILE
+      TWITCH_CLIENTSECRET_FILE: /run/secrets/TWITCH_CLIENTSECRET_FILE
+      TWITCH_USERID: 116508839
+      TWITCH_WEBHOOKSPORT: 8443
+      WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
+    secrets:
+      - APPINSIGHTS_INSTRUMENTATIONKEY
+      - DISCORD_CLIENTID_FILE
+      - DISCORD_CLIENTSECRET_FILE
+      - DISCORD_TOKEN_FILE
+      - ENCRYPTION_KEY_FILE
+      - REDIS_PASSWORD_FILE
+      - TWITCH_BOT_ACCESSTOKEN_FILE
+      - TWITCH_BOT_REFRESHTOKEN_FILE
+      - TWITCH_CHANNEL_ACCESSTOKEN_FILE
+      - TWITCH_CHANNEL_REFRESHTOKEN_FILE
+      - TWITCH_CLIENTID_FILE
+      - TWITCH_CLIENTSECRET_FILE
+      - WEB_SIXGG_PASSWORD_FILE
+    restart: always
+    entrypoint: /var/www/start.sh
+    privileged: true
+
+  nginx:
+    container_name: sixgg-nginx
+    build: ./nginx
+    depends_on:
+      - node
+      - logging
+    networks:
+      - six.gg-network
+    ports:
+      - "80:80"
+      - "443:443"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    environment:
+      DOMAIN: six.gg
+      PROXY_PORT: 3030
+    restart: always
+    volumes:
+      - certbot-conf:/etc/letsencrypt:rw
+      - certbot-work:/var/certbot/work:rw
+      - nginx-work:/var/nginx/work:rw
+    entrypoint: /var/nginx/start.sh
+
+  certbot:
+    container_name: sixgg-certbot
+    build: ./certbot
+    depends_on:
+      - nginx
+      - logging
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://localhost:12201"
+    environment:
+      DOMAIN: six.gg
+      EMAIL: roncli@roncli.com
+    restart: always
+    volumes:
+      - certbot-conf:/etc/letsencrypt:rw
+      - certbot-work:/var/certbot/work:rw
+    entrypoint: /var/certbot/start.sh
+
+networks:
+  six.gg-network:
+    driver: bridge
+
+volumes:
+  certbot-conf:
+  certbot-work:
+  nginx-work:
+
+secrets:
+  APPINSIGHTS_INSTRUMENTATIONKEY:
+    file: ./secrets/APPINSIGHTS_INSTRUMENTATIONKEY
+  DISCORD_CLIENTID_FILE:
+    file: ./secrets/DISCORD_CLIENTID_FILE
+  DISCORD_CLIENTSECRET_FILE:
+    file: ./secrets/DISCORD_CLIENTSECRET_FILE
+  DISCORD_TOKEN_FILE:
+    file: ./secrets/DISCORD_TOKEN_FILE
+  ENCRYPTION_KEY_FILE:
+    file: ./secrets/ENCRYPTION_KEY_FILE
+  MONGO_INITDB_ROOT_PASSWORD_FILE:
+    file: ./secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
+  MONGO_INITDB_ROOT_USERNAME_FILE:
+    file: ./secrets/MONGO_INITDB_ROOT_USERNAME_FILE
+  REDIS_PASSWORD_FILE:
+    file: ./secrets/REDIS_PASSWORD_FILE
+  TWITCH_BOT_ACCESSTOKEN_FILE:
+    file: ./secrets/TWITCH_BOT_ACCESSTOKEN_FILE
+  TWITCH_BOT_REFRESHTOKEN_FILE:
+    file: ./secrets/TWITCH_BOT_REFRESHTOKEN_FILE
+  TWITCH_CHANNEL_ACCESSTOKEN_FILE:
+    file: ./secrets/TWITCH_CHANNEL_ACCESSTOKEN_FILE
+  TWITCH_CHANNEL_REFRESHTOKEN_FILE:
+    file: ./secrets/TWITCH_CHANNEL_REFRESHTOKEN_FILE
+  TWITCH_CLIENTID_FILE:
+    file: ./secrets/TWITCH_CLIENTID_FILE
+  TWITCH_CLIENTSECRET_FILE:
+    file: ./secrets/TWITCH_CLIENTSECRET_FILE
+  WEB_SIXGG_PASSWORD_FILE:
+    file: ./secrets/WEB_SIXGG_PASSWORD_FILE

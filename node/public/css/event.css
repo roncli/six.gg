@@ -1,0 +1,8 @@
+div#event img,
+div#attendees img {
+    vertical-align: middle;
+}
+
+div#event div {
+    line-height: 1.2;
+}

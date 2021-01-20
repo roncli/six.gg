@@ -1,0 +1,7 @@
+.fc a, .fc a:hover {
+    text-decoration: initial;
+}
+
+.fc-list-event-dot {
+    margin-top: 3px;
+}

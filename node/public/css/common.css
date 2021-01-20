@@ -1,0 +1,208 @@
+body {
+    background-color: #0b8b8c;
+    color: black;
+}
+
+a {
+    color: #aa61bd;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#page {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+#menu a {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#menu a:hover {
+    text-decoration: none;
+}
+
+#menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#menu li {
+    display: inline-block;
+    padding: 5px 15px;
+}
+
+#menu li:hover {
+    background-color: #cccccc;
+}
+
+#menu li.login {
+    float: right;
+}
+
+#menu li.login img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+#header {
+    display: grid;
+    grid-template-columns: 296px auto;
+    align-items: center;
+    background-position: center;
+}
+
+#header #logo {
+    margin: 0 auto;
+    width: 1200px;
+    height: 94px;
+    background: url("/images/six.png") no-repeat center;
+}
+
+#page-body {
+    margin: 20px;
+}
+
+#discord {
+    display: grid;
+    grid-template-columns: auto 396px;
+}
+
+#discord .title {
+    color: #0b8b8c;
+    font-size: 24px;
+    font-weight: bold;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+}
+
+#discord .text {
+    grid-column: 1;
+    grid-row: 2;
+    padding-right: 10px;
+}
+
+#discord .link {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: end;
+}
+
+@media only screen and (max-width: 900px) {
+    #discord {
+        grid-template-columns: repeat(1, auto);
+    }
+
+    #discord .title {
+        grid-column: 1;
+    }
+
+    #discord .link {
+        padding-top: 20px;
+        grid-column: 1;
+        grid-row: 3;
+    }
+}
+
+#copyright {
+    padding-top: 10px;
+    background-color: #0b8b8c
+}
+
+#copyright a {
+    color: black;
+}
+
+#copyright .left {
+    float: left;
+}
+
+#copyright .right {
+    float: right;
+}
+
+.section {
+    color: #0b8b8c;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 0 10px 0;
+}
+
+.subsection {
+    margin: -8px 0 10px 0;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.header {
+    color: #0b8b8c;
+    font-weight: bold;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.right-align {
+    text-align: right;
+}
+
+a {
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes half-on {
+    0% {
+        opacity: 100;
+    }
+
+    50% {
+        opacity: 0;
+    }
+    
+    100% {
+        opacity: 100;
+    }
+}
+
+@keyframes half-off {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 100;
+    }
+    
+    100% {
+        opacity: 0;
+    }
+}
+
+.blink > div:nth-child(1) {
+    animation: half-on 0.5s step-start infinite;
+}
+
+.blink > div:nth-child(2) {
+    animation: half-off 0.5s step-start infinite;
+}
+
+.blink {
+    position: relative;
+}
+
+.blink > div {
+    position: absolute;
+}

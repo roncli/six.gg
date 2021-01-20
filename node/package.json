@@ -1,0 +1,56 @@
+{
+    "name": "six.gg-node",
+    "version": "2.0.0",
+    "description": "The website and bot for Six Gaming.",
+    "homepage": "https://github.com/roncli/six.gg",
+    "bugs": {
+        "url": "https://github.com/roncli/six.gg/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roncli/six.gg"
+    },
+    "main": "index.js",
+    "author": {
+        "name": "Ronald M. Clifford",
+        "email": "roncli@roncli.com",
+        "url": "http://roncli.com"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "@fullcalendar/core": "5.5.1",
+        "@fullcalendar/daygrid": "5.5.0",
+        "@fullcalendar/list": "5.5.0",
+        "@root/request": "1.7.0",
+        "applicationinsights": "1.8.8",
+        "body-parser": "1.19.0",
+        "compression": "1.7.4",
+        "cookie-parser": "1.4.5",
+        "csso": "4.2.0",
+        "discord-markdown": "2.4.1",
+        "discord.js": "12.5.1",
+        "discord-oauth2": "2.6.0",
+        "express": "4.17.1",
+        "express-minify": "1.0.0",
+        "html-minifier": "4.0.0",
+        "igdb-api-node": "5.0.0",
+        "ioredis": "4.19.4",
+        "mongodb": "3.6.3",
+        "public-ip": "4.0.3",
+        "terser": "5.5.1",
+        "timezonecomplete": "5.11.2",
+        "twitch": "4.4.1",
+        "twitch-auth": "4.4.1",
+        "twitch-chat-client": "4.4.1",
+        "twitch-pubsub-client": "4.4.1",
+        "twitch-webhooks": "4.4.1",
+        "tzdata": "1.0.24"
+    },
+    "devDependencies": {
+        "@babel/core": "7.12.10",
+        "@babel/eslint-parser": "7.12.1",
+        "@types/express": "4.17.11",
+        "@types/ioredis": "4.19.1",
+        "@types/mongodb": "3.6.3"
+    }
+}

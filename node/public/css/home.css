@@ -1,0 +1,11 @@
+div#featured, div#live {
+    display: grid;
+    grid-template-columns: repeat(2, min-content);
+    column-gap: 5px;
+    align-items: center;
+}
+
+div#live img {
+    height: 24px;
+    width: 24px;
+}

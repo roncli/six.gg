@@ -1,0 +1,29 @@
+{
+    "name": "six.gg-logging",
+    "version": "2.0.0",
+    "description": "gelf logging for six.gg.",
+    "homepage": "https://github.com/roncli/six.gg",
+    "bugs": {
+        "url": "https://github.com/roncli/six.gg/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roncli/six.gg"
+    },
+    "main": "index.js",
+    "author": {
+        "name": "Ronald M. Clifford",
+        "email": "roncli@roncli.com",
+        "url": "http://roncli.com"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "applicationinsights": "1.8.8",
+        "graygelf": "2.0.0"
+    },
+    "devDependencies": {
+        "@babel/core": "7.12.10",
+        "@babel/eslint-parser": "7.12.1",
+        "@types/node": "14.14.22"
+    }
+}

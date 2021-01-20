@@ -1,0 +1,68 @@
+#add {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    align-items: center;
+    column-gap: 5px;
+    row-gap: 2px;
+}
+
+#add .header {
+    justify-self: end;
+}
+
+#add .top {
+    align-items: start;
+}
+
+#add input {
+    width: 200px;
+}
+
+#add textarea {
+    width: 200px;
+    height: 80px;
+}
+
+#add .dropdown {
+    position: relative;
+    display: inline-block;
+}
+  
+#add .combo {
+    position: absolute;
+    min-width: 160px;
+    min-height: 100px;
+    padding: 3px;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px black;
+    border: solid 1px black;
+    z-index: 20;
+    height: 300px;
+    overflow-y: auto;
+}
+
+#add .combo .item {
+    display: table-row;
+}
+
+#add .combo .item:hover {
+    background-color: #0b8b8c;
+    cursor: pointer;
+}
+
+#add .combo .item .image,
+#add .combo .item .game {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 3px 0;
+    border-bottom: solid 1px #808080;
+}
+
+#add .combo .item .image {
+    padding-right: 5px;
+}
+
+#add .combo .item:last-child .image,
+#add .combo .item:last-child .game {
+    border-bottom: none;
+}

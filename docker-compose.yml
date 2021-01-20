@@ -35,7 +35,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
       WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
     volumes:
-      - /mnt/mongodb:/data/db
+      - /mnt/mongodb:/data/db:rw
     secrets:
       - MONGO_INITDB_ROOT_USERNAME_FILE
       - MONGO_INITDB_ROOT_PASSWORD_FILE

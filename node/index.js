@@ -52,7 +52,7 @@ process.on("unhandledRejection", (reason) => {
     try {
         await router.setup();
     } catch (err) {
-        console.log(err);
+        Log.exception("There was an error while setting up the router.", err);
         return;
     }
 
@@ -140,5 +140,5 @@ process.on("unhandledRejection", (reason) => {
     const port = process.env.PORT || 3030;
 
     app.listen(port);
-    console.log(`Server PID ${process.pid} listening on port ${port}.`);
+    Log.log(`Server PID ${process.pid} listening on port ${port}.`);
 }());

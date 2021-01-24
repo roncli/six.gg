@@ -33,7 +33,7 @@ class Cache {
             const client = await Redis.login();
 
             if (expiration) {
-                const time = Math.max(expiration.getTime() - new Date().getTime(), 1);
+                const time = Math.ceil(Math.max(expiration.getTime() - new Date().getTime(), 1) / 1000);
                 await client.set(key, JSON.stringify(obj), "EX", time);
             } else {
                 await client.set(key, JSON.stringify(obj));

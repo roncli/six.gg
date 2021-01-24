@@ -136,7 +136,7 @@ class Event {
     // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
     //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
     /**
-     * Creates a new user object.
+     * Creates a new event.
      * @param {EventTypes.EventData} event The event.
      */
     constructor(event) {

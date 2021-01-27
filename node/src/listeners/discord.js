@@ -131,10 +131,18 @@ class DiscordListener {
             if (activity && urlParse.test(activity.url)) {
                 if (!oldActivity) {
                     const {groups: {user: twitchName}} = urlParse.exec(activity.url);
-                    await streamers.add(newPresence.member, activity, twitchName, true);
+                    try {
+                        await streamers.add(newPresence.member, activity, twitchName, true);
+                    } catch (err) {
+                        Log.exception("There was an error adding a streamer.", err);
+                    }
                 }
             } else {
-                await streamers.remove(newPresence.member);
+                try {
+                    await streamers.remove(newPresence.member);
+                } catch (err) {
+                    Log.exception("There was an error removing a streamer.", err);
+                }
             }
         }
     }

@@ -62,10 +62,6 @@ class Cache {
      * @returns {Promise} A promise that resolves when the cache has been flushed.
      */
     static async flush() {
-        if (!+process.env.REDIS_ENABLED) {
-            return;
-        }
-
         try {
             const client = await Redis.login();
 
@@ -88,10 +84,6 @@ class Cache {
      * @returns {Promise<object>} A promise that returns the retrieved object.
      */
     static async get(key) {
-        if (!+process.env.REDIS_ENABLED) {
-            return void 0;
-        }
-
         try {
             const client = await Redis.login();
 

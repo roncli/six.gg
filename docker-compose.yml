@@ -96,7 +96,6 @@ services:
       MINIFY_ENABLED: 1
       NODE_ENV: production
       PORT: 3030
-      REDIS_ENABLED: 1
       REDIS_PASSWORD_FILE: /run/secrets/REDIS_PASSWORD_FILE
       REDIS_PORT: 6379
       REDIS_PREFIX: six

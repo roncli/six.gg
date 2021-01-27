@@ -8,7 +8,7 @@ export REDIS_PASSWORD=$(cat $REDIS_PASSWORD_FILE)
 protected-mode yes
 port $REDIS_PORT
 tcp-backlog 128
-timeout 0
+timeout 300
 tcp-keepalive 300
 daemonize no
 supervised no

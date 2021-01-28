@@ -29,6 +29,7 @@
         "discord.js": "12.5.1",
         "discord-oauth2": "2.6.0",
         "express": "4.17.1",
+        "generic-pool": "3.7.1",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.0",
         "ioredis": "4.19.4",
@@ -47,6 +48,7 @@
         "@babel/core": "7.12.10",
         "@babel/eslint-parser": "7.12.1",
         "@types/express": "4.17.11",
+        "@types/generic-pool": "3.1.9",
         "@types/ioredis": "4.19.1",
         "@types/mongodb": "3.6.3"
     }

@@ -1,5 +1,9 @@
 const Log = require("../logging/log"),
+    GenericPool = require("generic-pool"),
     IoRedis = require("ioredis");
+
+/** @type {GenericPool.Pool<IoRedis.Redis>} */
+let pool;
 
 //  ####              #    #
 //  #   #             #
@@ -12,51 +16,72 @@ const Log = require("../logging/log"),
  * A class that handles calls to Redis.
  */
 class Redis {
-    // ##                 #
-    //  #
-    //  #     ##    ###  ##    ###
-    //  #    #  #  #  #   #    #  #
-    //  #    #  #   ##    #    #  #
-    // ###    ##   #     ###   #  #
-    //              ###
+    //                   ##
+    //                    #
+    // ###    ##    ##    #
+    // #  #  #  #  #  #   #
+    // #  #  #  #  #  #   #
+    // ###    ##    ##   ###
+    // #
     /**
-     * Logs in to the Redis server, and returns the client.
-     * @returns {Promise<IoRedis.Redis>} A promise that returns the Redis client.
+     * Gets the pool to get a Redis client.
+     * @returns {GenericPool.Pool<IoRedis.Redis>} A promise that returns the Redis client.
      */
-    static async login() {
-        /** @type {IoRedis.Redis} */
-        let client;
+    static get pool() {
+        if (!pool) {
+            pool = GenericPool.createPool({
+                create: () => {
+                    /** @type {IoRedis.Redis} */
+                    let client;
 
-        try {
-            const newClient = new IoRedis({
-                host: "redis",
-                port: +process.env.REDIS_PORT,
-                password: process.env.REDIS_PASSWORD
+                    try {
+                        client = new IoRedis({
+                            host: "redis",
+                            port: +process.env.REDIS_PORT,
+                            password: process.env.REDIS_PASSWORD
+                        });
+                    } catch (err) {
+                        if (client) {
+                            client.removeAllListeners().disconnect();
+                        }
+                        return Promise.reject(err);
+                    }
+
+                    return new Promise((res, rej) => {
+                        client.on("ready", () => {
+                            res(client);
+                        });
+
+                        client.on("error", (err) => {
+                            if (client) {
+                                client.removeAllListeners().disconnect();
+                            }
+
+                            rej(err);
+                        });
+                    });
+                },
+                destroy: (client) => Promise.resolve(client.removeAllListeners().disconnect()),
+                validate: (client) => Promise.resolve(client.status === "ready")
+            }, {
+                max: 50,
+                min: 0,
+                autostart: true,
+                testOnBorrow: true,
+                testOnReturn: true,
+                idleTimeoutMillis: 300000
             });
-            client = newClient;
-        } catch (err) {
-            Log.exception("A Redis error occurred while logging in.", err);
 
-            client.removeAllListeners();
-            if (client) {
-                await client.quit();
-            }
-            client = void 0;
+            pool.on("factoryCreateError", (err) => {
+                Log.exception("There was an error creating a Redis object from the pool.", err);
+            });
 
-            return void 0;
+            pool.on("factoryDestroyError", (err) => {
+                Log.exception("There was an error destroying a Redis object in the pool.", err);
+            });
         }
 
-        client.on("error", async (err) => {
-            Log.exception("A Redis error occurred.", err);
-
-            client.removeAllListeners();
-            if (client) {
-                await client.quit();
-            }
-            client = void 0;
-        });
-
-        return client;
+        return pool;
     }
 }
 

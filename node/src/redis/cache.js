@@ -34,8 +34,11 @@ class Cache {
             client = await Redis.pool.acquire();
 
             if (expiration) {
-                const time = Math.ceil(Math.max(expiration.getTime() - new Date().getTime(), 1) / 1000);
-                await client.set(key, JSON.stringify(obj), "EX", time);
+                // TODO: redis 6.2 will introduce PXAT expiration method.
+                // await client.set(key, JSON.stringify(obj), "PXAT", expiration.getTime());
+
+                const time = Math.ceil(Math.max(expiration.getTime() - new Date().getTime(), 1));
+                await client.set(key, JSON.stringify(obj), "PX", time);
             } else {
                 await client.set(key, JSON.stringify(obj));
             }

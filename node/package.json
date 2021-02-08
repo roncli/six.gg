@@ -21,7 +21,7 @@
         "@fullcalendar/core": "5.5.1",
         "@fullcalendar/daygrid": "5.5.0",
         "@fullcalendar/list": "5.5.0",
-        "applicationinsights": "1.8.8",
+        "applicationinsights": "1.8.9",
         "body-parser": "1.19.0",
         "compression": "1.7.4",
         "cookie-parser": "1.4.5",
@@ -32,24 +32,24 @@
         "generic-pool": "3.7.1",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.0",
-        "ioredis": "4.19.4",
-        "mongodb": "3.6.3",
+        "ioredis": "4.22.0",
+        "mongodb": "3.6.4",
         "public-ip": "4.0.3",
         "terser": "5.5.1",
-        "timezonecomplete": "5.11.2",
-        "twitch": "4.4.1",
-        "twitch-auth": "4.4.1",
-        "twitch-chat-client": "4.4.1",
-        "twitch-pubsub-client": "4.4.1",
-        "twitch-webhooks": "4.4.1",
-        "tzdata": "1.0.24"
+        "timezonecomplete": "5.11.5",
+        "twitch": "4.4.9",
+        "twitch-auth": "4.4.9",
+        "twitch-chat-client": "4.4.9",
+        "twitch-pubsub-client": "4.4.9",
+        "twitch-webhooks": "4.4.9",
+        "tzdata": "1.0.25"
     },
     "devDependencies": {
-        "@babel/core": "7.12.10",
-        "@babel/eslint-parser": "7.12.1",
+        "@babel/core": "7.12.13",
+        "@babel/eslint-parser": "7.12.13",
         "@types/express": "4.17.11",
         "@types/generic-pool": "3.1.9",
-        "@types/ioredis": "4.19.1",
-        "@types/mongodb": "3.6.3"
+        "@types/ioredis": "4.19.3",
+        "@types/mongodb": "3.6.6"
     }
 }

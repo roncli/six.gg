@@ -22,6 +22,16 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### 2.0.1 - 2/8/2021
+
+* Fix redis caching bug.
+* Use logging rather than console.log in startup routine.
+* Exceptions are now logged when streamers can't be added or removed.
+* Redis is required, so toggling it has been removed.
+* Redis now has a 5 minute idle timeout.
+* Redis now uses a generic pool for connections.
+* Various package updates.
+
 ### 2.0.0 - 1/20/2021
 
 * Complete redesign with new features.

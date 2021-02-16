@@ -29,8 +29,10 @@ process.on("unhandledRejection", (reason) => {
  */
 (async function startup() {
     // Setup application insights.
-    appInsights.setup().setAutoCollectRequests(false);
-    appInsights.start();
+    if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY !== "") {
+        appInsights.setup().setAutoCollectRequests(false);
+        appInsights.start();
+    }
 
     Log.log("Starting up...");
 

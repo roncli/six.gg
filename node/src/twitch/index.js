@@ -544,8 +544,15 @@ class Twitch {
             }
         });
 
-        channelChatClient.client.connect();
-        botChatClient.client.connect();
+        channelChatClient.client.connect().catch(async (err) => {
+            Log.exception("The streamer's Twitch chat failed to connect.", err);
+            await Twitch.setupChat();
+        });
+
+        botChatClient.client.connect().catch(async (err) => {
+            Log.exception("The bot's Twitch chat failed to connect.", err);
+            await Twitch.setupChat();
+        });
     }
 
     //               #                ###         #      ##         #

@@ -6,7 +6,7 @@
 
 const crypto = require("crypto"),
     DiscordOAuth = require("discord-oauth2"),
-    Log = require("../logging/log"),
+    Log = require("node-application-insights-logger"),
 
     oauth = new DiscordOAuth({
         clientId: process.env.DISCORD_CLIENTID,
@@ -94,7 +94,7 @@ class User {
                 return void 0;
             }
 
-            Log.exception("There was a Discord OAuth exception while getting a token.", err);
+            Log.error("There was a Discord OAuth exception while getting a token.", {err});
             throw new Error("Discord returned an error while getting a token.");
         }
     }
@@ -115,7 +115,7 @@ class User {
         try {
             return await oauth.getUser(token);
         } catch (err) {
-            Log.exception("There was a Discord OAuth exception while getting a user.", err);
+            Log.error("There was a Discord OAuth exception while getting a user.", {err});
             throw new Error("Discord returned an error while getting a user.");
         }
     }
@@ -136,7 +136,7 @@ class User {
         try {
             return await oauth.getUserConnections(token);
         } catch (err) {
-            Log.exception("There was a Discord OAuth exception while getting a user's connections.", err);
+            Log.error("There was a Discord OAuth exception while getting a user's connections.", {err});
             throw new Error("Discord returned an error while getting a user's connections.");
         }
     }
@@ -160,7 +160,7 @@ class User {
                 grantType: "refresh_token"
             });
         } catch (err) {
-            Log.exception("There was a Discord OAuth exception while refreshing a token.", err);
+            Log.error("There was a Discord OAuth exception while refreshing a token.", {err});
             throw new Error("Discord returned an error while refreshing a token.");
         }
     }
@@ -180,7 +180,7 @@ class User {
         try {
             return await oauth.revokeToken(token);
         } catch (err) {
-            Log.exception("There was a Discord OAuth exception while revoking a token.", err);
+            Log.error("There was a Discord OAuth exception while revoking a token.", {err});
             throw new Error("Discord returned an error while revoking a token.");
         }
     }

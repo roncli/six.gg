@@ -4,7 +4,7 @@
  */
 
 const DiscordListener = require("../../src/listeners/discord"),
-    Log = require("../../src/logging/log");
+    Log = require("node-application-insights-logger");
 
 //  #        #                    #             #
 //  #                            # #
@@ -45,7 +45,7 @@ class LiveApi {
             res.status(200).json(streamers);
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${LiveApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${LiveApi.route.path}.`, {err});
         }
     }
 }

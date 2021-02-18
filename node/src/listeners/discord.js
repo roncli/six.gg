@@ -7,12 +7,12 @@
 
 const Commands = require("../discord/commands"),
     Discord = require("../discord"),
-    Exception = require("../logging/exception"),
-    Log = require("../logging/log"),
+    Exception = require("../errors/exception"),
+    Log = require("node-application-insights-logger"),
     Streamers = require("../discord/streamers"),
     Twitch = require("../twitch"),
     VoiceChannelManagement = require("../discord/voiceChannelManagement"),
-    Warning = require("../logging/warning"),
+    Warning = require("../errors/warning"),
 
     messageParse = /^!(?<cmd>[^ ]+)(?: +(?<args>.*[^ ]))? *$/,
     urlParse = /^https:\/\/www.twitch.tv\/(?<user>.+)$/;
@@ -93,18 +93,18 @@ class DiscordListener {
                     success = await commands[command](member, message.channel, args);
                 } catch (err) {
                     if (err instanceof Warning) {
-                        Log.warning(`${message.channel} ${member}: ${text} - ${err.message || err}`);
+                        Log.warn(`${message.channel} ${member}: ${text} - ${err.message || err}`);
                     } else if (err instanceof Exception) {
-                        Log.exception(`${message.channel} ${member}: ${text} - ${err.message}`, err.innerError);
+                        Log.error(`${message.channel} ${member}: ${text} - ${err.message}`, {err: err.innerError});
                     } else {
-                        Log.exception(`${message.channel} ${member}: ${text}`, err);
+                        Log.error(`${message.channel} ${member}: ${text}`, {err});
                     }
 
                     return;
                 }
 
                 if (success) {
-                    Log.log(`${message.channel} ${member}: ${text}`);
+                    Log.verbose(`${message.channel} ${member}: ${text}`);
                 }
             }
         }
@@ -134,14 +134,14 @@ class DiscordListener {
                     try {
                         await streamers.add(newPresence.member, activity, twitchName, true);
                     } catch (err) {
-                        Log.exception("There was an error adding a streamer.", err);
+                        Log.error("There was an error adding a streamer.", {err});
                     }
                 }
             } else {
                 try {
                     await streamers.remove(newPresence.member);
                 } catch (err) {
-                    Log.exception("There was an error removing a streamer.", err);
+                    Log.error("There was an error removing a streamer.", {err});
                 }
             }
         }

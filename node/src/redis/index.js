@@ -1,4 +1,4 @@
-const Log = require("../logging/log"),
+const Log = require("node-application-insights-logger"),
     GenericPool = require("generic-pool"),
     IoRedis = require("ioredis");
 
@@ -73,11 +73,11 @@ class Redis {
             });
 
             pool.on("factoryCreateError", (err) => {
-                Log.exception("There was an error creating a Redis object from the pool.", err);
+                Log.error("There was an error creating a Redis object from the pool.", {err});
             });
 
             pool.on("factoryDestroyError", (err) => {
-                Log.exception("There was an error destroying a Redis object in the pool.", err);
+                Log.error("There was an error destroying a Redis object in the pool.", {err});
             });
         }
 

@@ -3,7 +3,7 @@
  * @typedef {import("express").Response} Express.Response
  */
 
-const Log = require("../../src/logging/log"),
+const Log = require("node-application-insights-logger"),
     Twitch = require("../../src/twitch"),
     User = require("../../src/models/user");
 
@@ -67,7 +67,7 @@ class GamesApi {
             })));
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${GamesApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${GamesApi.route.path}.`, {err});
         }
     }
 }

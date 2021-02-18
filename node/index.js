@@ -1,20 +1,20 @@
-const appInsights = require("applicationinsights"),
-    bodyParser = require("body-parser"),
+const bodyParser = require("body-parser"),
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     express = require("express"),
-    Minify = require("./src/minify"),
+    Log = require("node-application-insights-logger"),
+    util = require("util"),
 
     Cache = require("./src/redis/cache"),
     Discord = require("./src/discord"),
     Listeners = require("./src/listeners"),
-    Log = require("./src/logging/log"),
+    Minify = require("./src/minify"),
     Redirects = require("./src/redirects"),
     Router = require("./src/router"),
     Twitch = require("./src/twitch");
 
 process.on("unhandledRejection", (reason) => {
-    Log.exception("Unhandled promise rejection caught.", reason);
+    Log.error("Unhandled promise rejection caught.", {err: reason instanceof Error ? reason : new Error(util.inspect(reason))});
 });
 
 //         #                 #
@@ -30,11 +30,10 @@ process.on("unhandledRejection", (reason) => {
 (async function startup() {
     // Setup application insights.
     if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY !== "") {
-        appInsights.setup().setAutoCollectRequests(false);
-        appInsights.start();
+        Log.setupApplicationInsights(process.env.APPINSIGHTS_INSTRUMENTATIONKEY, {application: "sixgg", container: "sixgg-node"});
     }
 
-    Log.log("Starting up...");
+    Log.info("Starting up...");
 
     // Set title.
     if (process.platform === "win32") {
@@ -54,7 +53,7 @@ process.on("unhandledRejection", (reason) => {
     try {
         await router.setup();
     } catch (err) {
-        Log.exception("There was an error while setting up the router.", err);
+        Log.critical("There was an error while setting up the router.", {err});
         return;
     }
 
@@ -132,7 +131,7 @@ process.on("unhandledRejection", (reason) => {
 
     // 500 errors.
     app.use((err, req, res, next) => {
-        Log.exception("Unhandled error has occurred.", err);
+        Log.error("Unhandled error has occurred.", {err});
         req.method = "GET";
         req.url = "/500";
         router.router(req, res, next);
@@ -142,5 +141,5 @@ process.on("unhandledRejection", (reason) => {
     const port = process.env.PORT || 3030;
 
     app.listen(port);
-    Log.log(`Server PID ${process.pid} listening on port ${port}.`);
+    Log.info(`Server PID ${process.pid} listening on port ${port}.`);
 }());

@@ -1,7 +1,7 @@
 const DiscordJs = require("discord.js"),
     events = require("events"),
-
-    Log = require("../logging/log"),
+    Log = require("node-application-insights-logger"),
+    util = require("util"),
 
     discord = new DiscordJs.Client({
         ws: {intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_VOICE_STATES"]}
@@ -124,7 +124,7 @@ class Discord {
      */
     static startup() {
         discord.on("ready", () => {
-            Log.log("Connected to Discord.");
+            Log.verbose("Connected to Discord.");
 
             guild = discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);
 
@@ -136,7 +136,7 @@ class Discord {
         });
 
         discord.on("disconnect", (ev) => {
-            Log.exception("Disconnected from Discord.", ev);
+            Log.error("Disconnected from Discord.", {err: ev instanceof Error ? ev : new Error(util.inspect(ev))});
         });
 
         discord.on("message", (message) => {
@@ -157,7 +157,7 @@ class Discord {
                 return;
             }
 
-            Log.exception("Discord error.", err);
+            Log.error("Discord error.", {err});
         });
     }
 
@@ -172,12 +172,12 @@ class Discord {
      * @returns {Promise} A promise that resolves once Discord is connected.
      */
     static async connect() {
-        Log.log("Connecting to Discord...");
+        Log.verbose("Connecting to Discord...");
 
         try {
             await discord.login();
         } catch (err) {
-            Log.exception("Error connecting to Discord, will automatically retry.", err);
+            Log.error("Error connecting to Discord, will automatically retry.", {err});
         }
     }
 

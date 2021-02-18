@@ -4,7 +4,7 @@
  * @typedef {import("discord.js").VoiceChannel} DiscordJs.VoiceChannel
  */
 
-const Log = require("../logging/log");
+const Log = require("node-application-insights-logger");
 
 /** @type {Discord} */
 let Discord;
@@ -136,7 +136,7 @@ class VoiceChannelManagement {
                     try {
                         await channel.delete();
                     } catch (err) {
-                        Log.exception(`Couldn't delete empty voice channel ${channel}.`, err);
+                        Log.error(`Couldn't delete empty voice channel ${channel}.`, {err});
                     } finally {
                         delete vcm.channelDeletionTimeouts[channel.id];
                     }

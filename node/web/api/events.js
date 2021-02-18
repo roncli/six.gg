@@ -4,7 +4,7 @@
  */
 
 const Event = require("../../src/models/event"),
-    Log = require("../../src/logging/log"),
+    Log = require("node-application-insights-logger"),
     tc = require("timezonecomplete"),
     Time = require("../../src/time"),
     User = require("../../src/models/user");
@@ -69,7 +69,7 @@ class EventsApi {
             })));
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${EventsApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${EventsApi.route.path}.`, {err});
         }
     }
 
@@ -159,7 +159,7 @@ class EventsApi {
             res.status(201).location(`/event/${event.id}`).json(event);
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${EventsApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${EventsApi.route.path}.`, {err});
         }
     }
 }

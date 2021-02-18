@@ -4,7 +4,7 @@
  */
 
 const Attendee = require("../../../src/models/attendee"),
-    Log = require("../../../src/logging/log"),
+    Log = require("node-application-insights-logger"),
     User = require("../../../src/models/user");
 
 //    #     #      #                       #                  #             #
@@ -53,7 +53,7 @@ class AttendeeApi {
             res.status(201).location(`/event/${id}`).json({eventId: id, userId: user.id});
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${AttendeeApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${AttendeeApi.route.path}.`, {err});
         }
     }
 }
@@ -90,7 +90,7 @@ AttendeeApi.delete = async (req, res) => {
         res.sendStatus(204);
     } catch (err) {
         res.status(500).json({error: "Server error."});
-        Log.exception(`An error occurred while posting to ${req.method} ${AttendeeApi.route.path}.`, err);
+        Log.error(`An error occurred while posting to ${req.method} ${AttendeeApi.route.path}.`, {err});
     }
 };
 

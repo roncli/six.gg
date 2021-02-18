@@ -6,11 +6,11 @@
  * @typedef {import("./voiceChannelManagement")} VoiceChannelManagement
  */
 
-const Exception = require("../logging/exception"),
+const Exception = require("../errors/exception"),
     pjson = require("../../package.json"),
     tzdata = require("tzdata"),
     User = require("../models/user"),
-    Warning = require("../logging/warning"),
+    Warning = require("../errors/warning"),
 
     idMessageParse = /^<@!?(?<id>[0-9]+)> (?<command>[^ ]+)(?: (?<newMessage>.+))?$/,
     idParse = /^<@!?(?<id>[0-9]+)>$/;

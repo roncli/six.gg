@@ -3,9 +3,8 @@
  * @typedef {import("express").Response} Express.Response
  */
 
-const tzdata = require("tzdata"),
-
-    Log = require("../../src/logging/log"),
+const Log = require("node-application-insights-logger"),
+    tzdata = require("tzdata"),
     User = require("../../src/models/user");
 
 //  #   #           #             #
@@ -75,7 +74,7 @@ class MeApi {
             res.sendStatus(204);
         } catch (err) {
             res.status(500).json({error: "Server error."});
-            Log.exception(`An error occurred while posting to ${req.method} ${MeApi.route.path}.`, err);
+            Log.error(`An error occurred while posting to ${req.method} ${MeApi.route.path}.`, {err});
         }
     }
 }

@@ -23,7 +23,7 @@
  * @typedef {import("../../types/node/twitchListenerTypes").WhisperEvent} TwitchListenerTypes.WhisperEvent
  */
 
-const Log = require("../logging/log"),
+const Log = require("node-application-insights-logger"),
     Discord = require("../discord"),
     Twitch = require("../twitch");
 
@@ -110,7 +110,7 @@ class TwitchListener {
      * @returns {void}
      */
     static error(ev) {
-        Log.exception("An error event was received from Twitch.", ev);
+        Log.error(`An error event was received from Twitch: ${ev.message}`, {err: ev.err});
     }
 
     //   #         ##    ##

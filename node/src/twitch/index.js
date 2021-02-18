@@ -7,12 +7,12 @@
 
 const events = require("events"),
     IGDB = require("igdb-api-node"),
+    Log = require("node-application-insights-logger"),
     TwitchAuth = require("twitch-auth"),
     TwitchClient = require("twitch").ApiClient,
 
     Chat = require("./chat"),
-    Exception = require("../logging/exception"),
-    Log = require("../logging/log"),
+    Exception = require("../errors/exception"),
     PubSub = require("./pubsub"),
     Sleep = require("../sleep"),
     TwitchDb = require("../database/twitch"),
@@ -146,14 +146,14 @@ class Twitch {
         }
 
         if (!channelAuthProvider || !botAuthProvider) {
-            Log.log("Logging into Twitch...");
+            Log.verbose("Logging into Twitch...");
             try {
                 await Twitch.login();
             } catch (err) {
-                Log.exception("Error connecting to Twitch.  You can try again by refreshing the control page.", err);
+                Log.error("Error connecting to Twitch.  You can try again by refreshing the control page.", {err});
             }
 
-            Log.log("Connected to Twitch.");
+            Log.verbose("Connected to Twitch.");
         }
 
         return !!(channelAuthProvider && botAuthProvider);
@@ -370,7 +370,7 @@ class Twitch {
 
         channelChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
-                Log.exception("The streamer's Twitch chat disconnected.", reason);
+                Log.error("The streamer's Twitch chat disconnected.", {err: reason});
             }
 
             if (!manually) {
@@ -536,7 +536,7 @@ class Twitch {
 
         botChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
-                Log.exception("The bot's Twitch chat disconnected.", reason);
+                Log.error("The bot's Twitch chat disconnected.", {err: reason});
             }
 
             if (!manually) {
@@ -545,12 +545,12 @@ class Twitch {
         });
 
         channelChatClient.client.connect().catch(async (err) => {
-            Log.exception("The streamer's Twitch chat failed to connect.", err);
+            Log.error("The streamer's Twitch chat failed to connect.", {err});
             await Twitch.setupChat();
         });
 
         botChatClient.client.connect().catch(async (err) => {
-            Log.exception("The bot's Twitch chat failed to connect.", err);
+            Log.error("The bot's Twitch chat failed to connect.", {err});
             await Twitch.setupChat();
         });
     }

@@ -4,7 +4,7 @@
  */
 
 const Event = require("../../src/models/event"),
-    Log = require("../../src/logging/log"),
+    Log = require("node-application-insights-logger"),
     User = require("../../src/models/user");
 
 //  #####                        #       #             #
@@ -53,7 +53,7 @@ EventApi.delete = async (req, res) => {
         res.sendStatus(204);
     } catch (err) {
         res.status(500).json({error: "Server error."});
-        Log.exception(`An error occurred while posting to ${req.method} ${EventApi.route.path}.`, err);
+        Log.error(`An error occurred while posting to ${req.method} ${EventApi.route.path}.`, {err});
     }
 };
 

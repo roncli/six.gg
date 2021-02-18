@@ -1,6 +1,6 @@
 const AttendeeDb = require("../database/attendee"),
     Event = require("./event"),
-    Exception = require("../logging/exception");
+    Exception = require("../errors/exception");
 
 //    #     #      #                       #
 //   # #    #      #                       #

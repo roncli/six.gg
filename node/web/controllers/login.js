@@ -40,8 +40,7 @@ class Login {
             return;
         }
 
-        const discordUser = new DiscordUser();
-        res.redirect(302, discordUser.getOAuthUrl());
+        res.redirect(302, DiscordUser.getOAuthUrl());
     }
 }
 

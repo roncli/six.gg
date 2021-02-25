@@ -26,12 +26,12 @@ class MeView {
      * @param {ViewTypes.MeViewParameters} data The data to render the page with.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         const {user, guildMember, timezones} = data;
         return /* html */`
             <div class="section">
                 <img src="${guildMember.user.displayAvatarURL({size: 64, format: "png"})}" />
-                ${MeView.encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
+                ${MeView.Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
             </div>
             <div class="section">Connections</div>
             <div id="connections">
@@ -39,9 +39,9 @@ class MeView {
                 ${user.connections && user.connections.length > 0 ? /* html */`
                     ${user.connections.filter((c) => ["steam", "twitch", "twitter", "youtube"].indexOf(c.type) !== -1).sort((a, b) => a.type.localeCompare(b.type)).map((connection) => /* html */`
                         <div>
-                            <a href="${MeView.connection.getUrl(connection)}" target="_blank"><img src="/images/${connection.type}.png" alt="${connection.type}" /></a>
+                            <a href="${MeView.Connection.getUrl(connection)}" target="_blank"><img src="/images/${connection.type}.png" alt="${connection.type}" /></a>
                             &nbsp;
-                            <a href="${MeView.connection.getUrl(connection)}" target="_blank">${connection.type.charAt(0).toUpperCase()}${connection.type.substring(1)}</a>
+                            <a href="${MeView.Connection.getUrl(connection)}" target="_blank">${connection.type.charAt(0).toUpperCase()}${connection.type.substring(1)}</a>
                             - ${connection.name}
                         </div>
                     `).join("")}
@@ -50,11 +50,11 @@ class MeView {
             <div class="section">Profile</div>
             <div id="profile">
                 <div class="header">Location:</div>
-                <div><input id="location" type="text" placeholder="Houston, Texas" value="${MeView.encoding.attributeEncode(user.location)}" maxlength="50" /><span></span></div>
+                <div><input id="location" type="text" placeholder="Houston, Texas" value="${MeView.Encoding.attributeEncode(user.location)}" maxlength="50" /><span></span></div>
                 <div class="header">Timezone:</div>
                 <div>
                     <select id="timezone">
-                        ${MeView.options.generateOptions(timezones.map((zone) => ({text: `${zone.zone} (${zone.time})`, value: zone.zone})), user.timezone, false)}
+                        ${MeView.Options.generateOptions(timezones.map((zone) => ({text: `${zone.zone} (${zone.time})`, value: zone.zone})), user.timezone, false)}
                     </select><span></span>
                 </div>
             </div>
@@ -62,17 +62,17 @@ class MeView {
     }
 }
 
-/** @type {import("../js/common/connection")} */
+/** @type {typeof import("../js/common/connection")} */
 // @ts-ignore
-MeView.connection = new (typeof Connection === "undefined" ? require("../js/common/connection") : Connection)(); // eslint-disable-line no-undef
+MeView.Connection = typeof Connection === "undefined" ? require("../js/common/connection") : Connection; // eslint-disable-line no-undef
 
-/** @type {import("../js/common/encoding")} */
+/** @type {typeof import("../js/common/encoding")} */
 // @ts-ignore
-MeView.encoding = new (typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding)(); // eslint-disable-line no-undef
+MeView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
 
-/** @type {import("../js/common/options")} */
+/** @type {typeof import("../js/common/options")} */
 // @ts-ignore
-MeView.options = new (typeof options === "undefined" ? require("../js/common/options") : Options)(); // eslint-disable-line no-undef
+MeView.Options = typeof options === "undefined" ? require("../js/common/options") : Options; // eslint-disable-line no-undef
 
 if (typeof module !== "undefined") {
     module.exports = MeView; // eslint-disable-line no-undef

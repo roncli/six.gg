@@ -24,7 +24,7 @@ class Template {
      * @param {string} className The name of the class.
      * @returns {Promise} A promise that resolves when the template is loaded.
      */
-    async loadTemplate(path, className) {
+    static async loadTemplate(path, className) {
         if (window[className]) {
             return;
         }
@@ -55,7 +55,7 @@ class Template {
      * @param {function} template The template function.
      * @returns {void}
      */
-    loadDataIntoTemplate(data, el, template) {
+    static loadDataIntoTemplate(data, el, template) {
         if (Array.isArray(data)) {
             el.innerHTML = "";
             data.forEach((item) => {

@@ -40,7 +40,7 @@ class Calendar {
                 css: ["/css/fullcalendar/common.css", "/css/fullcalendar/daygrid.css", "/css/fullcalendar.css", "/css/modal.css", "/css/calendar.css"],
                 js: ["/js/fullcalendar/core.js", "/js/fullcalendar/daygrid.js", "/js/common/modal.js", "/js/common/template.js", "/js/calendar.js"]
             },
-            new CalendarView().get({timezone: user && user.timezone ? user.timezone : process.env.DEFAULT_TIMEZONE, defaultTimezone: !(user && user.timezone)}),
+            CalendarView.get({timezone: user && user.timezone ? user.timezone : process.env.DEFAULT_TIMEZONE, defaultTimezone: !(user && user.timezone)}),
             req,
             user
         ));

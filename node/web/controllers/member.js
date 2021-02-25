@@ -40,7 +40,7 @@ class Member {
             res.status(404).send(Common.page(
                 "",
                 {css: ["/css/error.css"]},
-                new NotFoundView().get({message: "This page does not exist."}),
+                NotFoundView.get({message: "This page does not exist."}),
                 req,
                 user
             ));
@@ -52,7 +52,7 @@ class Member {
         res.status(200).send(Common.page(
             "",
             {css: ["/css/member.css"], js: ["/js/common/connection.js"]},
-            new MemberView().get(member),
+            MemberView.get(member),
             req,
             user
         ));

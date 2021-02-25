@@ -25,7 +25,7 @@ class CalendarView {
      * @param {ViewTypes.CalendarViewParameters} data The page data.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         const {timezone, defaultTimezone} = data;
         return /* html */`
             <div class="section">Six Gaming Calendar of Events</div>

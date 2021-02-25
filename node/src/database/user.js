@@ -27,7 +27,7 @@ const MongoDb = require("mongodb"),
 /**
  * A class to handle database calls for the user collection.
  */
-class UserDb extends Db {
+class UserDb {
     //              #
     //              #
     //  ###   ##   ###
@@ -40,11 +40,11 @@ class UserDb extends Db {
      * @param {number} id The user ID.
      * @returns {Promise<UserTypes.UserData>} A promise that returns the user.
      */
-    async get(id) {
-        await super.setup();
+    static async get(id) {
+        const db = await Db.get();
 
         /** @type {UserTypes.UserMongoData} */
-        const user = await super.db.collection("user").findOne({_id: id});
+        const user = await db.collection("user").findOne({_id: id});
 
         return {
             _id: Db.fromLong(user._id),
@@ -68,13 +68,13 @@ class UserDb extends Db {
      * @param {string[]} discordIds The Discord IDs.
      * @returns {Promise<UserTypes.UserData[]>} A promise that returns the users.
      */
-    async getAll(discordIds) {
-        await super.setup();
+    static async getAll(discordIds) {
+        const db = await Db.get();
 
-        await super.db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
+        await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
 
         /** @type {UserTypes.UserMongoData[]} */
-        const users = await super.db.collection("user").find().toArray();
+        const users = await db.collection("user").find().toArray();
 
         return users.map((u) => ({
             _id: Db.fromLong(u._id),
@@ -98,11 +98,11 @@ class UserDb extends Db {
      * @param {DiscordJs.GuildMember} member The guild member.
      * @returns {Promise<{user: UserTypes.UserData, session: SessionTypes.SessionData}>} A promise that returns the user and the session.
      */
-    async getByGuildMember(member) {
-        await super.setup();
+    static async getByGuildMember(member) {
+        const db = await Db.get();
 
         /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */
-        const encryptedData = await super.db.collection("session").aggregate([
+        const encryptedData = await db.collection("session").aggregate([
             {
                 $match: {
                     "discord.id": member.id
@@ -157,16 +157,14 @@ class UserDb extends Db {
             }
         };
 
-        const encryption = new Encryption();
-
         return {
             user: data.user,
             session: {
                 _id: data.session._id,
                 ip: data.session.ip,
                 userId: data.session.userId,
-                accessToken: encryption.decryptWithSalt(data.session.accessToken),
-                refreshToken: encryption.decryptWithSalt(data.session.refreshToken),
+                accessToken: Encryption.decryptWithSalt(data.session.accessToken),
+                refreshToken: Encryption.decryptWithSalt(data.session.refreshToken),
                 expires: data.session.expires
             }
         };
@@ -184,11 +182,11 @@ class UserDb extends Db {
      * @param {number} eventId The event ID to get the users for.
      * @returns {Promise<UserTypes.UserData[]>} A promise that returns a list of users that will be attending the event.
      */
-    async getByEventAttendees(eventId) {
-        await super.setup();
+    static async getByEventAttendees(eventId) {
+        const db = await Db.get();
 
         /** @type {UserTypes.UserMongoData[]} */
-        const attendees = await super.db.collection("attendee").aggregate([
+        const attendees = await db.collection("attendee").aggregate([
             {
                 $match: {
                     eventId: MongoDb.Long.fromNumber(eventId)
@@ -242,11 +240,11 @@ class UserDb extends Db {
      * @param {string} ip The user's IP address.
      * @returns {Promise<{user: UserTypes.UserData, session: SessionTypes.SessionData}>} A promise that returns the user and the session.
      */
-    async getBySession(id, ip) {
-        await super.setup();
+    static async getBySession(id, ip) {
+        const db = await Db.get();
 
         /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */
-        const encryptedData = await super.db.collection("session").aggregate([
+        const encryptedData = await db.collection("session").aggregate([
             {
                 $match: {
                     _id: new MongoDb.ObjectId(id),
@@ -301,16 +299,14 @@ class UserDb extends Db {
             }
         };
 
-        const encryption = new Encryption();
-
         return {
             user: data.user,
             session: {
                 _id: data.session._id,
                 ip: data.session.ip,
                 userId: data.session.userId,
-                accessToken: encryption.decryptWithSalt(data.session.accessToken),
-                refreshToken: encryption.decryptWithSalt(data.session.refreshToken),
+                accessToken: Encryption.decryptWithSalt(data.session.accessToken),
+                refreshToken: Encryption.decryptWithSalt(data.session.refreshToken),
                 expires: data.session.expires
             }
         };
@@ -331,14 +327,14 @@ class UserDb extends Db {
      * @param {Express.Request} req The request.
      * @returns {Promise<{user: UserTypes.UserData, session: SessionTypes.SessionData}>} A promise that returns the user and the session.
      */
-    async set(user, guildMember, connections, token, req) {
-        await super.setup();
+    static async set(user, guildMember, connections, token, req) {
+        const db = await Db.get();
 
         /** @type {UserTypes.UserMongoData} */
         let userResult;
-        if (await super.db.collection("user").findOne({"discord.id": user.id})) {
+        if (await db.collection("user").findOne({"discord.id": user.id})) {
             /** @type {MongoDb.FindAndModifyWriteOpResultObject<UserTypes.UserMongoData>} */
-            const result = await super.db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
+            const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
                 discord: {
                     id: user.id,
                     username: user.username,
@@ -377,22 +373,21 @@ class UserDb extends Db {
                 timezone: process.env.DEFAULT_TIMEZONE
             };
 
-            await super.id(userResult, "user");
+            await Db.id(userResult, "user");
 
-            await super.db.collection("user").insertOne(userResult);
+            await db.collection("user").insertOne(userResult);
         }
 
         const expires = new Date(),
-            encryption = new Encryption(),
             encryptedTokens = {
-                accessToken: encryption.encryptWithSalt(token.access_token),
-                refreshToken: encryption.encryptWithSalt(token.refresh_token)
+                accessToken: Encryption.encryptWithSalt(token.access_token),
+                refreshToken: Encryption.encryptWithSalt(token.refresh_token)
             };
 
         expires.setSeconds(expires.getSeconds() + token.expires_in - 3600);
 
         /** @type {MongoDb.FindAndModifyWriteOpResultObject<SessionTypes.EncryptedMongoSessionData>} */
-        const sessionResult = await super.db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: {
+        const sessionResult = await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: {
             ip: req.ip,
             userId: userResult._id,
             accessToken: {
@@ -438,10 +433,10 @@ class UserDb extends Db {
      * @param {object} data The data to set.
      * @returns {Promise} A promise that resolves when the data for the user has been set.
      */
-    async setData(user, data) {
-        await super.setup();
+    static async setData(user, data) {
+        const db = await Db.get();
 
-        await super.db.collection("user").findOneAndUpdate({_id: MongoDb.Long.fromNumber(user.id)}, {$set: data});
+        await db.collection("user").findOneAndUpdate({_id: MongoDb.Long.fromNumber(user.id)}, {$set: data});
     }
 }
 

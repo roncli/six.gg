@@ -20,7 +20,7 @@ class ServerErrorView {
      * Gets the rendered server error template.
      * @returns {string} An HTML string of the server error view.
      */
-    get() {
+    static get() {
         return /* html */`
             <div id="error">
                 <div class="section">500 - Messy and <i>ineffective</i>...</div>

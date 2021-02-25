@@ -34,8 +34,7 @@ class OAuthDiscord {
     static async get(req, res) {
         const code = req.query.code.toString(),
             state = req.query.state.toString(),
-            discordUser = new DiscordUser(),
-            token = await discordUser.getToken(state, code);
+            token = await DiscordUser.getToken(state, code);
 
         if (!token) {
             res.redirect(302, "/join");
@@ -43,8 +42,8 @@ class OAuthDiscord {
         }
 
         const [user, connections] = await Promise.all([
-            discordUser.getUser(token.access_token),
-            discordUser.getUserConnections(token.access_token)
+            DiscordUser.getUser(token.access_token),
+            DiscordUser.getUserConnections(token.access_token)
         ]);
 
         if (!user) {

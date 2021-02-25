@@ -21,7 +21,7 @@ class Connection {
      * @param {{name: string, id: string, type: string}} connection The connection.
      * @returns {string} The URL.
      */
-    getUrl(connection) {
+    static getUrl(connection) {
         switch (connection.type) {
             case "steam":
                 return `https://steamcommunity.com/profiles/${connection.id}`;

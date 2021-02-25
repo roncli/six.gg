@@ -3,7 +3,7 @@
  */
 
 const EventDb = require("../database/event"),
-    Exception = require("../logging/exception");
+    Exception = require("../errors/exception");
 
 //  #####                        #
 //  #                            #
@@ -29,8 +29,7 @@ class Event {
      */
     static async add(data) {
         try {
-            const db = new EventDb();
-            await db.add(data);
+            await EventDb.add(data);
         } catch (err) {
             throw new Exception("There was an error while adding an event to the database.", err);
         }
@@ -54,8 +53,7 @@ class Event {
         /** @type {EventTypes.EventData} */
         let event;
         try {
-            const db = new EventDb();
-            event = await db.get(id);
+            event = await EventDb.get(id);
         } catch (err) {
             throw new Exception("There was an error while getting an event from the database.", err);
         }
@@ -84,8 +82,7 @@ class Event {
         /** @type {EventTypes.EventData[]} */
         let events;
         try {
-            const db = new EventDb();
-            events = await db.getByDateRange(start, end);
+            events = await EventDb.getByDateRange(start, end);
         } catch (err) {
             throw new Exception("There was an error while getting events from the database.", err);
         }
@@ -108,10 +105,9 @@ class Event {
      * @returns {Promise<boolean>} A promise that returns whether the event has been removed.
      */
     static async remove(eventId, userId) {
-        const db = new EventDb();
         let event;
         try {
-            event = await db.get(eventId);
+            event = await EventDb.get(eventId);
         } catch (err) {
             throw new Exception("There was an error getting an event while attempting to delete it from the database.", err);
         }
@@ -121,7 +117,7 @@ class Event {
         }
 
         try {
-            await db.remove(eventId);
+            await EventDb.remove(eventId);
         } catch (err) {
             throw new Exception("There was an error getting an event while attempting to delete it from the database.", err);
         }

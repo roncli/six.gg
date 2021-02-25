@@ -112,11 +112,9 @@ class Twitch {
      * @returns {Promise<boolean>} A promise that returns whether the Twitch client is ready.
      */
     static async connect() {
-        const db = new TwitchDb();
-
         let tokens;
         try {
-            tokens = await db.get();
+            tokens = await TwitchDb.get();
         } catch (err) {
             throw new Exception("There was an error getting the Twitch tokens.", err);
         }
@@ -130,7 +128,7 @@ class Twitch {
             };
 
             try {
-                await db.set(tokens);
+                await TwitchDb.set(tokens);
             } catch (err) {
                 throw new Exception("There was an error setting the Twitch tokens on connecting.", err);
             }
@@ -195,8 +193,7 @@ class Twitch {
                     channelAccessToken = token.accessToken;
                     channelRefreshToken = token.refreshToken;
                     try {
-                        const db = new TwitchDb();
-                        await db.set({
+                        await TwitchDb.set({
                             botAccessToken,
                             botRefreshToken,
                             channelAccessToken,
@@ -225,8 +222,7 @@ class Twitch {
                     botAccessToken = token.accessToken;
                     botRefreshToken = token.refreshToken;
                     try {
-                        const db = new TwitchDb();
-                        await db.set({
+                        await TwitchDb.set({
                             botAccessToken,
                             botRefreshToken,
                             channelAccessToken,
@@ -615,7 +611,7 @@ class Twitch {
             }
         }
 
-        new Sleep().sleep(1000);
+        Sleep.sleep(1000);
 
         webhooks = new Webhooks();
 

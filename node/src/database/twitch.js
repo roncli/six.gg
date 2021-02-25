@@ -19,7 +19,7 @@ const MongoDb = require("mongodb"),
 /**
  * A class to handle database calls for the twitch collection.
  */
-class TwitchDb extends Db {
+class TwitchDb {
     //              #
     //              #
     //  ###   ##   ###
@@ -31,11 +31,11 @@ class TwitchDb extends Db {
      * Gets the Twitch variables.
      * @returns {Promise<TwitchTypes.Tokens>} A promise that returns the Twitch variables.
      */
-    async get() {
-        await super.setup();
+    static async get() {
+        const db = await Db.get();
 
         /** @type {TwitchTypes.EncryptedMongoTokens} */
-        const encryptedTokens = await super.db.collection("twitch").findOne({});
+        const encryptedTokens = await db.collection("twitch").findOne({});
 
         if (!encryptedTokens) {
             return void 0;
@@ -61,13 +61,11 @@ class TwitchDb extends Db {
             }
         };
 
-        const encryption = new Encryption();
-
         return {
-            botAccessToken: encryption.decryptWithSalt(tokens.botAccessToken),
-            botRefreshToken: encryption.decryptWithSalt(tokens.botRefreshToken),
-            channelAccessToken: encryption.decryptWithSalt(tokens.channelAccessToken),
-            channelRefreshToken: encryption.decryptWithSalt(tokens.channelRefreshToken)
+            botAccessToken: Encryption.decryptWithSalt(tokens.botAccessToken),
+            botRefreshToken: Encryption.decryptWithSalt(tokens.botRefreshToken),
+            channelAccessToken: Encryption.decryptWithSalt(tokens.channelAccessToken),
+            channelRefreshToken: Encryption.decryptWithSalt(tokens.channelRefreshToken)
         };
     }
 
@@ -82,18 +80,17 @@ class TwitchDb extends Db {
      * @param {TwitchTypes.Tokens} tokens The tokens to set.
      * @returns {Promise} A promise that resolves when the tokens are set.
      */
-    async set(tokens) {
-        await super.setup();
+    static async set(tokens) {
+        const db = await Db.get();
 
-        const encryption = new Encryption(),
-            encryptedTokens = {
-                botAccessToken: encryption.encryptWithSalt(tokens.botAccessToken),
-                botRefreshToken: encryption.encryptWithSalt(tokens.botRefreshToken),
-                channelAccessToken: encryption.encryptWithSalt(tokens.channelAccessToken),
-                channelRefreshToken: encryption.encryptWithSalt(tokens.channelRefreshToken)
-            };
+        const encryptedTokens = {
+            botAccessToken: Encryption.encryptWithSalt(tokens.botAccessToken),
+            botRefreshToken: Encryption.encryptWithSalt(tokens.botRefreshToken),
+            channelAccessToken: Encryption.encryptWithSalt(tokens.channelAccessToken),
+            channelRefreshToken: Encryption.encryptWithSalt(tokens.channelRefreshToken)
+        };
 
-        await super.db.collection("twitch").findOneAndUpdate({}, {$set: {
+        await db.collection("twitch").findOneAndUpdate({}, {$set: {
             botAccessToken: {
                 salt: new MongoDb.Binary(encryptedTokens.botAccessToken.salt),
                 encrypted: new MongoDb.Binary(encryptedTokens.botAccessToken.encrypted)

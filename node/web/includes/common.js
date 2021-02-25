@@ -54,7 +54,22 @@ class Common {
 
         const minify = new Minify();
 
-        head = `${head}${minify.combine(files.js, "js")}${minify.combine(files.css, "css")}${Common.favIcon()}`;
+        head = /* html */`
+            ${head}
+            ${minify.combine(files.js, "js")}
+            ${minify.combine(files.css, "css")}
+            <meta name="apple-mobile-web-app-title" content="Six Gaming">
+            <meta name="application-name" content="Six Gaming">
+            <meta name="msapplication-TileColor" content="#0b8b8c">
+            <meta name="msapplication-config" content="/images/browserconfig.xml">
+            <meta name="theme-color" content="#ffffff">
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+            <link rel="manifest" href="/images/site.webmanifest">
+            <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#0b8b8c">
+            <link rel="shortcut icon" href="/images/favicon.ico">
+        `;
 
         let guildMember;
         if (user) {
@@ -62,7 +77,7 @@ class Common {
         }
 
         return HtmlMinifier.minify(
-            new IndexView().get({
+            IndexView.get({
                 head,
                 html,
                 protocol: req.protocol,
@@ -86,107 +101,6 @@ class Common {
                 useShortDoctype: true
             }
         );
-    }
-
-    //   #               ###
-    //  # #               #
-    //  #     ###  # #    #     ##    ##   ###
-    // ###   #  #  # #    #    #     #  #  #  #
-    //  #    # ##  # #    #    #     #  #  #  #
-    //  #     # #   #    ###    ##    ##   #  #
-    /**
-     * Returns the HTML to generate the favicon.
-     * @returns {string} The HTML to generate the favicon.
-     */
-    static favIcon() {
-        return /* html */`
-            <meta name="apple-mobile-web-app-title" content="Six Gaming">
-            <meta name="application-name" content="Six Gaming">
-            <meta name="msapplication-TileColor" content="#0b8b8c">
-            <meta name="msapplication-config" content="/images/browserconfig.xml">
-            <meta name="theme-color" content="#ffffff">
-            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-            <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-            <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-            <link rel="manifest" href="/images/site.webmanifest">
-            <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#0b8b8c">
-            <link rel="shortcut icon" href="/images/favicon.ico">
-        `;
-    }
-
-    //   #                            #    ###    #
-    //  # #                           #     #
-    //  #     ##   ###   # #    ###  ###    #    ##    # #    ##
-    // ###   #  #  #  #  ####  #  #   #     #     #    ####  # ##
-    //  #    #  #  #     #  #  # ##   #     #     #    #  #  ##
-    //  #     ##   #     #  #   # #    ##   #    ###   #  #   ##
-    /**
-     * Formats the time portion of the date.
-     * @param {Date} time The time to display.
-     * @returns {string} The formatted time.
-     */
-    static formatTime(time) {
-        return `${time.getHours() === 0 ? 12 : time.getHours() > 12 ? time.getHours() - 12 : time.getHours()}:${time.getMinutes() < 10 ? "0" : ""}${time.getMinutes()} ${time.getHours() < 12 ? "AM" : "PM"}`;
-    }
-
-    //   #                            #    ###          #
-    //  # #                           #    #  #         #
-    //  #     ##   ###   # #    ###  ###   #  #   ###  ###    ##
-    // ###   #  #  #  #  ####  #  #   #    #  #  #  #   #    # ##
-    //  #    #  #  #     #  #  # ##   #    #  #  # ##   #    ##
-    //  #     ##   #     #  #   # #    ##  ###    # #    ##   ##
-    /**
-     * Formats the date to show in the user's time zone.
-     * @param {Date} time The date and time to display.
-     * @returns {string} The formatted date and time.
-     */
-    static formatDate(time) {
-        const now = new Date(),
-            today = new Date(now);
-
-        today.setMilliseconds(0);
-        today.setSeconds(0);
-        today.setMinutes(0);
-        today.setHours(0);
-
-        const date = new Date(time);
-
-        date.setMilliseconds(0);
-        date.setSeconds(0);
-        date.setMinutes(0);
-        date.setHours(0);
-
-        switch (date.getTime() - today.getTime()) {
-            case 0:
-                return `Today ${Common.formatTime(time)}`;
-            case 86400000:
-                return `Tomorrow ${Common.formatTime(time)}`;
-            case -86400000:
-                return `Yesterday ${Common.formatTime(time)}`;
-            default:
-                return `${["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][time.getMonth()]} ${time.getDate()} ${time.getFullYear()} ${Common.formatTime(time)}`;
-        }
-    }
-
-    //   #                            #    ###    #
-    //  # #                           #     #
-    //  #     ##   ###   # #    ###  ###    #    ##    # #    ##    ###   ###    ###  ###
-    // ###   #  #  #  #  ####  #  #   #     #     #    ####  # ##  ##     #  #  #  #  #  #
-    //  #    #  #  #     #  #  # ##   #     #     #    #  #  ##      ##   #  #  # ##  #  #
-    //  #     ##   #     #  #   # #    ##   #    ###   #  #   ##   ###    ###    # #  #  #
-    //                                                                    #
-    /**
-     * Formats a timespan.
-     * @param {number} time The number of seconds.
-     * @returns {string} A string representing the timespan.
-     */
-    static formatTimespan(time) {
-        if (!time) {
-            return "";
-        }
-
-        time = Math.round(time);
-        return `${Math.floor(time / 3600)}:${(Math.floor(time / 60) % 60).toLocaleString("en-US", {minimumIntegerDigits: 2})}:${(time % 60).toLocaleString("en-US", {minimumIntegerDigits: 2})}`;
     }
 }
 

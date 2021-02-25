@@ -41,7 +41,7 @@ class EventController {
             res.status(404).send(Common.page(
                 "",
                 {css: ["/css/error.css"]},
-                new NotFoundView().get({message: "This page does not exist."}),
+                NotFoundView.get({message: "This page does not exist."}),
                 req,
                 user
             ));
@@ -54,7 +54,7 @@ class EventController {
             res.status(404).send(Common.page(
                 "",
                 {css: ["/css/error.css"]},
-                new NotFoundView().get({message: "This page does not exist."}),
+                NotFoundView.get({message: "This page does not exist."}),
                 req,
                 user
             ));
@@ -66,7 +66,7 @@ class EventController {
         res.status(200).send(Common.page(
             "",
             {css: ["/css/event.css"], js: ["/js/event.js"]},
-            new EventView().get({event, user, eventUser: eventUser.user, guildMember: eventUser.guildMember, attendees}),
+            EventView.get({event, user, eventUser: eventUser.user, guildMember: eventUser.guildMember, attendees}),
             req,
             user
         ));

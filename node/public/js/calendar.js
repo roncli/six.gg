@@ -31,20 +31,19 @@ class Calendar {
                 add: {
                     text: "Add Event",
                     click: async () => {
-                        const template = new window.Template(),
-                            div = document.createElement("div");
 
                         let diff = 0,
                             gameId = void 0;
 
                         try {
-                            await template.loadTemplate("/views/calendar/add.js", "AddView");
+                            await Calendar.Template.loadTemplate("/views/calendar/add.js", "AddView");
                         } catch {
                             return;
                         }
-                        const addView = new window.AddView();
 
-                        template.loadDataIntoTemplate(void 0, div, addView.get);
+                        const div = document.createElement("div");
+
+                        Calendar.Template.loadDataIntoTemplate(void 0, div, window.AddView.get);
 
                         Calendar.modal = new window.Modal();
 
@@ -122,9 +121,9 @@ class Calendar {
 
                                 data.forEach((game) => {
                                     html = /* html */`${html}
-                                        <div class="item" data-id="${Calendar.encoding.attributeEncode(game.id)}">
+                                        <div class="item" data-id="${Calendar.Encoding.attributeEncode(game.id)}">
                                             <div class="image">${game.imageUrl ? /* html */`<img src="${game.imageUrl}" />` : ""}</div>
-                                            <div class="game">${Calendar.encoding.htmlEncode(game.game)}</div>
+                                            <div class="game">${Calendar.Encoding.htmlEncode(game.game)}</div>
                                         </div>
                                     `;
                                 });
@@ -242,17 +241,21 @@ class Calendar {
     }
 }
 
+/** @type {typeof import("./common/encoding")} */
+// @ts-ignore
+Calendar.Encoding = typeof Encoding === "undefined" ? require("./common/encoding") : Encoding; // eslint-disable-line no-undef
+
 /** @type {number} */
 Calendar.gameComboTimeout = null;
 
 /** @type {Modal} */
 Calendar.modal = null;
 
-document.addEventListener("DOMContentLoaded", Calendar.DOMContentLoaded);
-
-/** @type {import("./common/encoding")} */
+/** @type {typeof import("./common/template")} */
 // @ts-ignore
-Calendar.encoding = new (typeof Encoding === "undefined" ? require("./common/encoding") : Encoding)(); // eslint-disable-line no-undef
+Calendar.Template = typeof Template === "undefined" ? require("./common/template") : Template; // eslint-disable-line no-undef
+
+document.addEventListener("DOMContentLoaded", Calendar.DOMContentLoaded);
 
 if (typeof module === "undefined") {
     window.Calendar = Calendar;

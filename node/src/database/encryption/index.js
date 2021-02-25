@@ -49,7 +49,7 @@ class Encryption {
      * @param {Buffer} [key] The key to use.
      * @returns {string} The decrypted text.
      */
-    decrypt(ciphertext, key) {
+    static decrypt(ciphertext, key) {
         const authenticationTag = ciphertext.slice(-16),
             initVector = ciphertext.slice(0, 12),
             encryptedMessage = ciphertext.slice(12, -16),
@@ -74,9 +74,8 @@ class Encryption {
      * @param {EncryptionTypes.EncryptedData} encryptedData The encrypted data to be decrypted.
      * @returns {string} The decrypted text.
      */
-    decryptWithSalt(encryptedData) {
-        const encryption = new Encryption(),
-            key = encryption.getSaltedKey(encryptedData.salt),
+    static decryptWithSalt(encryptedData) {
+        const key = Encryption.getSaltedKey(encryptedData.salt),
             authenticationTag = encryptedData.encrypted.slice(-16),
             initVector = encryptedData.encrypted.slice(0, 12),
             encryptedMessage = encryptedData.encrypted.slice(12, -16),
@@ -102,7 +101,7 @@ class Encryption {
      * @param {Buffer} [key] The key to use.
      * @returns {Buffer} The encrypted text.
      */
-    encrypt(messagetext, key) {
+    static encrypt(messagetext, key) {
         const initVector = crypto.randomBytes(initVectorLength),
             cipher = crypto.createCipheriv(algorithm, key || getKey(), initVector, {authTagLength: authenticationTagLength});
 
@@ -125,10 +124,9 @@ class Encryption {
      * @param {string} messagetext The clear text message to be encrypted.
      * @returns {EncryptionTypes.EncryptedData} The encrypted data.
      */
-    encryptWithSalt(messagetext) {
-        const encryption = new Encryption(),
-            salt = encryption.getSalt(),
-            key = encryption.getSaltedKey(salt),
+    static encryptWithSalt(messagetext) {
+        const salt = Encryption.getSalt(),
+            key = Encryption.getSaltedKey(salt),
             initVector = crypto.randomBytes(initVectorLength),
             cipher = crypto.createCipheriv(algorithm, key, initVector, {authTagLength: authenticationTagLength});
 
@@ -150,7 +148,7 @@ class Encryption {
      * Gets a random salt to help prevent rainbow table attacks.
      * @returns {Buffer} The buffer containing the salt.
      */
-    getSalt() {
+    static getSalt() {
         return crypto.randomBytes(saltLength);
     }
 
@@ -166,7 +164,7 @@ class Encryption {
      * @param {Buffer} salt The salt.
      * @returns {Buffer} The key.
      */
-    getSaltedKey(salt) {
+    static getSaltedKey(salt) {
         return crypto.scryptSync(getKey(), salt, keyLength);
     }
 }

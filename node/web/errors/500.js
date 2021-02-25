@@ -40,7 +40,7 @@ class ServerError {
         res.status(500).send(Common.page(
             "",
             {css: ["/css/error.css"]},
-            new ServerErrorView().get(),
+            ServerErrorView.get(),
             req,
             user
         ));

@@ -143,34 +143,34 @@ class Home {
         }
 
         try {
-            await Home.template.loadTemplate("/views/home/live.js", "LiveView");
+            await Home.Template.loadTemplate("/views/home/live.js", "LiveView");
         } catch (err) {
             return;
         }
-        const liveView = new window.LiveView();
 
         if (data[0].member.displayName === featured) {
             const live = document.getElementById("live");
-            Home.template.loadDataIntoTemplate(data.slice(1), live, liveView.get);
+            Home.Template.loadDataIntoTemplate(data.slice(1), live, window.LiveView.get);
         } else {
             try {
-                await Home.template.loadTemplate("/views/home/streamers.js", "StreamersView");
+                await Home.Template.loadTemplate("/views/home/streamers.js", "StreamersView");
             } catch (err) {
                 return;
             }
-            const streamersView = new window.StreamersView();
 
-            Home.template.loadDataIntoTemplate(data, streamers, streamersView.get);
+            Home.Template.loadDataIntoTemplate(data, streamers, window.StreamersView.get);
         }
     }
 }
 
+Home.embed = null;
+
 /** @type {number} */
 Home.streamsInterval = null;
 
-Home.embed = null;
-
-Home.template = new window.Template();
+/** @type {typeof import("./common/template")} */
+// @ts-ignore
+Home.Template = typeof Template === "undefined" ? require("./common/template") : Template; // eslint-disable-line no-undef
 
 document.addEventListener("DOMContentLoaded", Home.DOMContentLoaded);
 

@@ -10,7 +10,7 @@
 
 const Discord = require("../discord"),
     DiscordUser = require("../discord/user"),
-    Exception = require("../logging/exception"),
+    Exception = require("../errors/exception"),
     SessionDb = require("../database/session"),
     UserDb = require("../database/user");
 
@@ -38,11 +38,9 @@ class User {
      * @returns {Promise<{user: User, guildMember: DiscordJs.GuildMember}[]>} A promise that returns the users attending the event.
      */
     static async getByEventAttendees(eventId) {
-        const db = new UserDb();
-
         let data;
         try {
-            data = await db.getByEventAttendees(eventId);
+            data = await UserDb.getByEventAttendees(eventId);
         } catch (err) {
             throw new Exception("There was an error while getting users by event ID.", err);
         }
@@ -70,11 +68,9 @@ class User {
      * @returns {Promise<User>} A promise that returns the user.
      */
     static async getByGuildMember(member) {
-        const db = new UserDb();
-
         let data;
         try {
-            data = await db.getByGuildMember(member);
+            data = await UserDb.getByGuildMember(member);
         } catch (err) {
             throw new Exception("There was an error while getting the user by Discord ID.", err);
         }
@@ -108,8 +104,7 @@ class User {
 
         let data;
         try {
-            const db = new UserDb();
-            data = await db.getBySession(sessionId, ip);
+            data = await UserDb.getBySession(sessionId, ip);
         } catch (err) {
             throw new Exception("There was an error while getting the current user by session.", err);
         }
@@ -121,8 +116,7 @@ class User {
         if (data.session.expires < new Date()) {
             let token;
             try {
-                const user = new DiscordUser();
-                token = await user.refreshToken(data.session.refreshToken);
+                token = await DiscordUser.refreshToken(data.session.refreshToken);
             } catch (err) {
                 return void 0;
             }
@@ -132,8 +126,7 @@ class User {
             data.session.expires.setSeconds(data.session.expires.getSeconds() + token.expires_in - 3600);
 
             try {
-                const db = new SessionDb();
-                await db.update(data.session);
+                await SessionDb.update(data.session);
             } catch (err) {
                 throw new Exception("There was an error while updating the current user's session.", err);
             }
@@ -158,8 +151,7 @@ class User {
         /** @type {UserTypes.UserData} */
         let user;
         try {
-            const db = new UserDb();
-            user = await db.get(id);
+            user = await UserDb.get(id);
         } catch (err) {
             throw new Exception("There was an error while getting a member from the database.", err);
         }
@@ -197,8 +189,7 @@ class User {
         /** @type {UserTypes.UserData[]} */
         let users;
         try {
-            const db = new UserDb();
-            users = await db.getAll(members.map((m) => m.id));
+            users = await UserDb.getAll(members.map((m) => m.id));
         } catch (err) {
             throw new Exception("There was an error while getting members from the database.", err);
         }
@@ -231,8 +222,7 @@ class User {
     static async set(user, guildMember, connections, token, req) {
         let data;
         try {
-            const db = new UserDb();
-            data = await db.set(user, guildMember, connections, token, req);
+            data = await UserDb.set(user, guildMember, connections, token, req);
         } catch (err) {
             throw new Exception("There was an error while setting the current user.", err);
         }
@@ -278,8 +268,7 @@ class User {
         }
 
         try {
-            const db = new UserDb();
-            await db.setData(this, data);
+            await UserDb.setData(this, data);
             Object.keys(data).filter((key) => ["discord", "guildMember", "connections", "location", "timezone", "session"].indexOf(key) !== -1).forEach((key) => {
                 this[key] = data[key];
             });
@@ -305,8 +294,7 @@ class User {
         }
 
         try {
-            const db = new UserDb();
-            await db.setData(this, {timezone});
+            await UserDb.setData(this, {timezone});
             this.timezone = timezone;
         } catch (err) {
             throw new Exception("There was an error while setting the timezone.", err);

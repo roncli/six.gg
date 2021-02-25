@@ -21,7 +21,7 @@ class MethodNotAllowedView {
      * @param {{message: string}} data The data for the method not allowed view.
      * @returns {string} An HTML string of the method not allowed view.
      */
-    get(data) {
+    static get(data) {
         const {message} = data;
 
         return /* html */`

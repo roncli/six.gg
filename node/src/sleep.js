@@ -23,7 +23,7 @@ class Sleep {
      * @param {number} ms The number of milliseconds to sleep for.
      * @returns {Promise} A promise that resolves when the sleep period has completed.
      */
-    sleep(ms) {
+    static sleep(ms) {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
         });

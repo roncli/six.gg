@@ -42,7 +42,7 @@ class Join {
         res.status(200).send(Common.page(
             "",
             {},
-            new JoinView().get(),
+            JoinView.get(),
             req,
             void 0
         ));

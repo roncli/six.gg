@@ -22,7 +22,7 @@ class Time {
      * @param {string} timezone The timezone.
      * @returns {string} The local ISO time.
      */
-    getLocalIsoTime(time, timezone) {
+    static getLocalIsoTime(time, timezone) {
         // The following will work on node 15+.
         // return time.toLocaleString("en-CA", {timeZone: timezone, hour12: false}).replace(/, /, "T");
 

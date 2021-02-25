@@ -33,8 +33,7 @@ class Attendee {
         }
 
         try {
-            const db = new AttendeeDb();
-            await db.add({eventId, userId});
+            await AttendeeDb.add({eventId, userId});
         } catch (err) {
             throw new Exception("There was an error while adding an attendee to the database.", err);
         }
@@ -60,8 +59,7 @@ class Attendee {
         }
 
         try {
-            const db = new AttendeeDb();
-            await db.remove({eventId, userId});
+            await AttendeeDb.remove({eventId, userId});
         } catch (err) {
             throw new Exception("There was an error while removing an attendee from the database.", err);
         }

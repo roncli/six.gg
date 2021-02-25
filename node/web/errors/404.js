@@ -37,7 +37,7 @@ class NotFound {
         res.status(404).send(Common.page(
             "",
             {css: ["/css/error.css"]},
-            new NotFoundView().get({message: "This page does not exist."}),
+            NotFoundView.get({message: "This page does not exist."}),
             req,
             user
         ));

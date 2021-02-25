@@ -20,7 +20,7 @@ class AboutView {
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.
      */
-    get() {
+    static get() {
         return /* html */`
             <div class="section">About Six Gaming</div>
             <div>

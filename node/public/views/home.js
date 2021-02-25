@@ -25,7 +25,7 @@ class HomeView {
      * @param {ViewTypes.HomeViewParameters} data The page data.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         const {streamers, timezone, defaultTimezone} = data;
 
         return /* html */`
@@ -35,7 +35,7 @@ class HomeView {
             ` : ""}
             <div id="calendar"></div>
             <div id="streamers">
-                ${streamers && streamers.length > 0 ? HomeView.streamersView.get(streamers) : ""}
+                ${streamers && streamers.length > 0 ? HomeView.StreamersView.get(streamers) : ""}
             </div>
             <script>
                 window.timezone = "${timezone.replace(/"/gm, "\\\"")}";
@@ -44,9 +44,9 @@ class HomeView {
     }
 }
 
-/** @type {import("./home/streamers")} */
+/** @type {typeof import("./home/streamers")} */
 // @ts-ignore
-HomeView.streamersView = new (typeof StreamersView === "undefined" ? require("./home/streamers") : StreamersView)(); // eslint-disable-line no-undef
+HomeView.StreamersView = typeof StreamersView === "undefined" ? require("./home/streamers") : StreamersView; // eslint-disable-line no-undef
 
 if (typeof module !== "undefined") {
     module.exports = HomeView; // eslint-disable-line no-undef

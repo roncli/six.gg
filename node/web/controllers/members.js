@@ -38,7 +38,7 @@ class Members {
         res.status(200).send(Common.page(
             "",
             {css: ["/css/members.css"], js: ["/js/common/connection.js"]},
-            new MembersView().get(members),
+            MembersView.get(members),
             req,
             user
         ));

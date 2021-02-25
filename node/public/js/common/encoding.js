@@ -22,7 +22,7 @@ class Encoding {
      * @param {string} str The string.
      * @returns {string} The encoded string.
      */
-    attributeEncode(str) {
+    static attributeEncode(str) {
         return str && `${str}`.replace(/"/g, "&#34;") || "";
     }
 
@@ -37,7 +37,7 @@ class Encoding {
      * @param {string} str The string.
      * @returns {string} The encoded string.
      */
-    htmlEncode(str) {
+    static htmlEncode(str) {
         return str && `${str}`.replace(/&/gm, "&amp;").replace(/</gm, "&lt;").replace(/[\u0080-\uFFFF<>&]/gm, (i) => `&#${i.charCodeAt(0)};`) || "";
     }
 
@@ -53,7 +53,7 @@ class Encoding {
      * @param {*} str The string.
      * @returns {string} The encoded string.
      */
-    jsEncode(str) {
+    static jsEncode(str) {
         return str && `${str}`.replace(/"/gm, "\\\"") || "";
     }
 }

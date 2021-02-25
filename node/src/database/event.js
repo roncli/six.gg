@@ -17,7 +17,7 @@ const MongoDb = require("mongodb"),
 /**
  * A class to handle database calls to the event collection.
  */
-class EventDb extends Db {
+class EventDb {
     //          #     #
     //          #     #
     //  ###   ###   ###
@@ -29,10 +29,10 @@ class EventDb extends Db {
      * @param {EventTypes.EventData} data The event data.
      * @returns {Promise<EventTypes.EventData>} A promise that returns the event data has been added.
      */
-    async add(data) {
-        await super.setup();
+    static async add(data) {
+        const db = await Db.get();
 
-        await super.id(data, "event");
+        await Db.id(data, "event");
 
         const event = {
             _id: data._id,
@@ -52,7 +52,7 @@ class EventDb extends Db {
         }
 
         /** @type {MongoDb.InsertOneWriteOpResult<EventTypes.EventMongoData>} */
-        await super.db.collection("event").insertOne(event);
+        await db.collection("event").insertOne(event);
 
         return data;
     }
@@ -69,11 +69,11 @@ class EventDb extends Db {
      * @param {number} id The event ID.
      * @returns {Promise<EventTypes.EventData>} A promise that returns the event.
      */
-    async get(id) {
-        await super.setup();
+    static async get(id) {
+        const db = await Db.get();
 
         /** @type {EventTypes.EventMongoData} */
-        const event = await super.db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)});
+        const event = await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)});
 
         if (!event) {
             return void 0;
@@ -104,11 +104,11 @@ class EventDb extends Db {
      * @param {Date} end The end date.
      * @returns {Promise<EventTypes.EventData[]>} A promise that returns the matching events.
      */
-    async getByDateRange(start, end) {
-        await super.setup();
+    static async getByDateRange(start, end) {
+        const db = await Db.get();
 
         /** @type {EventTypes.EventMongoData[]} */
-        const events = await super.db.collection("event").find({
+        const events = await db.collection("event").find({
             $and: [
                 {
                     start: {$lte: end},
@@ -138,12 +138,12 @@ class EventDb extends Db {
      * @param {number} id The event ID.
      * @returns {Promise} A promise that resolves when the event has been removed.
      */
-    async remove(id) {
-        await super.setup();
+    static async remove(id) {
+        const db = await Db.get();
 
         await Promise.all([
-            super.db.collection("event").deleteOne({_id: MongoDb.Long.fromNumber(id)}),
-            super.db.collection("attendee").deleteMany({eventId: MongoDb.Long.fromNumber(id)})
+            db.collection("event").deleteOne({_id: MongoDb.Long.fromNumber(id)}),
+            db.collection("attendee").deleteMany({eventId: MongoDb.Long.fromNumber(id)})
         ]);
     }
 }

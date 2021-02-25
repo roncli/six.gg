@@ -21,7 +21,7 @@ class NotFoundView {
      * @param {{message: string}} data The data for the not found view.
      * @returns {string} An HTML string of the not found view.
      */
-    get(data) {
+    static get(data) {
         const {message} = data;
 
         return /* html */`

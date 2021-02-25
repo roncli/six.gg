@@ -47,7 +47,7 @@ class Me {
         res.status(200).send(Common.page(
             "",
             {css: ["/css/me.css"], js: ["/js/me.js", "/js/common/connection.js"]},
-            new MeView().get({
+            MeView.get({
                 user,
                 guildMember: Discord.findGuildMemberById(user.discord.id),
                 timezones: Object.keys(tzdata.zones).filter((zone) => {

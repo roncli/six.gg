@@ -37,7 +37,7 @@ class About {
         res.status(200).send(Common.page(
             "",
             {css: ["/css/about.css"]},
-            new AboutView().get(),
+            AboutView.get(),
             req,
             user
         ));

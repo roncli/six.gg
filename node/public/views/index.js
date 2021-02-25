@@ -25,7 +25,7 @@ class IndexView {
      * @param {ViewTypes.IndexViewParameters} data The data to render the page with.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         const {head, html, protocol, host, originalUrl, year, version, user, guildMember} = data;
 
         return /* html */`
@@ -56,7 +56,7 @@ class IndexView {
                                     <li class="login">
                                         <a href="/me">
                                             <img src="${guildMember.user.displayAvatarURL({size: 32, format: "png"})}" />
-                                            ${IndexView.encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
+                                            ${IndexView.Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
                                         </a>
                                     </li>
                                     ` : /* html */`
@@ -95,9 +95,9 @@ class IndexView {
     }
 }
 
-/** @type {import("../js/common/encoding")} */
+/** @type {typeof import("../js/common/encoding")} */
 // @ts-ignore
-IndexView.encoding = new (typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding)(); // eslint-disable-line no-undef
+IndexView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
 
 if (typeof module !== "undefined") {
     module.exports = IndexView; // eslint-disable-line no-undef

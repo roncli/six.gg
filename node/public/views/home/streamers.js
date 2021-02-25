@@ -26,7 +26,7 @@ class StreamersView {
      * @param {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} data The page data.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         return /* html */`
             <div class="section">Featured Streamer</div>
             <div id="featured">
@@ -36,19 +36,15 @@ class StreamersView {
             <div id="twitch">
             </div>
             <div id="live">
-                ${data.length === 1 ? "" : StreamersView.liveView.get(data.slice(1))}
+                ${data.length === 1 ? "" : StreamersView.LiveView.get(data.slice(1))}
             </div>
         `;
     }
 }
 
-/** @type {import("./live")} */
+/** @type {typeof import("./live")} */
 // @ts-ignore
-StreamersView.liveView = new (typeof LiveView === "undefined" ? require("./live") : LiveView)(); // eslint-disable-line no-undef
-
-/** @type {import("../../js/common/encoding")} */
-// @ts-ignore
-StreamersView.encoding = new (typeof Encoding === "undefined" ? require("../../js/common/encoding") : Encoding)(); // eslint-disable-line no-undef
+StreamersView.LiveView = typeof LiveView === "undefined" ? require("./live") : LiveView; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.StreamersView = StreamersView;

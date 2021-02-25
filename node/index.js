@@ -42,21 +42,6 @@ process.on("unhandledRejection", (reason) => {
         process.stdout.write("\x1b]2;Six Gaming\x1b\x5c");
     }
 
-    // Setup express app.
-    const app = express();
-
-    // Remove powered by.
-    app.disable("x-powered-by");
-
-    // Get the router.
-    const router = new Router();
-    try {
-        await router.setup();
-    } catch (err) {
-        Log.critical("There was an error while setting up the router.", {err});
-        return;
-    }
-
     // Setup various listeners.
     Listeners.setup();
 
@@ -70,19 +55,25 @@ process.on("unhandledRejection", (reason) => {
     // Flush cache.
     await Cache.flush();
 
+    // Setup express app.
+    const app = express();
+
+    // Remove powered by.
+    app.disable("x-powered-by");
+
     // Initialize middleware stack.
     app.use(bodyParser.json());
     app.use(compression());
     app.use(cookieParser());
 
-    // Setup public redirects.
-    app.use(express.static("public"));
-
-    // Set req.ip.
+    // Correct IP from web server..
     app.use((req, res, next) => {
-        req.ip = (req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"].toString() : void 0) || req.ip || req.connection.remoteAddress;
+        req.ip = (req.headers["x-forwarded-for"] ? req.headers["x-forwarded-for"].toString() : void 0) || req.ip || (req.socket && req.socket.remoteAddress || void 0) || (req.connection && req.connection.remoteAddress || void 0);
         next();
     });
+
+    // Setup public redirects.
+    app.use(express.static("public"));
 
     // Setup Discord redirect.
     app.get("/discord", (req, res) => {
@@ -104,6 +95,15 @@ process.on("unhandledRejection", (reason) => {
 
         res.status(200).contentType(redirect.contentType).sendFile(`${__dirname}/${redirect.path}`);
     });
+
+    // Get the router.
+    const router = new Router();
+    try {
+        await router.setup();
+    } catch (err) {
+        Log.critical("There was an error while setting up the router.", {err});
+        return;
+    }
 
     // tsconfig.json is not meant to be served, 404 it if it's requested directly.
     app.use("/tsconfig.json", (req, res, next) => {

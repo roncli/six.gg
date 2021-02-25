@@ -26,7 +26,7 @@ class LiveView {
      * @param {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} data The page data.
      * @returns {string} An HTML string of the page.
      */
-    get(data) {
+    static get(data) {
         return /* html */`
             ${data.map((stream) => /* html */`
                 <div><a href="${stream.activity.url}" target="_blank"><img src="/images/twitch.png"></a></div>

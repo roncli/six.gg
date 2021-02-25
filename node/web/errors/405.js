@@ -37,7 +37,7 @@ class MethodNotAllowed {
         res.status(405).send(Common.page(
             "",
             {css: ["/css/error.css"]},
-            new MethodNotAllowedView().get({message: "This method not allowed."}),
+            MethodNotAllowedView.get({message: "This method not allowed."}),
             req,
             user
         ));

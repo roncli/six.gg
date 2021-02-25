@@ -17,7 +17,7 @@ const MongoDb = require("mongodb"),
 /**
  * A class to handle database calls to the attendee collection.
  */
-class AttendeeDb extends Db {
+class AttendeeDb {
     //          #     #
     //          #     #
     //  ###   ###   ###
@@ -29,11 +29,11 @@ class AttendeeDb extends Db {
      * @param {AttendeeTypes.AttendeeData} data The data to add.
      * @returns {Promise<AttendeeTypes.AttendeeData>} A promise that returns the data, including the newly inserted ID.
      */
-    async add(data) {
-        await super.setup();
+    static async add(data) {
+        const db = await Db.get();
 
         /** @type {MongoDb.InsertOneWriteOpResult<AttendeeTypes.AttendeeMongoData>} */
-        const result = await super.db.collection("attendee").insertOne({
+        const result = await db.collection("attendee").insertOne({
             eventId: MongoDb.Long.fromNumber(data.eventId),
             userId: MongoDb.Long.fromNumber(data.userId)
         });
@@ -52,10 +52,10 @@ class AttendeeDb extends Db {
      * @param {AttendeeTypes.AttendeeData} data The data to remove.
      * @returns {Promise} A promise that resolves when the attendee has been removed from an event.
      */
-    async remove(data) {
-        await super.setup();
+    static async remove(data) {
+        const db = await Db.get();
 
-        await super.db.collection("attendee").deleteOne(data);
+        await db.collection("attendee").deleteOne(data);
     }
 }
 

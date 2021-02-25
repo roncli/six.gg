@@ -17,7 +17,7 @@ const MongoDb = require("mongodb"),
 /**
  * A class to handle database calls to the session collection.
  */
-class SessionDb extends Db {
+class SessionDb {
     //                #         #
     //                #         #
     // #  #  ###    ###   ###  ###    ##
@@ -30,17 +30,15 @@ class SessionDb extends Db {
      * @param {SessionTypes.SessionData} session The session to update.
      * @returns {Promise} A promise that resolves when the session has been updated.
      */
-    async update(session) {
-        await super.setup();
-
-        const encryption = new Encryption();
+    static async update(session) {
+        const db = await Db.get();
 
         const encryptedTokens = {
-            accessToken: encryption.encryptWithSalt(session.accessToken),
-            refreshToken: encryption.encryptWithSalt(session.refreshToken)
+            accessToken: Encryption.encryptWithSalt(session.accessToken),
+            refreshToken: Encryption.encryptWithSalt(session.refreshToken)
         };
 
-        await super.db.collection("session").findOneAndUpdate({_id: session._id, ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
+        await db.collection("session").findOneAndUpdate({_id: session._id, ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
             ip: session.ip,
             userId: MongoDb.Long.fromNumber(session.userId),
             accessToken: {

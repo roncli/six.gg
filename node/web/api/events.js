@@ -39,8 +39,7 @@ class EventsApi {
         try {
             const start = (req.query.start || "").toString(),
                 end = (req.query.end || "").toString(),
-                timezone = (req.query.timeZone || "").toString(),
-                time = new Time();
+                timezone = (req.query.timeZone || "").toString();
 
             if (start === "" || end === "") {
                 res.status(400).json({error: "Bad request, you must include both the start and end date."});
@@ -63,8 +62,8 @@ class EventsApi {
             res.status(200).json(events.map((event) => ({
                 id: event.id,
                 title: event.title,
-                start: time.getLocalIsoTime(event.start, timezone),
-                end: time.getLocalIsoTime(event.end, timezone),
+                start: Time.getLocalIsoTime(event.start, timezone),
+                end: Time.getLocalIsoTime(event.end, timezone),
                 url: `/event/${event.id}`
             })));
         } catch (err) {

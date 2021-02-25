@@ -37,32 +37,18 @@ class Db {
         return typeof val === "number" ? val : val.toNumber();
     }
 
-    //    #  #
-    //    #  #
-    //  ###  ###
-    // #  #  #  #
-    // #  #  #  #
-    //  ###  ###
+    //              #
+    //              #
+    //  ###   ##   ###
+    // #  #  # ##   #
+    //  ##   ##     #
+    // #      ##     ##
+    //  ###
     /**
      * Gets the database object.
-     * @returns {MongoDb.Db} The database.
+     * @returns {Promise<MongoDb.Db>} The database.
      */
-    get db() {
-        return db;
-    }
-
-    //               #
-    //               #
-    //  ###    ##   ###   #  #  ###
-    // ##     # ##   #    #  #  #  #
-    //   ##   ##     #    #  #  #  #
-    // ###     ##     ##   ###  ###
-    //                          #
-    /**
-     * Sets up the database.
-     * @returns {Promise} A promise that resolves with the database.
-     */
-    async setup() {
+    static async get() {
         if (!client) {
             client = new MongoDb.MongoClient(`mongodb://web_sixgg:${process.env.WEB_SIXGG_PASSWORD}@db:27017/sixgg`, {
                 authMechanism: "SCRAM-SHA-256",
@@ -79,6 +65,8 @@ class Db {
         if (!db) {
             db = client.db("sixgg");
         }
+
+        return db;
     }
 
     //  #       #
@@ -93,8 +81,10 @@ class Db {
      * @param {string} collection The collection the ID belongs to.
      * @returns {Promise} A promise that resolves when the ID has been appended.
      */
-    async id(object, collection) {
-        await this.setup();
+    static async id(object, collection) {
+        if (!db) {
+            await Db.get();
+        }
 
         object._id = MongoDb.Long.fromNumber((await db.collection("counters").findOneAndUpdate({_id: collection}, {$inc: {value: MongoDb.Long.fromNumber(1)}})).value.value + 1);
     }

@@ -39,7 +39,7 @@ class User {
      * Gets the OAuth URL to use, generating a state to ensure that it came from this site.
      * @returns {string} The OAuth URL to use.
      */
-    getOAuthUrl() {
+    static getOAuthUrl() {
         let state;
         do {
             state = crypto.randomBytes(16).toString("hex");
@@ -74,7 +74,7 @@ class User {
      * @param {string} code The OAuth code.
      * @returns {Promise<DiscordOAuthTypes.TokenRequestResult>} A promise that returns the token.
      */
-    async getToken(state, code) {
+    static async getToken(state, code) {
         if (!validStates.has(state)) {
             return void 0;
         }
@@ -111,7 +111,7 @@ class User {
      * @param {string} token The access token.
      * @returns {Promise<DiscordOAuthTypes.User>} A promise that returns the user.
      */
-    async getUser(token) {
+    static async getUser(token) {
         try {
             return await oauth.getUser(token);
         } catch (err) {
@@ -132,7 +132,7 @@ class User {
      * @param {string} token The access token.
      * @returns {Promise<DiscordOAuthTypes.Connection[]>} A promise that returns the user's connections.
      */
-    async getUserConnections(token) {
+    static async getUserConnections(token) {
         try {
             return await oauth.getUserConnections(token);
         } catch (err) {
@@ -152,7 +152,7 @@ class User {
      * @param {string} token The refresh token.
      * @returns {Promise<DiscordOAuthTypes.TokenRequestResult>} A promise that returns the token.
      */
-    async refreshToken(token) {
+    static async refreshToken(token) {
         try {
             return await oauth.tokenRequest({
                 refreshToken: token,
@@ -176,7 +176,7 @@ class User {
      * @param {string} token The token.
      * @returns {Promise} A promise that resolves when the access token as been revoked.
      */
-    async revokeToken(token) {
+    static async revokeToken(token) {
         try {
             return await oauth.revokeToken(token);
         } catch (err) {

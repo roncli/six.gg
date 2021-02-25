@@ -29,21 +29,21 @@ class Options {
      * @param {boolean} [includeEmpty] Whether to include an empty option.
      * @returns {string} The HTML string of options.
      */
-    generateOptions(options, selected, includeEmpty) {
+    static generateOptions(options, selected, includeEmpty) {
         return /* html */`
             ${includeEmpty ? /* html */`
                 <option value=""${!selected || selected === "" ? " selected" : ""}></option>
             ` : ""}
             ${options.map((o) => /* html */`
-                <option value="${Options.encoding.htmlEncode(o.value)}"${selected === o.value ? " selected" : ""}>${Options.encoding.htmlEncode(o.text || o.value)}</option>
+                <option value="${Options.Encoding.htmlEncode(o.value)}"${selected === o.value ? " selected" : ""}>${Options.Encoding.htmlEncode(o.text || o.value)}</option>
             `).join("")}
         `;
     }
 }
 
-/** @type {import("./encoding")} */
+/** @type {typeof import("./encoding")} */
 // @ts-ignore
-Options.encoding = new (typeof Encoding === "undefined" ? require("./encoding") : Encoding)(); // eslint-disable-line no-undef
+Options.Encoding = typeof Encoding === "undefined" ? require("./encoding") : Encoding; // eslint-disable-line no-undef
 
 if (typeof module === "undefined") {
     window.Options = Options;

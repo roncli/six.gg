@@ -7,6 +7,7 @@ const Common = require("../includes/common"),
     Event = require("../../src/models/event"),
     EventView = require("../../public/views/event"),
     NotFoundView = require("../../public/views/404"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #####                        #      ###                  #                    ##     ##
@@ -19,7 +20,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the event page.
  */
-class EventController {
+class EventController extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/event/:id";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -72,9 +91,5 @@ class EventController {
         ));
     }
 }
-
-EventController.route = {
-    path: "/event/:id"
-};
 
 module.exports = EventController;

@@ -4,6 +4,7 @@
  */
 
 const DiscordUser = require("../../src/discord/user"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #                      #
@@ -18,7 +19,25 @@ const DiscordUser = require("../../src/discord/user"),
 /**
  * A class that represents the login page.
  */
-class Login {
+class Login extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/login";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -43,9 +62,5 @@ class Login {
         res.redirect(302, DiscordUser.getOAuthUrl());
     }
 }
-
-Login.route = {
-    path: "/login"
-};
 
 module.exports = Login;

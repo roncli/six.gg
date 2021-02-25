@@ -7,8 +7,9 @@
 const Discord = require("../../src/discord"),
     HtmlMinifier = require("html-minifier"),
     IndexView = require("../../public/views/index"),
-    Minify = require("../../src/minify"),
-    pjson = require("../../package.json");
+    Minify = require("node-minify"),
+    pjson = require("../../package.json"),
+    RouterBase = require("hot-router").RouterBase;
 
 //   ###
 //  #   #
@@ -20,7 +21,25 @@ const Discord = require("../../src/discord"),
 /**
  * A class that handles common web functions.
  */
-class Common {
+class Common extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.include = true;
+
+        return route;
+    }
+
     // ###    ###   ###   ##
     // #  #  #  #  #  #  # ##
     // #  #  # ##   ##   ##
@@ -52,12 +71,10 @@ class Common {
         files.css.unshift("/css/common.css");
         files.css.unshift("/css/reset.css");
 
-        const minify = new Minify();
-
         head = /* html */`
             ${head}
-            ${minify.combine(files.js, "js")}
-            ${minify.combine(files.css, "css")}
+            ${Minify.combine(files.js, "js")}
+            ${Minify.combine(files.css, "css")}
             <meta name="apple-mobile-web-app-title" content="Six Gaming">
             <meta name="application-name" content="Six Gaming">
             <meta name="msapplication-TileColor" content="#0b8b8c">
@@ -103,9 +120,5 @@ class Common {
         );
     }
 }
-
-Common.route = {
-    include: true
-};
 
 module.exports = Common;

@@ -4,6 +4,7 @@
  */
 
 const Log = require("node-application-insights-logger"),
+    RouterBase = require("hot-router").RouterBase,
     Twitch = require("../../src/twitch"),
     User = require("../../src/models/user");
 
@@ -22,7 +23,25 @@ const throttle = {};
 /**
  * A class that represents the games API.
  */
-class GamesApi {
+class GamesApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/games";
+
+        return route;
+    }
+
     //                     #
     //                     #
     // ###    ##    ###   ###
@@ -71,9 +90,5 @@ class GamesApi {
         }
     }
 }
-
-GamesApi.route = {
-    path: "/api/games"
-};
 
 module.exports = GamesApi;

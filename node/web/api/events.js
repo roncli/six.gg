@@ -6,6 +6,7 @@
 const Event = require("../../src/models/event"),
     Log = require("node-application-insights-logger"),
     tc = require("timezonecomplete"),
+    RouterBase = require("hot-router").RouterBase,
     Time = require("../../src/time"),
     User = require("../../src/models/user");
 
@@ -21,7 +22,25 @@ const Event = require("../../src/models/event"),
 /**
  * A class that represents the events API.
  */
-class EventsApi {
+class EventsApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/events";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -162,9 +181,5 @@ class EventsApi {
         }
     }
 }
-
-EventsApi.route = {
-    path: "/api/events"
-};
 
 module.exports = EventsApi;

@@ -5,6 +5,7 @@
 
 const Log = require("node-application-insights-logger"),
     tzdata = require("tzdata"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #   #           #             #
@@ -19,7 +20,25 @@ const Log = require("node-application-insights-logger"),
 /**
  * A class that represents the me API.
  */
-class MeApi {
+class MeApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/me";
+
+        return route;
+    }
+
     //                     #
     //                     #
     // ###    ##    ###   ###
@@ -78,9 +97,5 @@ class MeApi {
         }
     }
 }
-
-MeApi.route = {
-    path: "/api/me"
-};
 
 module.exports = MeApi;

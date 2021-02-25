@@ -5,6 +5,7 @@
 
 const CalendarView = require("../../public/views/calendar"),
     Common = require("../includes/common"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //   ###           ##                      #
@@ -17,7 +18,25 @@ const CalendarView = require("../../public/views/calendar"),
 /**
  * A class that represents the calendar page.
  */
-class Calendar {
+class Calendar extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/calendar";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -46,9 +65,5 @@ class Calendar {
         ));
     }
 }
-
-Calendar.route = {
-    path: "/calendar"
-};
 
 module.exports = Calendar;

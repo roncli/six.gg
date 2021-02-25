@@ -5,6 +5,7 @@
 
 const AboutView = require("../../public/views/about"),
     Common = require("../includes/common"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //    #    #                     #
@@ -17,7 +18,25 @@ const AboutView = require("../../public/views/about"),
 /**
  * A class that represents the about page.
  */
-class About {
+class About extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/about";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -43,9 +62,5 @@ class About {
         ));
     }
 }
-
-About.route = {
-    path: "/about"
-};
 
 module.exports = About;

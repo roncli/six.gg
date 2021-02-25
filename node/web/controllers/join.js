@@ -5,6 +5,7 @@
 
 const Common = require("../includes/common"),
     JoinView = require("../../public/views/join"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //    ###           #
@@ -17,7 +18,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the join page.
  */
-class Join {
+class Join extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/join";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -48,9 +67,5 @@ class Join {
         ));
     }
 }
-
-Join.route = {
-    path: "/join"
-};
 
 module.exports = Join;

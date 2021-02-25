@@ -6,6 +6,7 @@
 const Common = require("../includes/common"),
     DiscordListener = require("../../src/listeners/discord"),
     HomeView = require("../../public/views/home"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //   #   #
@@ -18,7 +19,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the home page.
  */
-class Home {
+class Home extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -51,9 +70,5 @@ class Home {
         ));
     }
 }
-
-Home.route = {
-    path: "/"
-};
 
 module.exports = Home;

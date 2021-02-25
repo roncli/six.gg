@@ -4,7 +4,8 @@
  */
 
 const DiscordListener = require("../../src/listeners/discord"),
-    Log = require("node-application-insights-logger");
+    Log = require("node-application-insights-logger"),
+    RouterBase = require("hot-router").RouterBase;
 
 //  #        #                    #             #
 //  #                            # #
@@ -18,7 +19,25 @@ const DiscordListener = require("../../src/listeners/discord"),
 /**
  * A class that represents the live API.
  */
-class LiveApi {
+class LiveApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/live";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -49,9 +68,5 @@ class LiveApi {
         }
     }
 }
-
-LiveApi.route = {
-    path: "/api/live"
-};
 
 module.exports = LiveApi;

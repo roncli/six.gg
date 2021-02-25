@@ -8,6 +8,7 @@ const tzdata = require("tzdata"),
     Common = require("../includes/common"),
     Discord = require("../../src/discord"),
     MeView = require("../../public/views/me"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #   #
@@ -20,7 +21,25 @@ const tzdata = require("tzdata"),
 /**
  * A class that represets the me page.
  */
-class Me {
+class Me extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/me";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -67,9 +86,5 @@ class Me {
         ));
     }
 }
-
-Me.route = {
-    path: "/me"
-};
 
 module.exports = Me;

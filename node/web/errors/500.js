@@ -4,6 +4,7 @@
  */
 
 const Common = require("../includes/common"),
+    RouterBase = require("hot-router").RouterBase,
     ServerErrorView = require("../../public/views/500"),
     User = require("../../src/models/user");
 
@@ -17,7 +18,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the 500 page.
  */
-class ServerError {
+class ServerError extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.serverError = true;
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -46,9 +65,5 @@ class ServerError {
         ));
     }
 }
-
-ServerError.route = {
-    path: "/500"
-};
 
 module.exports = ServerError;

@@ -5,6 +5,7 @@
 
 const Discord = require("../../src/discord"),
     DiscordUser = require("../../src/discord/user"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //   ###     #            #     #      ####     #                                    #
@@ -17,7 +18,25 @@ const Discord = require("../../src/discord"),
 /**
  * A class that represents the Discord Oauth landing page.
  */
-class OAuthDiscord {
+class OAuthDiscord extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/oauth/discord";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -65,9 +84,5 @@ class OAuthDiscord {
         res.redirect(302, "/me");
     }
 }
-
-OAuthDiscord.route = {
-    path: "/oauth/discord"
-};
 
 module.exports = OAuthDiscord;

@@ -3,6 +3,8 @@
  * @typedef {import("express").Response} Express.Response
  */
 
+const RouterBase = require("hot-router").RouterBase;
+
 //  #                                   #
 //  #                                   #
 //  #       ###    ## #   ###   #   #  ####
@@ -15,7 +17,25 @@
 /**
  * A class that represents the logout page.
  */
-class Logout {
+class Logout extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/logout";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -34,9 +54,5 @@ class Logout {
         res.redirect(302, "/");
     }
 }
-
-Logout.route = {
-    path: "/logout"
-};
 
 module.exports = Logout;

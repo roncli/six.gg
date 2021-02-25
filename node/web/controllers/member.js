@@ -6,6 +6,7 @@
 const Common = require("../includes/common"),
     MemberView = require("../../public/views/member"),
     NotFoundView = require("../../public/views/404"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #   #                #
@@ -18,7 +19,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the member page.
  */
-class Member {
+class Member extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/member/:id/:name";
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -58,9 +77,5 @@ class Member {
         ));
     }
 }
-
-Member.route = {
-    path: "/member/:id/:name"
-};
 
 module.exports = Member;

@@ -1,16 +1,18 @@
 const bodyParser = require("body-parser"),
+    Cache = require("node-redis").Cache,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     express = require("express"),
+    HotRouter = require("hot-router"),
     Log = require("node-application-insights-logger"),
+    Minify = require("node-minify"),
+    path = require("path"),
+    Redis = require("node-redis"),
     util = require("util"),
 
-    Cache = require("./src/redis/cache"),
     Discord = require("./src/discord"),
     Listeners = require("./src/listeners"),
-    Minify = require("./src/minify"),
     Redirects = require("./src/redirects"),
-    Router = require("./src/router"),
     Twitch = require("./src/twitch");
 
 process.on("unhandledRejection", (reason) => {
@@ -52,7 +54,15 @@ process.on("unhandledRejection", (reason) => {
     // Startup Twitch.
     await Twitch.connect();
 
-    // Flush cache.
+    // Setup Redis.
+    Redis.setup({
+        host: "redis",
+        port: +process.env.REDIS_PORT,
+        password: process.env.REDIS_PASSWORD
+    });
+    Redis.eventEmitter.on("error", (err) => {
+        Log.error(`Redis error: ${err.message}`, {err: err.err});
+    });
     await Cache.flush();
 
     // Setup express app.
@@ -80,10 +90,32 @@ process.on("unhandledRejection", (reason) => {
         res.redirect(process.env.SIXGG_DISCORD_URL);
     });
 
-    // Setup JS/CSS handlers.
-    const minify = new Minify();
-    app.get("/css", minify.cssHandler);
-    app.get("/js", minify.jsHandler);
+    // Setup minification.
+    Minify.setup({
+        cssRoot: "/css/",
+        jsRoot: "/js/",
+        wwwRoot: path.join(__dirname, "public"),
+        caching: process.env.MINIFY_CACHE ? {
+            get: async (key) => {
+                try {
+                    return await Cache.get(key);
+                } catch (err) {
+                    Log.error("An error occurred while attempting to get a Minify cache.", {err, properties: {key}});
+                    return void 0;
+                }
+            },
+            set: (key, value) => {
+                Cache.add(key, value, new Date(new Date().getTime() + 86400000)).catch((err) => {
+                    Log.error("An error occurred while attempting to set a Minify cache.", {err, properties: {key}});
+                });
+            },
+            prefix: process.env.REDIS_PREFIX
+        } : void 0,
+        redirects: Redirects,
+        disableTagCombining: !process.env.MINIFY_ENABLED
+    });
+    app.get("/css", Minify.cssHandler);
+    app.get("/js", Minify.jsHandler);
 
     // Setup redirect routes.
     app.get("*", (req, res, next) => {
@@ -93,48 +125,22 @@ process.on("unhandledRejection", (reason) => {
             return;
         }
 
-        res.status(200).contentType(redirect.contentType).sendFile(`${__dirname}/${redirect.path}`);
+        res.status(200).contentType(redirect.contentType).sendFile(`${redirect.path}`);
     });
 
-    // Get the router.
-    const router = new Router();
+    // Setup hot-router.
+    const router = new HotRouter.Router();
+    router.on("error", (data) => {
+        Log.error(data.message, {err: data.err, req: data.req});
+    });
     try {
-        await router.setup();
+        app.use("/", await router.getRouter(path.join(__dirname, "web"), {hot: false}));
     } catch (err) {
-        Log.critical("There was an error while setting up the router.", {err});
-        return;
+        Log.critical("Could not set up routes.", {err});
     }
 
-    // tsconfig.json is not meant to be served, 404 it if it's requested directly.
-    app.use("/tsconfig.json", (req, res, next) => {
-        req.method = "GET";
-        req.url = "/404";
-        router.router(req, res, next);
-    });
-
-    // 500 is an internal route, 404 it if it's requested directly.
-    app.use("/500", (req, res, next) => {
-        req.method = "GET";
-        req.url = "/404";
-        router.router(req, res, next);
-    });
-
-    // Setup dynamic routing.
-    app.use("/", router.router);
-
-    // 404 remaining pages.
-    app.use((req, res, next) => {
-        req.method = "GET";
-        req.url = "/404";
-        router.router(req, res, next);
-    });
-
-    // 500 errors.
     app.use((err, req, res, next) => {
-        Log.error("Unhandled error has occurred.", {err});
-        req.method = "GET";
-        req.url = "/500";
-        router.router(req, res, next);
+        router.error(err, req, res, next);
     });
 
     // Startup web server.

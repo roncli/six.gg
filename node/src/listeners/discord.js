@@ -124,6 +124,10 @@ class DiscordListener {
      * @returns {Promise} A promise that resolves when the event has been processed.
      */
     static async presenceUpdate(oldPresence, newPresence) {
+        if (!streamers) {
+            return;
+        }
+
         if (newPresence && newPresence.activities && newPresence.member && newPresence.guild && newPresence.guild.id === Discord.id) {
             const oldActivity = oldPresence && oldPresence.activities && oldPresence.activities.find((p) => p.name === "Twitch") || void 0,
                 activity = newPresence.activities.find((p) => p.name === "Twitch");

@@ -5,6 +5,7 @@
 
 const Attendee = require("../../../src/models/attendee"),
     Log = require("node-application-insights-logger"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../../src/models/user");
 
 //    #     #      #                       #                  #             #
@@ -19,7 +20,25 @@ const Attendee = require("../../../src/models/attendee"),
 /**
  * A class that represents the attendee API.
  */
-class AttendeeApi {
+class AttendeeApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/event/:id/attendee";
+
+        return route;
+    }
+
     //                     #
     //                     #
     // ###    ##    ###   ###
@@ -92,10 +111,6 @@ AttendeeApi.delete = async (req, res) => {
         res.status(500).json({error: "Server error."});
         Log.error(`An error occurred while posting to ${req.method} ${AttendeeApi.route.path}.`, {err});
     }
-};
-
-AttendeeApi.route = {
-    path: "/api/event/:id/attendee"
 };
 
 module.exports = AttendeeApi;

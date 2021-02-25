@@ -5,6 +5,7 @@
 
 const Event = require("../../src/models/event"),
     Log = require("node-application-insights-logger"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #####                        #       #             #
@@ -19,7 +20,25 @@ const Event = require("../../src/models/event"),
 /**
  * A class that represents the event API.
  */
-class EventApi {}
+class EventApi extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.path = "/api/event/:id";
+
+        return route;
+    }
+}
 
 //    #        ##           #
 //    #         #           #
@@ -55,10 +74,6 @@ EventApi.delete = async (req, res) => {
         res.status(500).json({error: "Server error."});
         Log.error(`An error occurred while posting to ${req.method} ${EventApi.route.path}.`, {err});
     }
-};
-
-EventApi.route = {
-    path: "/api/event/:id"
 };
 
 module.exports = EventApi;

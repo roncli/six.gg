@@ -5,6 +5,7 @@
 
 const Common = require("../includes/common"),
     NotFoundView = require("../../public/views/404"),
+    RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
 //  #   #          #     #####                           #
@@ -17,7 +18,25 @@ const Common = require("../includes/common"),
 /**
  * A class that represents the 404 page.
  */
-class NotFound {
+class NotFound extends RouterBase {
+    //                    #
+    //                    #
+    // ###    ##   #  #  ###    ##
+    // #  #  #  #  #  #   #    # ##
+    // #     #  #  #  #   #    ##
+    // #      ##    ###    ##   ##
+    /**
+     * Retrieves the route parameters for the class.
+     * @returns {RouterBase.Route} The route parameters.
+     */
+    static get route() {
+        const route = {...super.route};
+
+        route.notFound = true;
+
+        return route;
+    }
+
     //              #
     //              #
     //  ###   ##   ###
@@ -43,9 +62,5 @@ class NotFound {
         ));
     }
 }
-
-NotFound.route = {
-    path: "/404"
-};
 
 module.exports = NotFound;

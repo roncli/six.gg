@@ -18,12 +18,12 @@
     },
     "license": "MIT",
     "dependencies": {
-        "applicationinsights": "1.8.8",
+        "applicationinsights": "1.8.10",
         "graygelf": "2.0.0"
     },
     "devDependencies": {
-        "@babel/core": "7.12.10",
-        "@babel/eslint-parser": "7.12.1",
-        "@types/node": "14.14.22"
+        "@babel/core": "7.13.1",
+        "@babel/eslint-parser": "7.13.4",
+        "@types/node": "14.14.31"
     }
 }

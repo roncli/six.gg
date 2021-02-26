@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: /certbot/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: /db/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: /logging/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: /nginx/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: /node/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "docker"
+    directory: /redis/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: /logging/
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: /node/
+    schedule:
+      interval: "daily"

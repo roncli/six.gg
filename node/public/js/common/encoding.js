@@ -26,6 +26,21 @@ class Encoding {
         return str && `${str}`.replace(/"/g, "&#34;") || "";
     }
 
+    //    #   #                                #  ####                       #
+    //    #                                    #  #                          #
+    //  ###  ##     ###    ##    ##   ###    ###  ###   ###    ##    ##    ###   ##
+    // #  #   #    ##     #     #  #  #  #  #  #  #     #  #  #     #  #  #  #  # ##
+    // #  #   #      ##   #     #  #  #     #  #  #     #  #  #     #  #  #  #  ##
+    //  ###  ###   ###     ##    ##   #      ###  ####  #  #   ##    ##    ###   ##
+    /**
+     * Discord-encodes a string.
+     * @param {string} str The string.
+     * @returns {string} The encoded string.
+     */
+    static discordEncode(str) {
+        return str && `${str}`.replace(/(?<character>[*_~`>])/gm, (match, p1) => `\\${p1}`).replace(/(?<character>[@#])/gm, (match, p1) => `\\${p1} `) || "";
+    }
+
     // #      #          ##    ####                       #
     // #      #           #    #                          #
     // ###   ###   # #    #    ###   ###    ##    ##    ###   ##
@@ -50,7 +65,7 @@ class Encoding {
     //  #
     /**
      * Javascript-encodes a string.
-     * @param {*} str The string.
+     * @param {string} str The string.
      * @returns {string} The encoded string.
      */
     static jsEncode(str) {

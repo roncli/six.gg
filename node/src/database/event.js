@@ -32,16 +32,15 @@ class EventDb {
     static async add(data) {
         const db = await Db.get();
 
-        await Db.id(data, "event");
-
         const event = {
-            _id: data._id,
             title: data.title,
             start: data.start,
             end: data.end,
             userId: MongoDb.Long.fromNumber(data.userId),
             game: data.game
         };
+
+        await Db.id(event, "event");
 
         if (data.gameId) {
             event.gameId = MongoDb.Long.fromNumber(data.gameId);
@@ -53,6 +52,8 @@ class EventDb {
 
         /** @type {MongoDb.InsertOneWriteOpResult<EventTypes.EventMongoData>} */
         await db.collection("event").insertOne(event);
+
+        data._id = Db.fromLong(event._id);
 
         return data;
     }

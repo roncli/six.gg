@@ -80,7 +80,7 @@ process.on("unhandledRejection", (reason) => {
     app.enable("trust proxy");
 
     // Setup public redirects.
-    app.use(express.static("public"));
+    app.use(/^(?!\/tsconfig\.json)/, express.static("public"));
 
     // Setup Discord redirect.
     app.get("/discord", (req, res) => {

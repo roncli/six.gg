@@ -56,7 +56,7 @@ class MethodNotAllowed extends RouterBase {
         res.status(405).send(Common.page(
             "",
             {css: ["/css/error.css"]},
-            MethodNotAllowedView.get({message: "This method not allowed."}),
+            MethodNotAllowedView.get({message: "This method is not allowed."}),
             req,
             user
         ));

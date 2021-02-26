@@ -5,6 +5,9 @@
  * @typedef {typeof import("../twitch")} Twitch
  */
 
+/** @type {{[x: string]: number}} */
+const lastAnnounced = {};
+
 /** @type {Discord} */
 let Discord;
 
@@ -70,6 +73,17 @@ class Streamers {
         this.streamers.set(member.id, {member, activity});
 
         await member.roles.add([Discord.findRoleByName("Live"), Discord.findRoleByName("Streamers")]);
+
+        if (!lastAnnounced[member.id]) {
+            lastAnnounced[member.id] = 0;
+        }
+
+        if (new Date().getTime() - lastAnnounced[member.id] < 300000) {
+            lastAnnounced[member.id] = new Date().getTime();
+            return;
+        }
+
+        lastAnnounced[member.id] = new Date().getTime();
 
         if (!this.featured) {
             this.feature(member.id);

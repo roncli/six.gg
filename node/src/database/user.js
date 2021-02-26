@@ -399,7 +399,7 @@ class UserDb {
                 encrypted: new MongoDb.Binary(encryptedTokens.refreshToken.encrypted)
             },
             expires
-        }}, {upsert: true});
+        }}, {upsert: true, returnOriginal: false});
 
         return {
             user: {

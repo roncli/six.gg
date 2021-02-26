@@ -2,8 +2,11 @@
  * @typedef {import("../../types/node/eventTypes").EventData} EventTypes.EventData
  */
 
-const EventDb = require("../database/event"),
-    Exception = require("../errors/exception");
+const Discord = require("../discord"),
+    Encoding = require("../../public/js/common/encoding"),
+    EventDb = require("../database/event"),
+    Exception = require("../errors/exception"),
+    User = require("./user");
 
 //  #####                        #
 //  #                            #
@@ -29,9 +32,52 @@ class Event {
      */
     static async add(data) {
         try {
-            await EventDb.add(data);
+            data = await EventDb.add(data);
         } catch (err) {
             throw new Exception("There was an error while adding an event to the database.", err);
+        }
+
+        try {
+            const user = await User.getMember(data.userId);
+
+            const embed = Discord.messageEmbed({
+                title: `New event posted: **${Encoding.discordEncode(data.title)}** by ${user.guildMember.user}`,
+                fields: []
+            });
+
+            if (data.description) {
+                embed.description = `${data.description.substring(0, 512)}${data.description.length > 512 ? "..." : ""}`;
+            }
+
+            if (data.game) {
+                embed.fields.push({
+                    name: "Game",
+                    value: data.game,
+                    inline: false
+                });
+            }
+
+            embed.fields.push({
+                name: "Time",
+                value: `${data.start.toLocaleString("en-US", {timeZone: process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})} to ${data.end.toLocaleString("en-US", {timeZone: process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})}`,
+                inline: false
+            });
+
+            embed.fields.push({
+                name: "Joining",
+                value: `Type \`!join ${data._id}\` to be notified within 30 minutes of the event's start.`,
+                inline: true
+            });
+
+            embed.fields.push({
+                name: "Leaving",
+                value: `If you've already joined the event but no longer wish to take part, type \`!leave ${data._id}\`.`,
+                inline: true
+            });
+
+            Discord.richQueue(embed, Discord.findTextChannelByName("event-announcements"));
+        } catch (err) {
+            throw new Exception("There was a Discord error while announcing a new event.", err);
         }
 
         return new Event(data);
@@ -120,6 +166,14 @@ class Event {
             await EventDb.remove(eventId);
         } catch (err) {
             throw new Exception("There was an error getting an event while attempting to delete it from the database.", err);
+        }
+
+        try {
+            const user = await User.getMember(event.userId);
+
+            await Discord.queue(`The event **${Encoding.discordEncode(event.title)}** by ${user.guildMember.user} on ${event.start.toLocaleString("en-US", {timeZone: process.env.DEFAULT_TIMEZONE, month: "numeric", day: "numeric", year: "numeric"})} has been cancelled.`, Discord.findTextChannelByName("event-announcements"));
+        } catch (err) {
+            throw new Exception("There was a Discord error announcing that an event has been cancelled.", err);
         }
 
         return true;

@@ -6,7 +6,10 @@
  * @typedef {import("./voiceChannelManagement")} VoiceChannelManagement
  */
 
-const Exception = require("../errors/exception"),
+const Attendee = require("../models/attendee"),
+    Encoding = require("../../public/js/common/encoding"),
+    Event = require("../models/event"),
+    Exception = require("../errors/exception"),
     pjson = require("../../package.json"),
     tzdata = require("tzdata"),
     User = require("../models/user"),
@@ -82,6 +85,29 @@ class Commands {
         if (!Discord.isOwner(member)) {
             throw new Warning("Owner permission required to perform this command.");
         }
+    }
+
+    //       #                 #     #  #              #                 ###          #  #
+    //       #                 #     ####              #                  #           #  #
+    //  ##   ###    ##    ##   # #   ####   ##   # #   ###    ##   ###    #     ###   #  #   ###    ##   ###
+    // #     #  #  # ##  #     ##    #  #  # ##  ####  #  #  # ##  #  #   #    ##     #  #  ##     # ##  #  #
+    // #     #  #  ##    #     # #   #  #  ##    #  #  #  #  ##    #      #      ##   #  #    ##   ##    #
+    //  ##   #  #   ##    ##   #  #  #  #   ##   #  #  ###    ##   #     ###   ###     ##   ###     ##   #
+    /**
+     * Checks to ensure the member is a web site user.
+     * @param {DiscordJs.GuildMember} member The member to check.
+     * @param {DiscordJs.TextChannel} channel The channel to reply on.
+     * @returns {Promise<User>} A promise that returns the user.
+     */
+    static async checkMemberIsUser(member, channel) {
+        const user = await User.getByGuildMember(member);
+
+        if (!user) {
+            await Discord.queue(`Sorry, ${member}, but you must link your Discord to Six Gaming first.  Visit https://${process.env.DOMAIN}/join to link your account.`, channel);
+            throw new Warning("A user account is required to perform this command.");
+        }
+
+        return user;
     }
 
     //       #                 #     #  #        ###                                  #
@@ -286,12 +312,7 @@ class Commands {
             return false;
         }
 
-        const user = await User.getByGuildMember(member);
-
-        if (!user) {
-            await Discord.queue(`Sorry, ${member}, but you must create a website account first.  Visit https://${process.env.DOMAIN}/join to create your account.`, channel);
-            return false;
-        }
+        const user = await Commands.checkMemberIsUser(member, channel);
 
         if (message) {
             const time = await Commands.checkTimezoneIsValid(message, member, channel);
@@ -501,6 +522,97 @@ class Commands {
         }
 
         await Discord.queue(`${member}, ${permitMember} is now permitted to join ${createdChannel}.`, channel);
+
+        return true;
+    }
+
+    //   #          #
+
+    //   #    ##   ##    ###
+    //   #   #  #   #    #  #
+    //   #   #  #   #    #  #
+    // # #    ##   ###   #  #
+    //  #
+    /**
+     * Joins the user to an event.
+     * @param {DiscordJs.GuildMember} member The user initiating the command.
+     * @param {DiscordJs.TextChannel} channel The channel the message was sent over.
+     * @param {string} message The text of the command.
+     * @returns {Promise<boolean>} A promise that returns whether the command completed successfully.
+     */
+    async join(member, channel, message) {
+        if (!Commands.checkChannelIsOnServer(channel)) {
+            return false;
+        }
+
+        const user = await Commands.checkMemberIsUser(member, channel);
+
+        if (!await Commands.checkHasParameters(message, member, `Use \`!join\` followed by the event ID of the event that you would like to join, for examples \`!join 1\`.  The event ID is listed in the ${Discord.findChannelByName("event-announcements")} channel.`, channel)) {
+            return false;
+        }
+
+        const eventId = +message;
+
+        if (!eventId || isNaN(eventId) || eventId <= 0) {
+            await Discord.queue(`Sorry, ${member}, but that is an invalid event ID.`, channel);
+            throw new Warning("Invalid event ID.");
+        }
+
+        const event = await Event.get(eventId);
+
+        if (!event) {
+            await Discord.queue(`Sorry, ${member}, but that is an invalid event ID.`, channel);
+            throw new Warning("Invalid event ID.");
+        }
+
+        await Attendee.add(eventId, user.id);
+
+        await Discord.queue(`${member}, you are now scheduled to join **${Encoding.discordEncode(event.title)}** on ${event.start.toLocaleString("en-US", {timeZone: user.timezone || process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})}.  You will receive a reminder 30 minutes before the event begins.  You can use the command \`!leave ${event.id}\` to leave this event.`, channel);
+
+        return true;
+    }
+
+    // ##
+    //  #
+    //  #     ##    ###  # #    ##
+    //  #    # ##  #  #  # #   # ##
+    //  #    ##    # ##  # #   ##
+    // ###    ##    # #   #     ##
+    /**
+     * Leaves the user from an event.
+     * @param {DiscordJs.GuildMember} member The user initiating the command.
+     * @param {DiscordJs.TextChannel} channel The channel the message was sent over.
+     * @param {string} message The text of the command.
+     * @returns {Promise<boolean>} A promise that returns whether the command completed successfully.
+     */
+    async leave(member, channel, message) {
+        if (!Commands.checkChannelIsOnServer(channel)) {
+            return false;
+        }
+
+        const user = await Commands.checkMemberIsUser(member, channel);
+
+        if (!await Commands.checkHasParameters(message, member, `Use \`!leave\` followed by the event ID of the event that you would like to leave, for examples \`!leave 1\`.  The event ID is listed in the ${Discord.findChannelByName("event-announcements")} channel.`, channel)) {
+            return false;
+        }
+
+        const eventId = +message;
+
+        if (!eventId || isNaN(eventId) || eventId <= 0) {
+            await Discord.queue(`Sorry, ${member}, but that is an invalid event ID.`, channel);
+            throw new Warning("Invalid event ID.");
+        }
+
+        const event = await Event.get(eventId);
+
+        if (!event) {
+            await Discord.queue(`Sorry, ${member}, but that is an invalid event ID.`, channel);
+            throw new Warning("Invalid event ID.");
+        }
+
+        await Attendee.remove(eventId, user.id);
+
+        await Discord.queue(`${member}, you are no longer scheduled to join **${Encoding.discordEncode(event.title)}** on ${event.start.toLocaleString("en-US", {timeZone: user.timezone || process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})}.  You can use the command \`!join ${event.id}\` to rejoin this event.`, channel);
 
         return true;
     }

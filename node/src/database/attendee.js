@@ -32,13 +32,16 @@ class AttendeeDb {
     static async add(data) {
         const db = await Db.get();
 
-        /** @type {MongoDb.InsertOneWriteOpResult<AttendeeTypes.AttendeeMongoData>} */
-        const result = await db.collection("attendee").insertOne({
+        /** @type {MongoDb.FindAndModifyWriteOpResultObject<AttendeeTypes.AttendeeMongoData>} */
+        const result = await db.collection("attendee").findOneAndUpdate({
             eventId: MongoDb.Long.fromNumber(data.eventId),
             userId: MongoDb.Long.fromNumber(data.userId)
-        });
+        }, {$set: {
+            eventId: MongoDb.Long.fromNumber(data.eventId),
+            userId: MongoDb.Long.fromNumber(data.userId)
+        }}, {upsert: true, returnOriginal: false});
 
-        data._id = result.ops[0]._id.toHexString();
+        data._id = result.value._id.toHexString();
 
         return data;
     }

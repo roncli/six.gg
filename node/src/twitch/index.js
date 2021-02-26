@@ -384,19 +384,20 @@ class Twitch {
             });
         });
 
-        channelChatClient.client.onHost(async (channel, target, viewers) => {
-            let user;
-            try {
-                user = (await channelTwitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
-            } catch (err) {} finally {}
-
-            eventEmitter.emit("host", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-                user: user ? user.name : target,
-                name: target,
-                viewerCount: viewers
-            });
-        });
+        // TODO: Requires Twitch API to expose auto hosting information. See https://github.com/roncli/six.gg/issues/3
+        // channelChatClient.client.onHost(async (channel, target, viewers) => {
+        //     let user;
+        //     try {
+        //         user = (await channelTwitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
+        //     } catch (err) {} finally {}
+        //
+        //     eventEmitter.emit("host", {
+        //         channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+        //         user: user ? user.name : target,
+        //         name: target,
+        //         viewerCount: viewers
+        //     });
+        // });
 
         channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
             let user;

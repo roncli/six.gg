@@ -2,7 +2,6 @@ const bodyParser = require("body-parser"),
     Cache = require("node-redis").Cache,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
-    Exception = require("./src/errors/exception"),
     express = require("express"),
     HotRouter = require("hot-router"),
     Log = require("node-application-insights-logger"),
@@ -129,14 +128,7 @@ process.on("unhandledRejection", (reason) => {
     // Setup hot-router.
     const router = new HotRouter.Router();
     router.on("error", (data) => {
-        let message = data.message;
-        let err = data.err;
-        while (err instanceof Exception) {
-            message = `${message} - ${err.message}`;
-            err = err.innerError;
-        }
-
-        Log.error(message, {err, req: data.req});
+        Log.error(data.message, {err: data.err, req: data.req});
     });
     try {
         app.use("/", await router.getRouter(path.join(__dirname, "web"), {hot: false}));

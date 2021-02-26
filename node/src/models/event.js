@@ -2,11 +2,17 @@
  * @typedef {import("../../types/node/eventTypes").EventData} EventTypes.EventData
  */
 
-const Discord = require("../discord"),
+const AttendeeDb = require("../database/attendee"),
+    Discord = require("../discord"),
     Encoding = require("../../public/js/common/encoding"),
     EventDb = require("../database/event"),
     Exception = require("../errors/exception"),
+    Log = require("node-application-insights-logger"),
+    Schedule = require("node-schedule"),
     User = require("./user");
+
+/** @type {{[x: number]: Schedule.Job}} */
+const upcomingEventJobs = {};
 
 //  #####                        #
 //  #                            #
@@ -138,6 +144,78 @@ class Event {
         }
 
         return events && events.map((e) => new Event(e)) || [];
+    }
+
+    //              #     #      #
+    //              #           # #
+    // ###    ##   ###   ##     #    #  #
+    // #  #  #  #   #     #    ###   #  #
+    // #  #  #  #   #     #     #     # #
+    // #  #   ##     ##  ###    #      #
+    //                                #
+    /**
+     * Sets up notifications about upcoming events.
+     * @returns {Promise<void>} A promise that resolves when notifications are setup.
+     */
+    static async notify() {
+        /** @type {EventTypes.EventData[]} */
+        let events;
+        try {
+            events = await EventDb.getByDateRange(new Date(new Date().getTime() + 1800000));
+        } catch (err) {
+            Log.error("There was an error while getting events from the database to schedule notifications.", {err});
+            return;
+        }
+
+        if (!events) {
+            return;
+        }
+
+        for (const event of events) {
+            const notificationDate = new Date(event.start.getTime() - 1800000);
+
+            if (notificationDate > new Date()) {
+                upcomingEventJobs[event._id] = Schedule.scheduleJob(notificationDate, Event.notifyEventStarting.bind(null, event._id));
+            }
+        }
+    }
+
+    //              #     #      #         ####                     #     ##    #                 #     #
+    //              #           # #        #                        #    #  #   #                 #
+    // ###    ##   ###   ##     #    #  #  ###   # #    ##   ###   ###    #    ###    ###  ###   ###   ##    ###    ###
+    // #  #  #  #   #     #    ###   #  #  #     # #   # ##  #  #   #      #    #    #  #  #  #   #     #    #  #  #  #
+    // #  #  #  #   #     #     #     # #  #     # #   ##    #  #   #    #  #   #    # ##  #      #     #    #  #   ##
+    // #  #   ##     ##  ###    #      #   ####   #     ##   #  #    ##   ##     ##   # #  #       ##  ###   #  #  #
+    //                                #                                                                             ###
+    /**
+     * Notifies attendees that an event is starting.
+     * @param {number} id The event ID.
+     * @returns {Promise} A promise that resolves when the notifications are sent.
+     */
+    static async notifyEventStarting(id) {
+        let event;
+        try {
+            event = await Event.get(id);
+        } catch (err) {
+            Log.error("There was an error while getting an event from the database to notify users of an event.", {err});
+            return;
+        }
+
+        let attendees;
+        try {
+            attendees = await AttendeeDb.getByEventId(event.id);
+        } catch (err) {
+            Log.error("There was an error while getting event attendees from the database to notify users of an event.", {err});
+            return;
+        }
+
+        for (const attendee of attendees) {
+            try {
+                await Discord.queue(`**${Encoding.discordEncode(event.title)}** begins in 30 minutes!`, (await Discord.findUserById(attendee.discordId)).dmChannel);
+            } catch (err) {
+                Log.error("There was an error notifying an attendee of an upcoming event.", {err});
+            }
+        }
     }
 
     // ###    ##   # #    ##   # #    ##

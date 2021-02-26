@@ -1,6 +1,7 @@
 const DiscordJs = require("discord.js"),
     events = require("events"),
     Log = require("node-application-insights-logger"),
+    Notify = require("../notify"),
     util = require("util"),
 
     discord = new DiscordJs.Client({
@@ -133,6 +134,8 @@ class Discord {
             if (!readied) {
                 readied = true;
             }
+
+            Notify.setupNotifications();
         });
 
         discord.on("disconnect", (ev) => {

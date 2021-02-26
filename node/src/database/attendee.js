@@ -46,6 +46,50 @@ class AttendeeDb {
         return data;
     }
 
+    //              #    ###         ####                     #    ###      #
+    //              #    #  #        #                        #     #       #
+    //  ###   ##   ###   ###   #  #  ###   # #    ##   ###   ###    #     ###
+    // #  #  # ##   #    #  #  #  #  #     # #   # ##  #  #   #     #    #  #
+    //  ##   ##     #    #  #   # #  #     # #   ##    #  #   #     #    #  #
+    // #      ##     ##  ###     #   ####   #     ##   #  #    ##  ###    ###
+    //  ###                     #
+    /**
+     * Gets attendees by the event ID.
+     * @param {number} id The event ID.
+     * @returns {Promise<{discordId: string}[]>} A promise that returns the users attending the event.
+     */
+    static async getByEventId(id) {
+        const db = await Db.get();
+
+        return db.collection("attendee").aggregate([
+            {
+                $match: {eventId: Db.toLong(id)}
+            },
+            {
+                $lookup: {
+                    from: "user",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    user: "$user"
+                }
+            },
+            {
+                $unwind: "$user"
+            },
+            {
+                $project: {
+                    discordId: "$user.discord.id"
+                }
+            }
+        ]).toArray();
+    }
+
     // ###    ##   # #    ##   # #    ##
     // #  #  # ##  ####  #  #  # #   # ##
     // #     ##    #  #  #  #  # #   ##

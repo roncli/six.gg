@@ -102,11 +102,16 @@ class EventDb {
     /**
      * Get events by date.
      * @param {Date} start The start date.
-     * @param {Date} end The end date.
+     * @param {Date} [end] The end date.
      * @returns {Promise<EventTypes.EventData[]>} A promise that returns the matching events.
      */
     static async getByDateRange(start, end) {
-        const db = await Db.get();
+        const db = await Db.get(),
+            range = {end: {$gte: start}};
+
+        if (end) {
+            range.start = {$lte: end};
+        }
 
         /** @type {EventTypes.EventMongoData[]} */
         const events = await db.collection("event").find({

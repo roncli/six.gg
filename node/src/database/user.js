@@ -348,11 +348,11 @@ class UserDb {
                     name: c.name,
                     id: c.id,
                     type: c.type
-                })),
-                timezone: process.env.DEFAULT_TIMEZONE
+                }))
             }});
 
             userResult = result.value;
+            userResult._id = Db.toLong(userResult._id);
         } else {
             userResult = {
                 _id: void 0,

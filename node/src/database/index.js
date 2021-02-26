@@ -37,6 +37,22 @@ class Db {
         return typeof val === "number" ? val : val.toNumber();
     }
 
+    //  #          #
+    //  #          #
+    // ###    ##   #      ##   ###    ###
+    //  #    #  #  #     #  #  #  #  #  #
+    //  #    #  #  #     #  #  #  #   ##
+    //   ##   ##   ####   ##   #  #  #
+    //                                ###
+    /**
+     * Converts a value from a number to a MongoDb.Long.
+     * @param {MongoDb.Long|number} val The number.
+     * @returns {MongoDb.Long} The number.
+     */
+    static toLong(val) {
+        return typeof val === "number" ? MongoDb.Long.fromNumber(val) : val;
+    }
+
     //              #
     //              #
     //  ###   ##   ###

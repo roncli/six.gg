@@ -18,6 +18,11 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### 2.0.3 - 2/25/2021
+* Fix bug with login.
+* Improved error handling.
+* Get the IP address by trusting the nginx proxy for docker.
+
 ### 2.0.2 - 2/25/2021
 * Don't setup Application Insights if there is no instrumentation key provided.
 * Better handle fail condition for Twitch chat bot setup.

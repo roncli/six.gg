@@ -4,19 +4,31 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 ## Features
 
 ### Discord Bot
-* Create and manage privacy of voice channels
+* Announce when Six Gaming streamers are going live.
+* Create and manage privacy of voice channels.
+* Announce when users create events.
+* Manage event attendance.
 
 ### Twitch Bot
 * Provide chat-based notifications of events on the SixGamingGG Twitch channel such as follows, bits, subscriptions, etc.
+* Occasional hosting of a user's stream for registered users streaming to Twitch.
 
 ### Website
-* Member list from the Discord server
-* OAuth2 registration and login with Discord
-* Basic website profile that displays some information from the user's Discord profile
-* Calendar of events that users can add events to or sign up with
-* Occasional front page feature of their stream for registered users streaming to Twitch
+* Member list from the Discord server.
+* OAuth2 registration and login with Discord.
+* Basic website profile that displays some information from the user's Discord profile.
+* Calendar of events that users can add events to or sign up with.
+* Occasional front page feature of a user's stream for registered users streaming to Twitch.
 
 ## Version History
+
+### 2.1.0 - 2/27/2021
+* Event integration in Discord.  Events are now announced in Discord when they are created.  You can now `!join` events for notifications, and `!leave` events to turn off notifications on a per-event basis.
+* The streamer that gets chosen to be on the front page of six.gg is now also hosted on the SixGamingGG Twitch Channel.
+* Streams are no longer announced twice.
+* Hosted streams are no longer announced at all.  This is a workaround, we are currently prevented from announcing non-hosted streams.
+* Excluded tsconfig.json from being served in the public directory.
+* Various package updates.
 
 ### 2.0.3 - 2/25/2021
 * Fix bug with login.

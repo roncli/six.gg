@@ -22,6 +22,9 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### 2.1.1 - 2/27/2021
+* Fix a couple circular references.
+
 ### 2.1.0 - 2/27/2021
 * Event integration in Discord.  Events are now announced in Discord when they are created.  You can now `!join` events for notifications, and `!leave` events to turn off notifications on a per-event basis.
 * The streamer that gets chosen to be on the front page of six.gg is now also hosted on the SixGamingGG Twitch Channel.

@@ -5,6 +5,8 @@
  * @typedef {typeof import("../twitch")} Twitch
  */
 
+const Log = require("node-application-insights-logger");
+
 /** @type {{[x: string]: number}} */
 const lastAnnounced = {};
 
@@ -45,7 +47,7 @@ class Streamers {
             Twitch = twitch;
         }
 
-        /** @type {Map<string, {member: DiscordJs.GuildMember, activity: DiscordJs.Activity}>} */
+        /** @type {Map<string, {member: DiscordJs.GuildMember, activity: DiscordJs.Activity, twitchName: string}>} */
         this.streamers = new Map();
 
         /** @type {Array<string>} */
@@ -70,7 +72,7 @@ class Streamers {
      * @returns {Promise} A promise that resolves when the streamer has been added.
      */
     async add(member, activity, twitchName, notify) {
-        this.streamers.set(member.id, {member, activity});
+        this.streamers.set(member.id, {member, activity, twitchName});
 
         await member.roles.add([Discord.findRoleByName("Live"), Discord.findRoleByName("Streamers")]);
 
@@ -86,7 +88,7 @@ class Streamers {
         lastAnnounced[member.id] = new Date().getTime();
 
         if (!this.featured) {
-            this.feature(member.id);
+            await this.feature(member.id, twitchName);
         }
 
         if (notify) {
@@ -137,15 +139,22 @@ class Streamers {
     /**
      * Features the streamer by their Discord ID.
      * @param {string} id The Discord ID.
-     * @returns {void}
+     * @param {string} channel The Twitch channel.
+     * @returns {Promise} A promise that resolves when the streamer has been featured.
      */
-    feature(id) {
+    async feature(id, channel) {
         this.featured = id;
         const index = this.previouslyFeatured.indexOf(id);
         if (index !== -1) {
             this.previouslyFeatured.splice(index, 1);
         }
         this.previouslyFeatured.push(id);
+
+        try {
+            await Twitch.botChatClient.host("sixgaminggg", channel);
+        } catch (err) {
+            Log.error("There was an error while hosting a featured streamer.", {err});
+        }
     }
 
     // ###    ##   # #    ##   # #    ##
@@ -173,7 +182,9 @@ class Streamers {
             if (this.streamers.size === 0) {
                 this.featured = void 0;
             } else {
-                this.feature(Array.from(this.streamers.keys()).map((s) => ({id: s, index: this.previouslyFeatured.indexOf(s)})).sort((a, b) => a.index - b.index)[0].id);
+                const data = Array.from(this.streamers.keys()).map((s) => ({id: s, twitchName: this.streamers.get(s).twitchName, index: this.previouslyFeatured.indexOf(s)})).sort((a, b) => a.index - b.index)[0];
+
+                await this.feature(data.id, data.twitchName);
             }
         }
     }

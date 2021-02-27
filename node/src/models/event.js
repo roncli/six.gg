@@ -3,7 +3,6 @@
  */
 
 const AttendeeDb = require("../database/attendee"),
-    Discord = require("../discord"),
     Encoding = require("../../public/js/common/encoding"),
     EventDb = require("../database/event"),
     Exception = require("../errors/exception"),
@@ -13,6 +12,13 @@ const AttendeeDb = require("../database/attendee"),
 
 /** @type {{[x: number]: Schedule.Job}} */
 const upcomingEventJobs = {};
+
+/** @type {typeof import("../discord")} */
+let Discord;
+
+setTimeout(() => {
+    Discord = require("../discord");
+}, 0);
 
 //  #####                        #
 //  #                            #

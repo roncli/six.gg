@@ -8,11 +8,17 @@
  * @typedef {import("../../types/node/userTypes").UserData} UserTypes.UserData
  */
 
-const Discord = require("../discord"),
-    DiscordUser = require("../discord/user"),
+const DiscordUser = require("../discord/user"),
     Exception = require("../errors/exception"),
     SessionDb = require("../database/session"),
     UserDb = require("../database/user");
+
+/** @type {typeof import("../discord")} */
+let Discord;
+
+setTimeout(() => {
+    Discord = require("../discord");
+}, 0);
 
 //  #   #
 //  #   #

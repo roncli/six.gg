@@ -19,11 +19,13 @@
     "license": "MIT",
     "dependencies": {
         "applicationinsights": "1.8.10",
+        "dockerode": "3.2.1",
         "graygelf": "2.0.0"
     },
     "devDependencies": {
         "@babel/core": "7.13.8",
         "@babel/eslint-parser": "7.13.8",
+        "@types/dockerode": "3.2.2",
         "@types/node": "14.14.31"
     }
 }

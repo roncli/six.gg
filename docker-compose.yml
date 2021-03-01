@@ -14,6 +14,8 @@ services:
     secrets:
       - APPINSIGHTS_INSTRUMENTATIONKEY
     restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /var/logging/start.sh
 
   db:

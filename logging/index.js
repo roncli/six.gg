@@ -1,4 +1,5 @@
 const appInsights = require("applicationinsights"),
+    Docker = require("./src/docker"),
     gelfserver = require("graygelf/server"),
 
     logMatch = /(?<ipaddress>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - (?<remoteuser>.+) \[(?<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2})\] (?<servername>.+) (?<serverport>\d+) "(?<request>(?<method>[a-z]+) (?<url>.+)(?<http>http\/[12]\.[01])|.+)" (?<statuscode>\d{3}) (?<bytessent>\d+) (?<requesttime>\d+(?:.\d+)) "(?<referrer>.+)" "(?<useragent>.+)"/i,
@@ -16,6 +17,8 @@ const appInsights = require("applicationinsights"),
         D5: 0
     },
     successMatch = /^[23]/;
+
+const docker = new Docker();
 
 //   ###              #
 //    #               #
@@ -103,6 +106,8 @@ class Index {
 
         server.listen(port);
         console.log(`Server PID ${process.pid} listening on port ${port}.`);
+
+        docker.start();
     }
 }
 

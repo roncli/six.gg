@@ -41,7 +41,7 @@
         "twitch-auth": "4.4.13",
         "twitch-chat-client": "4.4.13",
         "twitch-pubsub-client": "4.4.13",
-        "twitch-webhooks": "4.4.12",
+        "twitch-webhooks": "4.4.13",
         "tzdata": "1.0.25"
     },
     "devDependencies": {

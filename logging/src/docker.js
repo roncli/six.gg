@@ -63,6 +63,8 @@ class Docker {
                             appInsights.defaultClient.trackMetric({name: "Network Received", value: stat.network.rxBytes.total / stat.count, min: stat.network.rxBytes.min, max: stat.network.rxBytes.max, time: new Date(), properties: {id, name: stat.name}});
                             appInsights.defaultClient.trackMetric({name: "Network Transmitted", value: stat.network.txBytes.total / stat.count, min: stat.network.txBytes.min, max: stat.network.txBytes.max, time: new Date(), properties: {id, name: stat.name}});
                         }
+
+                        delete minutes[currentMinute];
                     }
 
                     currentMinute = minute;

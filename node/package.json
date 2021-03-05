@@ -37,7 +37,7 @@
         "node-schedule": "2.0.0",
         "public-ip": "4.0.3",
         "timezonecomplete": "5.12.1",
-        "twitch": "4.4.13",
+        "twitch": "4.5.0",
         "twitch-auth": "4.4.13",
         "twitch-chat-client": "4.4.13",
         "twitch-pubsub-client": "4.5.0",

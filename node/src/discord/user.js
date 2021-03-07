@@ -12,7 +12,7 @@ const crypto = require("crypto"),
         clientId: process.env.DISCORD_CLIENTID,
         clientSecret: process.env.DISCORD_CLIENTSECRET,
         redirectUri: process.env.DISCORD_REDIRECT_URI,
-        credentials: Buffer.from(`${process.env.DISCORD_CLIENT_ID}:${process.env.DISCORD_CLIENT_SECRET}`).toString("base64")
+        credentials: Buffer.from(`${process.env.DISCORD_CLIENTID}:${process.env.DISCORD_CLIENT_SECRET}`).toString("base64")
     });
 
 const validStates = new Set();

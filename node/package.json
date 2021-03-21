@@ -36,7 +36,7 @@
         "node-redis": "roncli/node-redis#v0.1.0",
         "node-schedule": "2.0.0",
         "public-ip": "4.0.3",
-        "timezonecomplete": "5.12.1",
+        "timezonecomplete": "5.12.2",
         "twitch": "4.5.1",
         "twitch-auth": "4.5.1",
         "twitch-chat-client": "4.5.1",

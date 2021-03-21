@@ -22,15 +22,21 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
-### 2.1.2 - 3/6/2021
+### v2.1.3 - 3/20/2021
+* Swap order so Twitch is connected to before Discord.
+* POSTing invalid JSON now correctly returns a 400.
+* Trying to get a member that doesn't exist now correctly returns a 404.
+* Various package updates.
+
+### v2.1.2 - 3/6/2021
 * Fix bug with refreshing the Discord token for OAuth.
 * Add App Insights performance logging metrics.
 * Various package updates.
 
-### 2.1.1 - 2/27/2021
+### v2.1.1 - 2/27/2021
 * Fix a couple circular references.
 
-### 2.1.0 - 2/27/2021
+### v2.1.0 - 2/27/2021
 * Event integration in Discord.  Events are now announced in Discord when they are created.  You can now `!join` events for notifications, and `!leave` events to turn off notifications on a per-event basis.
 * The streamer that gets chosen to be on the front page of six.gg is now also hosted on the SixGamingGG Twitch Channel.
 * Streams are no longer announced twice.
@@ -38,17 +44,17 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 * Excluded tsconfig.json from being served in the public directory.
 * Various package updates.
 
-### 2.0.3 - 2/25/2021
+### v2.0.3 - 2/25/2021
 * Fix bug with login.
 * Improved error handling.
 * Get the IP address by trusting the nginx proxy for docker.
 
-### 2.0.2 - 2/25/2021
+### v2.0.2 - 2/25/2021
 * Don't setup Application Insights if there is no instrumentation key provided.
 * Better handle fail condition for Twitch chat bot setup.
 * Various package updates, including changing some core functionality to new packages.
 
-### 2.0.1 - 2/8/2021
+### v2.0.1 - 2/8/2021
 * Fix redis caching bug.
 * Use logging rather than console.log in startup routine.
 * Exceptions are now logged when streamers can't be added or removed.
@@ -57,10 +63,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 * Redis now uses a generic pool for connections.
 * Various package updates.
 
-### 2.0.0 - 1/20/2021
+### v2.0.0 - 1/20/2021
 * Complete redesign with new features.
 
-### Before 2.0.0
+### Before v2.0.0
 Versions prior to 2.0.0 were not part of an open source project.  six.gg was rewritten from the ground up, and does not use any of the previously open source code.
 
 ## License Details

@@ -46,6 +46,10 @@ class UserDb {
         /** @type {UserTypes.UserMongoData} */
         const user = await db.collection("user").findOne({_id: id});
 
+        if (!user) {
+            return void 0;
+        }
+
         return {
             _id: Db.fromLong(user._id),
             discord: user.discord,

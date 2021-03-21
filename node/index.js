@@ -11,6 +11,7 @@ const bodyParser = require("body-parser"),
     util = require("util"),
 
     Discord = require("./src/discord"),
+    Exception = require("./src/errors/exception"),
     Listeners = require("./src/listeners"),
     Redirects = require("./src/redirects"),
     Twitch = require("./src/twitch");
@@ -128,7 +129,11 @@ process.on("unhandledRejection", (reason) => {
     // Setup hot-router.
     const router = new HotRouter.Router();
     router.on("error", (data) => {
-        Log.error(data.message, {err: data.err, req: data.req});
+        if (data.err && data.err instanceof Exception) {
+            Log.error(data.message, {err: data.err.innerError, req: data.req});
+        } else {
+            Log.error(data.message, {err: data.err, req: data.req});
+        }
     });
     try {
         app.use("/", await router.getRouter(path.join(__dirname, "web"), {hot: false}));

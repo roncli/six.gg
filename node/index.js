@@ -47,12 +47,12 @@ process.on("unhandledRejection", (reason) => {
     // Setup various listeners.
     Listeners.setup();
 
+    // Startup Twitch.
+    await Twitch.connect();
+
     // Startup Discord.
     Discord.startup();
     await Discord.connect();
-
-    // Startup Twitch.
-    await Twitch.connect();
 
     // Setup Redis.
     Redis.setup({

@@ -374,10 +374,6 @@ class Twitch {
             if (reason) {
                 Log.error("The streamer's Twitch chat disconnected.", {err: reason});
             }
-
-            if (!manually) {
-                await Twitch.setupChat();
-            }
         });
 
         channelChatClient.client.onGiftPaidUpgrade((channel, user, subInfo) => {
@@ -540,10 +536,6 @@ class Twitch {
         botChatClient.client.onDisconnect(async (manually, reason) => {
             if (reason) {
                 Log.error("The bot's Twitch chat disconnected.", {err: reason});
-            }
-
-            if (!manually) {
-                await Twitch.setupChat();
             }
         });
 

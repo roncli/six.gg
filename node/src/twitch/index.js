@@ -370,7 +370,7 @@ class Twitch {
             });
         });
 
-        channelChatClient.client.onDisconnect(async (manually, reason) => {
+        channelChatClient.client.onDisconnect((manually, reason) => {
             if (reason) {
                 Log.error("The streamer's Twitch chat disconnected.", {err: reason});
             }
@@ -533,7 +533,7 @@ class Twitch {
             });
         });
 
-        botChatClient.client.onDisconnect(async (manually, reason) => {
+        botChatClient.client.onDisconnect((manually, reason) => {
             if (reason) {
                 Log.error("The bot's Twitch chat disconnected.", {err: reason});
             }

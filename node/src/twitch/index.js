@@ -209,7 +209,10 @@ class Twitch {
         channelTwitchClient = new TwitchClient({
             authProvider: channelAuthProvider,
             initialScopes: process.env.TWITCH_CHANNEL_SCOPES.split(" "),
-            preAuth: true
+            preAuth: true,
+            logger: {
+                colors: false
+            }
         });
 
         botAuthProvider = new TwitchAuth.RefreshableAuthProvider(
@@ -238,7 +241,10 @@ class Twitch {
         botTwitchClient = new TwitchClient({
             authProvider: botAuthProvider,
             initialScopes: process.env.TWITCH_BOT_SCOPES.split(" "),
-            preAuth: true
+            preAuth: true,
+            logger: {
+                colors: false
+            }
         });
 
         apiAuthProvider = new TwitchAuth.ClientCredentialsAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET);

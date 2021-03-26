@@ -28,7 +28,10 @@ class Chat {
     constructor(authProvider) {
         this.client = new ChatClient(authProvider, {
             channels: [process.env.TWITCH_CHANNEL],
-            requestMembershipEvents: true
+            requestMembershipEvents: true,
+            logger: {
+                colors: false
+            }
         });
     }
 }

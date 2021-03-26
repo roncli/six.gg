@@ -22,6 +22,11 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.4 - 3/26/2021
+* Fix bug with attempting to reconnect when the chat is already attempting to reconnect.
+* Turn off log colorization for Twitch libraries.
+* Various package updates.
+
 ### v2.1.3 - 3/20/2021
 * Swap order so Twitch is connected to before Discord.
 * POSTing invalid JSON now correctly returns a 400.

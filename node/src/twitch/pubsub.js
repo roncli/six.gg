@@ -2,7 +2,9 @@
  * @typedef {import("twitch").ApiClient} TwitchClient
  */
 
-const TwitchPubSub = require("twitch-pubsub-client").PubSubClient;
+const TwitchPubSubClient = require("twitch-pubsub-client"),
+    BaseTwitchPubSub = TwitchPubSubClient.BasicPubSubClient,
+    TwitchPubSub = TwitchPubSubClient.PubSubClient;
 
 //  ####          #       ###          #
 //  #   #         #      #   #         #
@@ -28,7 +30,11 @@ class PubSub {
      * @returns {Promise} A promise that resolves when the PubSub are setup.
      */
     async setup(twitchClient) {
-        this.client = new TwitchPubSub();
+        this.client = new TwitchPubSub(new BaseTwitchPubSub({
+            logger: {
+                colors: false
+            }
+        }));
         await this.client.registerUserListener(twitchClient);
     }
 }

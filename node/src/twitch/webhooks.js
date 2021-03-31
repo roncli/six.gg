@@ -33,7 +33,11 @@ class Webhooks {
         this.listener = new TwitchWebhooks(twitchClient, new SimpleAdapter({
             hostName: await PublicIP.v4(),
             listenerPort: +process.env.TWITCH_WEBHOOKSPORT
-        }));
+        }), {
+            logger: {
+                colors: false
+            }
+        });
 
         this.listener.listen();
     }

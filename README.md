@@ -22,6 +22,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.5 - 3/30/2021
+* Turn off more log colorization for Twitch libraries.
+* Various package updates.
+
 ### v2.1.4 - 3/26/2021
 * Fix bug with attempting to reconnect when the chat is already attempting to reconnect.
 * Turn off log colorization for Twitch libraries.

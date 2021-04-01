@@ -97,7 +97,6 @@ class Common extends RouterBase {
             IndexView.get({
                 head,
                 html,
-                protocol: req.protocol,
                 host: req.get("host"),
                 originalUrl: req.originalUrl,
                 year: new Date().getFullYear(),

@@ -26,17 +26,17 @@ class IndexView {
      * @returns {string} An HTML string of the page.
      */
     static get(data) {
-        const {head, html, protocol, host, originalUrl, year, version, user, guildMember} = data;
+        const {head, html, host, originalUrl, year, version, user, guildMember} = data;
 
         return /* html */`
             <html>
                 <head>
                     <title>Six Gaming</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-                    <meta name="og:image" content="${protocol}://${host}/images/six.png" />
+                    <meta name="og:image" content="https://${host}/images/six.png" />
                     <meta name="og:title" content="Six Gaming" />
                     <meta name="og:type" content="website" />
-                    <meta name="og:url" content="${protocol}://${host}${encodeURI(originalUrl)}" />
+                    <meta name="og:url" content="https://${host}${encodeURI(originalUrl)}" />
                     <meta name="twitter:card" content="summary" />
                     <meta name="twitter:creator" content="@roncli" />
                     ${head}

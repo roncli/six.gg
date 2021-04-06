@@ -38,7 +38,7 @@
         "public-ip": "4.0.3",
         "timezonecomplete": "5.12.2",
         "twitch": "4.5.3",
-        "twitch-auth": "4.5.3",
+        "twitch-auth": "4.5.4",
         "twitch-chat-client": "4.5.3",
         "twitch-pubsub-client": "4.5.3",
         "twitch-webhooks": "4.5.3",

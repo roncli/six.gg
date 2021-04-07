@@ -1,7 +1,3 @@
-/**
- * @typedef {import("./common/modal")} Modal
- */
-
 //   ###           ##                      #
 //  #   #           #                      #
 //  #       ###     #     ###   # ##    ## #   ###   # ##
@@ -45,7 +41,7 @@ class Calendar {
 
                         Calendar.Template.loadDataIntoTemplate(void 0, div, window.AddView.get);
 
-                        Calendar.modal = new window.Modal();
+                        Calendar.modal = new Calendar.Modal();
 
                         Calendar.modal.display(div.innerHTML);
 
@@ -248,7 +244,11 @@ Calendar.Encoding = typeof Encoding === "undefined" ? require("./common/encoding
 /** @type {number} */
 Calendar.gameComboTimeout = null;
 
-/** @type {Modal} */
+/** @type {typeof import("./common/modal")} */
+// @ts-ignore
+Calendar.Modal = typeof Modal === "undefined" ? require("./common/modal") : Modal; // eslint-disable-line no-undef
+
+/** @type {import("./common/modal")} */
 Calendar.modal = null;
 
 /** @type {typeof import("./common/template")} */

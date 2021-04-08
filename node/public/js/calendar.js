@@ -155,7 +155,7 @@ class Calendar {
 
                             while (!el.classList.contains("item")) {
                                 el = /** @type {HTMLDivElement} */(el.parentNode); // eslint-disable-line no-extra-parens
-                                if (!el) {
+                                if (!el || !el.classList) {
                                     return;
                                 }
                             }

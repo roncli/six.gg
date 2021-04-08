@@ -1,5 +1,4 @@
-const bodyParser = require("body-parser"),
-    Cache = require("node-redis").Cache,
+const Cache = require("node-redis").Cache,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     express = require("express"),
@@ -73,7 +72,7 @@ process.on("unhandledRejection", (reason) => {
     app.disable("x-powered-by");
 
     // Initialize middleware stack.
-    app.use(bodyParser.json());
+    app.use(express.json());
     app.use(compression());
     app.use(cookieParser());
 

@@ -41,6 +41,8 @@ class CalendarView {
     }
 }
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.CalendarView = CalendarView;
+} else {
     module.exports = CalendarView; // eslint-disable-line no-undef
 }

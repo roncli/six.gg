@@ -74,6 +74,8 @@ MeView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encodi
 // @ts-ignore
 MeView.Options = typeof options === "undefined" ? require("../js/common/options") : Options; // eslint-disable-line no-undef
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.MeView = MeView;
+} else {
     module.exports = MeView; // eslint-disable-line no-undef
 }

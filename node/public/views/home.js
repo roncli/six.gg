@@ -48,6 +48,8 @@ class HomeView {
 // @ts-ignore
 HomeView.StreamersView = typeof StreamersView === "undefined" ? require("./home/streamers") : StreamersView; // eslint-disable-line no-undef
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.HomeView = HomeView;
+} else {
     module.exports = HomeView; // eslint-disable-line no-undef
 }

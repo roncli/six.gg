@@ -63,6 +63,8 @@ MemberView.Connection = typeof Connection === "undefined" ? require("../js/commo
 // @ts-ignore
 MemberView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.MemberView = MemberView;
+} else {
     module.exports = MemberView; // eslint-disable-line no-undef
 }

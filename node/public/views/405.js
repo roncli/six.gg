@@ -33,6 +33,8 @@ class MethodNotAllowedView {
     }
 }
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.MethodNotAllowedView = MethodNotAllowedView;
+} else {
     module.exports = MethodNotAllowedView; // eslint-disable-line no-undef
 }

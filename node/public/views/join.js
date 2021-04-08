@@ -28,6 +28,8 @@ class JoinView {
     }
 }
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.JoinView = JoinView;
+} else {
     module.exports = JoinView; // eslint-disable-line no-undef
 }

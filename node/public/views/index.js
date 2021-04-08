@@ -99,6 +99,8 @@ class IndexView {
 // @ts-ignore
 IndexView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.IndexView = IndexView;
+} else {
     module.exports = IndexView; // eslint-disable-line no-undef
 }

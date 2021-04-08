@@ -79,6 +79,8 @@ class EventView {
 // @ts-ignore
 EventView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.EventView = EventView;
+} else {
     module.exports = EventView; // eslint-disable-line no-undef
 }

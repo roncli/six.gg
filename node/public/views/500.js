@@ -30,6 +30,8 @@ class ServerErrorView {
     }
 }
 
-if (typeof module !== "undefined") {
+if (typeof module === "undefined") {
+    window.ServerErrorView = ServerErrorView;
+} else {
     module.exports = ServerErrorView; // eslint-disable-line no-undef
 }

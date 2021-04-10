@@ -47,8 +47,14 @@ process.on("unhandledRejection", (reason) => {
     // Setup various listeners.
     Listeners.setup();
 
-    // Startup Twitch.
-    await Twitch.connect();
+    try {
+        // Startup Twitch.
+        await Twitch.connect();
+    } catch (err) {
+        // Exit the app, there was likely a problem connecting to the database.
+        Log.error("Could not connect to Twitch.", {err});
+        process.exit(1);
+    }
 
     // Startup Discord.
     Discord.startup();

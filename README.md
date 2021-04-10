@@ -22,6 +22,9 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.7 - 4/10/2021
+* Fix Discord OAuth issue.
+
 ### v2.1.6 - 4/10/2021
 * Debugging for Discord OAuth issue.
 * Always use HTTPS protocol in meta tags.

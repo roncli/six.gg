@@ -32,7 +32,7 @@
         "mongodb": "3.6.6",
         "node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.3",
         "node-minify": "roncli/node-minify#v1.0.1",
-        "node-redis": "roncli/node-redis#v0.1.0",
+        "node-redis": "roncli/node-redis#v0.1.2",
         "node-schedule": "2.0.0",
         "public-ip": "4.0.3",
         "timezonecomplete": "5.12.2",

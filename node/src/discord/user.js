@@ -160,7 +160,7 @@ class User {
                 grantType: "refresh_token"
             });
         } catch (err) {
-            Log.error("There was a Discord OAuth exception while refreshing a token.", {err, properties: {token}});
+            Log.error("There was a Discord OAuth exception while refreshing a token.", {err});
             throw new Error("Discord returned an error while refreshing a token.");
         }
     }

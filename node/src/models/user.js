@@ -124,6 +124,9 @@ class User {
             try {
                 token = await DiscordUser.refreshToken(data.session.refreshToken);
             } catch (err) {
+                // Delete session, user was invalid.
+                await SessionDb.delete(data.session._id);
+
                 return void 0;
             }
             data.session.accessToken = token.access_token;

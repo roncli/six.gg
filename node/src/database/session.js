@@ -18,6 +18,23 @@ const MongoDb = require("mongodb"),
  * A class to handle database calls to the session collection.
  */
 class SessionDb {
+    //    #        ##           #
+    //    #         #           #
+    //  ###   ##    #     ##   ###    ##
+    // #  #  # ##   #    # ##   #    # ##
+    // #  #  ##     #    ##     #    ##
+    //  ###   ##   ###    ##     ##   ##
+    /**
+     * Deletes a sessino by its ID.
+     * @param {string} id The session ID.
+     * @returns {Promise} A promise that resolves when the session has been deleted.
+     */
+    static async delete(id) {
+        const db = await Db.get();
+
+        await db.collection("session").deleteOne({_id: MongoDb.ObjectID.createFromHexString(id)});
+    }
+
     //                #         #
     //                #         #
     // #  #  ###    ###   ###  ###    ##
@@ -38,7 +55,7 @@ class SessionDb {
             refreshToken: Encryption.encryptWithSalt(session.refreshToken)
         };
 
-        await db.collection("session").findOneAndUpdate({_id: session._id, ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
+        await db.collection("session").findOneAndUpdate({_id: MongoDb.ObjectID.createFromHexString(session._id), ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
             ip: session.ip,
             userId: MongoDb.Long.fromNumber(session.userId),
             accessToken: {

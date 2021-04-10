@@ -38,7 +38,7 @@
         "timezonecomplete": "5.12.2",
         "twitch": "4.5.3",
         "twitch-auth": "4.5.5",
-        "twitch-chat-client": "4.5.3",
+        "twitch-chat-client": "4.5.5",
         "twitch-pubsub-client": "4.5.5",
         "twitch-webhooks": "4.5.5",
         "tzdata": "1.0.25"

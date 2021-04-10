@@ -22,6 +22,18 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.6 - 4/10/2021
+* Debugging for Discord OAuth issue.
+* Always use HTTPS protocol in meta tags.
+* Rearrange Dockerfiles in such a way to make debugging easier, ie: send over package.json first, then npm install, then send over the rest of the files.
+* Fix HTML encoding bug.
+* Hang the Modal object on the classes that use it, not on window.
+* Replace body-parser with express.
+* Fix bug with add event's game combo box.
+* Fix bug with templates not being added to window when loaded.
+* Add extra debugging to Discord token refresh failures to try to understand them better.
+* Various package updates.
+
 ### v2.1.5 - 3/30/2021
 * Turn off more log colorization for Twitch libraries.
 * Various package updates.

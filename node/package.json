@@ -29,7 +29,7 @@
         "hot-router": "1.0.0-beta.5",
         "html-minifier": "4.0.0",
         "igdb-api-node": "5.0.0",
-        "mongodb": "3.6.5",
+        "mongodb": "3.6.6",
         "node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.3",
         "node-minify": "roncli/node-minify#v1.0.1",
         "node-redis": "roncli/node-redis#v0.1.0",

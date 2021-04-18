@@ -82,6 +82,9 @@ class Streamers {
 
         if (new Date().getTime() - lastAnnounced[member.id] < 300000) {
             lastAnnounced[member.id] = new Date().getTime();
+            if (notify) {
+                Log.info("Did not notify because last announced less than 5 minutes ago.", {properties: {twitchName}});
+            }
             return;
         }
 
@@ -94,11 +97,13 @@ class Streamers {
         if (notify) {
             const user = await Twitch.botTwitchClient.helix.users.getUserByName(twitchName);
             if (!user) {
+                Log.info("Did not notify because user was not found.", {properties: {twitchName}});
                 return;
             }
 
             const channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
             if (!channel) {
+                Log.info("Did not notify because channel was not found.", {properties: {twitchName, userId: user.id}});
                 return;
             }
 

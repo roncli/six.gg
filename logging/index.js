@@ -107,7 +107,9 @@ class Index {
         server.listen(port);
         console.log(`Server PID ${process.pid} listening on port ${port}.`);
 
-        docker.start();
+        if (process.env.APPINSIGHTS_PERFORMANCE_METRICS) {
+            docker.start();
+        }
     }
 }
 

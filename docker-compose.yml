@@ -9,6 +9,7 @@ services:
       - "12201:12201/udp"
     environment:
       PORT: 12201
+      APPINSIGHTS_PERFORMANCE_METRICS: 0
       APPINSIGHTS_INSTRUMENTATIONKEY: /run/secrets/APPINSIGHTS_INSTRUMENTATIONKEY
       APPLICATION: six.gg
     secrets:

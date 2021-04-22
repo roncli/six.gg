@@ -14,7 +14,7 @@ then
     rm -f "$logfile"
 
     # Start mongod.
-    mongod --fork --logpath "$logfile" --pidfilepath "$pidfile"
+    mongod --fork --logpath "$logfile" --pidfilepath "$pidfile" --setParameter diagnosticDataCollectionEnabled=false
 
     # Ensure mongod is running.
     tries=30
@@ -47,4 +47,4 @@ then
 fi
 
 # Start up mongod normally.
-/usr/local/bin/docker-entrypoint.sh mongod
+/usr/local/bin/docker-entrypoint.sh mongod --setParameter diagnosticDataCollectionEnabled=false

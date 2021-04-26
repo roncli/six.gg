@@ -72,38 +72,44 @@ class Streamers {
      * @returns {Promise} A promise that resolves when the streamer has been added.
      */
     async add(member, activity, twitchName, notify) {
+        Log.verbose("Add called.", {properties: {member: member.toString(), state: activity.state, twitchName, notify}});
         this.streamers.set(member.id, {member, activity, twitchName});
 
         await member.roles.add([Discord.findRoleByName("Live"), Discord.findRoleByName("Streamers")]);
+        Log.verbose("Live role set.", {properties: {twitchName, notify}});
 
         if (!lastAnnounced[member.id]) {
+            Log.verbose("Did not find member in lastAnnounced object.", {properties: {twitchName, notify}});
             lastAnnounced[member.id] = 0;
         }
 
         if (new Date().getTime() - lastAnnounced[member.id] < 300000) {
             lastAnnounced[member.id] = new Date().getTime();
             if (notify) {
-                Log.info("Did not notify because last announced less than 5 minutes ago.", {properties: {twitchName}});
+                Log.verbose("Did not notify because last announced less than 5 minutes ago.", {properties: {twitchName, notify}});
             }
             return;
         }
 
         lastAnnounced[member.id] = new Date().getTime();
+        Log.verbose("lastAnnounced set.", {properties: {twitchName, notify}});
 
         if (!this.featured) {
             await this.feature(member.id, twitchName);
+            Log.verbose("Featured streamer.", {properties: {twitchName, notify}});
         }
 
         if (notify) {
+            Log.verbose("Attempting to notify.", {properties: {twitchName, notify}});
             const user = await Twitch.botTwitchClient.helix.users.getUserByName(twitchName);
             if (!user) {
-                Log.info("Did not notify because user was not found.", {properties: {twitchName}});
+                Log.verbose("Did not notify because user was not found.", {properties: {twitchName}});
                 return;
             }
 
             const channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
             if (!channel) {
-                Log.info("Did not notify because channel was not found.", {properties: {twitchName, userId: user.id}});
+                Log.verbose("Did not notify because channel was not found.", {properties: {twitchName, userId: user.id}});
                 return;
             }
 
@@ -132,6 +138,7 @@ class Streamers {
                     }
                 ]
             }), Discord.findTextChannelByName("live-stream-announcements"));
+            Log.verbose("Notified.", {properties: {twitchName, notify}});
         }
     }
 

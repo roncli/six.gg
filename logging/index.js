@@ -93,6 +93,11 @@ class Index {
                     if (severityEnum[severity] >= 3) {
                         appInsights.defaultClient.trackException({exception: new Error(message), severity: severityEnum[severity], time: date, properties});
                     } else {
+                        // Don't log checkpoints.
+                        if (data.ctx === "WTCheckpointThread") {
+                            return;
+                        }
+
                         appInsights.defaultClient.trackTrace({message, severity: severityEnum[severity], time: date, properties});
                     }
 

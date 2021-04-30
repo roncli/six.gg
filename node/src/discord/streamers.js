@@ -87,10 +87,6 @@ class Streamers {
 
         lastAnnounced[member.id] = new Date().getTime();
 
-        if (!this.featured) {
-            await this.feature(member.id, twitchName);
-        }
-
         if (notify) {
             const user = await Twitch.botTwitchClient.helix.users.getUserByName(twitchName),
                 channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
@@ -120,6 +116,10 @@ class Streamers {
                     }
                 ]
             }), Discord.findTextChannelByName("live-stream-announcements"));
+        }
+
+        if (!this.featured) {
+            await this.feature(member.id, twitchName);
         }
     }
 

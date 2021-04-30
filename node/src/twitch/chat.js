@@ -30,7 +30,8 @@ class Chat {
             channels: [process.env.TWITCH_CHANNEL],
             requestMembershipEvents: true,
             logger: {
-                colors: false
+                colors: false,
+                minLevel: 7
             }
         });
     }

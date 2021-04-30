@@ -206,15 +206,6 @@ class Twitch {
             }
         );
 
-        channelTwitchClient = new TwitchClient({
-            authProvider: channelAuthProvider,
-            initialScopes: process.env.TWITCH_CHANNEL_SCOPES.split(" "),
-            preAuth: true,
-            logger: {
-                colors: false
-            }
-        });
-
         botAuthProvider = new TwitchAuth.RefreshableAuthProvider(
             new TwitchAuth.StaticAuthProvider(process.env.TWITCH_CLIENTID, botAccessToken, process.env.TWITCH_BOT_SCOPES.split(" "), "user"),
             {
@@ -237,6 +228,18 @@ class Twitch {
                 }
             }
         );
+
+        await channelAuthProvider.refresh();
+        await botAuthProvider.refresh();
+
+        channelTwitchClient = new TwitchClient({
+            authProvider: channelAuthProvider,
+            initialScopes: process.env.TWITCH_CHANNEL_SCOPES.split(" "),
+            preAuth: true,
+            logger: {
+                colors: false
+            }
+        });
 
         botTwitchClient = new TwitchClient({
             authProvider: botAuthProvider,
@@ -339,7 +342,7 @@ class Twitch {
             } catch (err) {} finally {}
         }
 
-        botChatClient = new Chat(botTwitchClient);
+        botChatClient = new Chat(botAuthProvider);
 
         channelChatClient.client.onAction((channel, user, message, msg) => {
             eventEmitter.emit("action", {

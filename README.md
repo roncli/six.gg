@@ -22,6 +22,13 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.8 - 4/30/2021
+* Fix stream announcing so that it always happens regardless of whether the bot hosts the streamer or not.
+* Don't collect MongoDB diagnostic data.
+* Add toggle for AppInsights performance metrics.
+* Refresh Twitch auth tokens on every restart of the app.
+* Various package updates.
+
 ### v2.1.7 - 4/10/2021
 * Fix Discord OAuth issue.
 

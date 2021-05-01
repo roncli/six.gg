@@ -148,7 +148,7 @@ class Twitch {
             try {
                 await Twitch.login();
             } catch (err) {
-                Log.error("Error connecting to Twitch.  You can try again by refreshing the control page.", {err});
+                Log.error("Error connecting to Twitch.", {err});
             }
 
             Log.verbose("Connected to Twitch.");

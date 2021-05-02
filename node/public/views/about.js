@@ -26,7 +26,7 @@ class AboutView {
             <div>
                 It all began as a World of Warcraft raiding guild called Six Minutes To Release, founded in December of 2007 by roncli and solitha.  The guild raided for seven years until February of 2015, but during that time many friendships were made, and from those friendships Six Gaming was born.<br /><br />
                 Colzaratha is credited with coining the name "Six Gaming", which was used as a League of Legends team name.  That name would later be used for Showsan's podcast, the Six Gaming Podcast.<br /><br />
-                Today, we are a group of passionate gamers who love playing games with and against each other.  You can find us hanging out on our <a href="http://ronc.li/six-discord" target="_blank">Discord server</a>.  Everyone is welcome to join Six Gaming!
+                Today, we are a group of passionate gamers who love playing games with and against each other.  You can find us hanging out on our <a href="https://ronc.li/six-discord" target="_blank">Discord server</a>.  Everyone is welcome to join Six Gaming!
             </div>
             <div class="section">SixBotGG</div>
             <div class="subsection">Six Gaming's Discord bot</div>

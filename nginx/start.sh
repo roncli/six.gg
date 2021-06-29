@@ -109,7 +109,7 @@ then
 fi
 
 # Reload nginx every 15 days to pick up any cert changes.
-$(while true; sleep 15d; nginx -s reload; done) &
+$(while true; do sleep 15d; nginx -s reload; done) &
 
 echo "Starting..."
 

@@ -2,7 +2,7 @@
 FROM nginx:stable-alpine
 
 # Get packages.
-RUN apk update && apk add inotify-tools openssl
+RUN apk update && apk add openssl
 
 # Create /var/nginx directory.
 RUN mkdir -p /var/nginx

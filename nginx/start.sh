@@ -108,8 +108,8 @@ then
     cp /var/nginx/work/fullchain.pem "/etc/letsencrypt/live/$DOMAIN/fullchain.pem"
 fi
 
-# Check for cert changes and reload if necessary.
-$(sleep 60000; while inotifywait -e close_write "/etc/letsencrypt/live/$DOMAIN"; do nginx -s reload; done) &
+# Reload nginx every 15 days to pick up any cert changes.
+$(while true; sleep 15d; nginx -s reload; done) &
 
 echo "Starting..."
 

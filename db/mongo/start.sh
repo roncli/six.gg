@@ -42,6 +42,21 @@ then
     # Shut down mongod.
     mongod --shutdown
 
+    # Ensure mongod is not running.
+    tries=30
+    while true; do
+        if ! { [ -s "$pidfile" ] && ps "$(< "$pidfile")" &> /dev/null; }; then
+            break
+        fi
+        (( tries-- ))
+        if [ "$tries" -le 0 ]; then
+            kill `cat "$pidfile"`
+            sleep 10
+            break
+        fi
+        sleep 1
+    done
+
     # Remove pidfile.
     rm -f "$pidfile"
 fi

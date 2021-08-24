@@ -34,8 +34,7 @@ class TwitchDb {
     static async get() {
         const db = await Db.get();
 
-        /** @type {TwitchTypes.EncryptedMongoTokens} */
-        const encryptedTokens = await db.collection("twitch").findOne({});
+        const encryptedTokens = /** @type {TwitchTypes.EncryptedMongoTokens} */(await db.collection("twitch").findOne({})); // eslint-disable-line no-extra-parens
 
         if (!encryptedTokens) {
             return void 0;

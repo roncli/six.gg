@@ -69,14 +69,11 @@ class Db {
             client = new MongoDb.MongoClient(`mongodb://web_sixgg:${process.env.WEB_SIXGG_PASSWORD}@db:27017/sixgg`, {
                 authMechanism: "SCRAM-SHA-256",
                 authSource: "admin",
-                useUnifiedTopology: true,
                 promoteLongs: false
             });
         }
 
-        if (!client.isConnected()) {
-            await client.connect();
-        }
+        await client.connect();
 
         if (!db) {
             db = client.db("sixgg");

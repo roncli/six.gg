@@ -32,14 +32,13 @@ class AttendeeDb {
     static async add(data) {
         const db = await Db.get();
 
-        /** @type {MongoDb.FindAndModifyWriteOpResultObject<AttendeeTypes.AttendeeMongoData>} */
-        const result = await db.collection("attendee").findOneAndUpdate({
+        const result = /** @type {MongoDb.ModifyResult<AttendeeTypes.AttendeeMongoData>} */(await db.collection("attendee").findOneAndUpdate({ // eslint-disable-line no-extra-parens
             eventId: MongoDb.Long.fromNumber(data.eventId),
             userId: MongoDb.Long.fromNumber(data.userId)
         }, {$set: {
             eventId: MongoDb.Long.fromNumber(data.eventId),
             userId: MongoDb.Long.fromNumber(data.userId)
-        }}, {upsert: true, returnOriginal: false});
+        }}, {upsert: true, returnDocument: "after"}));
 
         data._id = result.value._id.toHexString();
 
@@ -61,7 +60,7 @@ class AttendeeDb {
     static async getByEventId(id) {
         const db = await Db.get();
 
-        return db.collection("attendee").aggregate([
+        return /** @type {Promise<{discordId: string}[]>} */(db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
             {
                 $match: {eventId: Db.toLong(id)}
             },
@@ -87,7 +86,7 @@ class AttendeeDb {
                     discordId: "$user.discord.id"
                 }
             }
-        ]).toArray();
+        ]).toArray());
     }
 
     // ###    ##   # #    ##   # #    ##

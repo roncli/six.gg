@@ -50,10 +50,10 @@ class EventDb {
             event.description = data.description;
         }
 
-        /** @type {MongoDb.InsertOneWriteOpResult<EventTypes.EventMongoData>} */
-        await db.collection("event").insertOne(event);
+        /** @type {MongoDb.InsertOneResult<EventTypes.EventMongoData>} */
+        const result = await db.collection("event").insertOne(event);
 
-        data._id = Db.fromLong(event._id);
+        data._id = result.insertedId.toNumber();
 
         return data;
     }
@@ -73,8 +73,7 @@ class EventDb {
     static async get(id) {
         const db = await Db.get();
 
-        /** @type {EventTypes.EventMongoData} */
-        const event = await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)});
+        const event = /** @type {EventTypes.EventMongoData} */(await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)})); // eslint-disable-line no-extra-parens
 
         if (!event) {
             return void 0;
@@ -113,15 +112,14 @@ class EventDb {
             range.start = {$lte: end};
         }
 
-        /** @type {EventTypes.EventMongoData[]} */
-        const events = await db.collection("event").find({
+        const events = /** @type {EventTypes.EventMongoData[]} */(await db.collection("event").find({ // eslint-disable-line no-extra-parens
             $and: [
                 {
                     start: {$lte: end},
                     end: {$gte: start}
                 }
             ]
-        }).toArray();
+        }).toArray());
 
         return events.map((e) => ({
             _id: Db.fromLong(e._id),

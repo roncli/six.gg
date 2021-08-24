@@ -32,7 +32,7 @@ class SessionDb {
     static async delete(id) {
         const db = await Db.get();
 
-        await db.collection("session").deleteOne({_id: MongoDb.ObjectID.createFromHexString(id)});
+        await db.collection("session").deleteOne({_id: MongoDb.ObjectId.createFromHexString(id)});
     }
 
     //                #         #
@@ -55,7 +55,7 @@ class SessionDb {
             refreshToken: Encryption.encryptWithSalt(session.refreshToken)
         };
 
-        await db.collection("session").findOneAndUpdate({_id: MongoDb.ObjectID.createFromHexString(session._id), ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
+        await db.collection("session").findOneAndUpdate({_id: MongoDb.ObjectId.createFromHexString(session._id), ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
             ip: session.ip,
             userId: MongoDb.Long.fromNumber(session.userId),
             accessToken: {

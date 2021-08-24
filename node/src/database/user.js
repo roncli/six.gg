@@ -43,8 +43,7 @@ class UserDb {
     static async get(id) {
         const db = await Db.get();
 
-        /** @type {UserTypes.UserMongoData} */
-        const user = await db.collection("user").findOne({_id: id});
+        const user = /** @type {UserTypes.UserMongoData} */(await db.collection("user").findOne({_id: id})); // eslint-disable-line no-extra-parens
 
         if (!user) {
             return void 0;
@@ -77,8 +76,7 @@ class UserDb {
 
         await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
 
-        /** @type {UserTypes.UserMongoData[]} */
-        const users = await db.collection("user").find().toArray();
+        const users = /** @type {UserTypes.UserMongoData[]} */(await db.collection("user").find().toArray()); // eslint-disable-line no-extra-parens
 
         return users.map((u) => ({
             _id: Db.fromLong(u._id),
@@ -105,8 +103,7 @@ class UserDb {
     static async getByGuildMember(member) {
         const db = await Db.get();
 
-        /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */
-        const encryptedData = await db.collection("session").aggregate([
+        const encryptedData = /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */(await db.collection("session").aggregate([ // eslint-disable-line no-extra-parens
             {
                 $match: {
                     "discord.id": member.id
@@ -129,7 +126,7 @@ class UserDb {
             {
                 $unwind: "$user"
             }
-        ]).next();
+        ]).next());
 
         if (!encryptedData) {
             return void 0;
@@ -189,8 +186,7 @@ class UserDb {
     static async getByEventAttendees(eventId) {
         const db = await Db.get();
 
-        /** @type {UserTypes.UserMongoData[]} */
-        const attendees = await db.collection("attendee").aggregate([
+        const attendees = /** @type {UserTypes.UserMongoData[]} */(await db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
             {
                 $match: {
                     eventId: MongoDb.Long.fromNumber(eventId)
@@ -222,7 +218,7 @@ class UserDb {
                     guildMember: 1
                 }
             }
-        ]).toArray();
+        ]).toArray());
 
         return attendees.map((a) => ({
             _id: Db.fromLong(a._id),
@@ -247,8 +243,7 @@ class UserDb {
     static async getBySession(id, ip) {
         const db = await Db.get();
 
-        /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */
-        const encryptedData = await db.collection("session").aggregate([
+        const encryptedData = /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */(await db.collection("session").aggregate([ // eslint-disable-line no-extra-parens
             {
                 $match: {
                     _id: new MongoDb.ObjectId(id),
@@ -272,7 +267,7 @@ class UserDb {
             {
                 $unwind: "$user"
             }
-        ]).next();
+        ]).next());
 
         if (!encryptedData) {
             return void 0;
@@ -337,8 +332,7 @@ class UserDb {
         /** @type {UserTypes.UserMongoData} */
         let userResult;
         if (await db.collection("user").findOne({"discord.id": user.id})) {
-            /** @type {MongoDb.FindAndModifyWriteOpResultObject<UserTypes.UserMongoData>} */
-            const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
+            const result = /** @type {MongoDb.ModifyResult<UserTypes.UserMongoData>} */(await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: { // eslint-disable-line no-extra-parens
                 discord: {
                     id: user.id,
                     username: user.username,
@@ -353,7 +347,7 @@ class UserDb {
                     id: c.id,
                     type: c.type
                 }))
-            }});
+            }}));
 
             userResult = result.value;
             userResult._id = Db.toLong(userResult._id);
@@ -379,7 +373,7 @@ class UserDb {
 
             await Db.id(userResult, "user");
 
-            await db.collection("user").insertOne(userResult);
+            await /** @type {MongoDb.Collection<UserTypes.UserMongoData>} */(db.collection("user")).insertOne(userResult); // eslint-disable-line no-extra-parens
         }
 
         const expires = new Date(),
@@ -390,8 +384,7 @@ class UserDb {
 
         expires.setSeconds(expires.getSeconds() + token.expires_in - 3600);
 
-        /** @type {MongoDb.FindAndModifyWriteOpResultObject<SessionTypes.EncryptedMongoSessionData>} */
-        const sessionResult = await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: {
+        const sessionResult = /** @type {MongoDb.ModifyResult<SessionTypes.EncryptedMongoSessionData>} */(await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: { // eslint-disable-line no-extra-parens
             ip: req.ip,
             userId: userResult._id,
             accessToken: {
@@ -403,7 +396,7 @@ class UserDb {
                 encrypted: new MongoDb.Binary(encryptedTokens.refreshToken.encrypted)
             },
             expires
-        }}, {upsert: true, returnOriginal: false});
+        }}, {upsert: true, returnDocument: "after"}));
 
         return {
             user: {

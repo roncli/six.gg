@@ -108,6 +108,9 @@ then
     cp /var/nginx/work/fullchain.pem "/etc/letsencrypt/live/$DOMAIN/fullchain.pem"
 fi
 
+# Reload nginx after 1 minute to pick up the first cert change.
+$(sleep 1m; nginx -s reload) &
+
 # Reload nginx every 15 days to pick up any cert changes.
 $(while true; do sleep 15d; nginx -s reload; done) &
 

@@ -36,3 +36,5 @@ if (migration.current < currentMigration) {
         sixgg.migration.findOneAndUpdate({}, {$set: {current: NumberInt(i)}});
     }
 }
+
+db.shutdownServer();

@@ -45,9 +45,6 @@ then
     "${mongo[@]}" /var/mongo/migrations/index.js
     echo "Migrations complete."
 
-    # Shut down mongod.
-    mongod --shutdown
-
     # Ensure mongod is not running.
     tries=30
     while true; do

@@ -18,8 +18,5 @@ COPY ./mongo/ /var/mongo/
 RUN chmod +x /docker-entrypoint-initdb.d/*.sh
 RUN chmod +x /var/mongo/*.sh
 
-# Import arg.
-ARG USE_AZURE_FILE_STORAGE
-
 # Expose port 27017.
 EXPOSE 27017

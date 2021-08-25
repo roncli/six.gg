@@ -21,10 +21,7 @@ services:
 
   db:
     container_name: sixgg-db
-    build:
-      context: ./db
-      args:
-        USE_AZURE_FILE_STORAGE: 1
+    build: ./db
     depends_on:
       - logging
     networks:

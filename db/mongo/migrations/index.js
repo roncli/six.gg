@@ -1,3 +1,4 @@
+const admin = db.getSiblingDB("admin");
 const sixgg = db.getSiblingDB("sixgg");
 
 // Update this with the latest migration number.
@@ -37,4 +38,4 @@ if (migration.current < currentMigration) {
     }
 }
 
-db.shutdownServer();
+admin.shutdownServer();

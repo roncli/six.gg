@@ -2,7 +2,7 @@
 FROM mongo:latest
 
 # Get packages.
-RUN apk update && apk add cifs-utils && apk add keyutils
+RUN apt-get update && apt-get install cifs-utils && apt-get install keyutils
 
 # Create /docker-entrypoint-initdb.d directory.
 RUN mkdir -p /docker-entrypoint-initdb.d

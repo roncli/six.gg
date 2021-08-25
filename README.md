@@ -22,6 +22,11 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.1.9 - 8/25/2021
+* Mount Azure File Storage account if the option is set to do so.
+* Update nginx to restart after 1 minute to ensure the first certificate is updated.
+* Various package updates.
+
 ### v2.1.8 - 4/30/2021
 * Fix stream announcing so that it always happens regardless of whether the bot hosts the streamer or not.
 * Don't collect MongoDB diagnostic data.

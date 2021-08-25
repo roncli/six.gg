@@ -19,6 +19,8 @@ then
     rm -f "$pidfile"
     rm -f "$logfile"
 
+    echo "Starting Mongo for migrations."
+
     # Start mongod.
     mongod --fork --logpath "$logfile" --pidfilepath "$pidfile" --setParameter diagnosticDataCollectionEnabled=false
 
@@ -60,9 +62,13 @@ then
         sleep 1
     done
 
+    echo "Mongo shutdown."
+
     # Remove pidfile.
     rm -f "$pidfile"
 fi
+
+echo "Starting Mongo."
 
 # Start up mongod normally.
 /usr/local/bin/docker-entrypoint.sh mongod --setParameter diagnosticDataCollectionEnabled=false

@@ -12,7 +12,7 @@ declare namespace SessionTypes {
     }
 
     type EncryptedSessionData = {
-        _id: string
+        _id?: string
         ip: string
         userId: number
         accessToken: EncryptionTypes.EncryptedData

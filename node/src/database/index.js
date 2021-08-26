@@ -99,7 +99,7 @@ class Db {
             await Db.get();
         }
 
-        object._id = MongoDb.Long.fromNumber((await db.collection("counters").findOneAndUpdate({_id: collection}, {$inc: {value: MongoDb.Long.fromNumber(1)}})).value.value + 1);
+        object._id = (await db.collection("counters").findOneAndUpdate({_id: collection}, {$inc: {value: MongoDb.Long.fromNumber(1)}})).value.value.add(1);
     }
 }
 

@@ -43,7 +43,7 @@ class UserDb {
     static async get(id) {
         const db = await Db.get();
 
-        const user = /** @type {UserTypes.UserMongoData} */(await db.collection("user").findOne({_id: id})); // eslint-disable-line no-extra-parens
+        const user = await db.collection("user").findOne({_id: Db.toLong(id)});
 
         if (!user) {
             return void 0;
@@ -76,7 +76,7 @@ class UserDb {
 
         await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
 
-        const users = /** @type {UserTypes.UserMongoData[]} */(await db.collection("user").find().toArray()); // eslint-disable-line no-extra-parens
+        const users = await db.collection("user").find().toArray();
 
         return users.map((u) => ({
             _id: Db.fromLong(u._id),
@@ -332,7 +332,7 @@ class UserDb {
         /** @type {UserTypes.UserMongoData} */
         let userResult;
         if (await db.collection("user").findOne({"discord.id": user.id})) {
-            const result = /** @type {MongoDb.ModifyResult<UserTypes.UserMongoData>} */(await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: { // eslint-disable-line no-extra-parens
+            const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
                 discord: {
                     id: user.id,
                     username: user.username,
@@ -347,10 +347,9 @@ class UserDb {
                     id: c.id,
                     type: c.type
                 }))
-            }}));
+            }}, {returnDocument: "after"});
 
             userResult = result.value;
-            userResult._id = Db.toLong(userResult._id);
         } else {
             userResult = {
                 _id: void 0,
@@ -373,7 +372,7 @@ class UserDb {
 
             await Db.id(userResult, "user");
 
-            await /** @type {MongoDb.Collection<UserTypes.UserMongoData>} */(db.collection("user")).insertOne(userResult); // eslint-disable-line no-extra-parens
+            await db.collection("user").insertOne(userResult);
         }
 
         const expires = new Date(),
@@ -384,7 +383,7 @@ class UserDb {
 
         expires.setSeconds(expires.getSeconds() + token.expires_in - 3600);
 
-        const sessionResult = /** @type {MongoDb.ModifyResult<SessionTypes.EncryptedMongoSessionData>} */(await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: { // eslint-disable-line no-extra-parens
+        const sessionResult = await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: {
             ip: req.ip,
             userId: userResult._id,
             accessToken: {
@@ -396,7 +395,7 @@ class UserDb {
                 encrypted: new MongoDb.Binary(encryptedTokens.refreshToken.encrypted)
             },
             expires
-        }}, {upsert: true, returnDocument: "after"}));
+        }}, {upsert: true, returnDocument: "after"});
 
         return {
             user: {

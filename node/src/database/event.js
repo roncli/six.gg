@@ -33,6 +33,7 @@ class EventDb {
         const db = await Db.get();
 
         const event = {
+            _id: MongoDb.Long.ZERO,
             title: data.title,
             start: data.start,
             end: data.end,
@@ -50,7 +51,6 @@ class EventDb {
             event.description = data.description;
         }
 
-        /** @type {MongoDb.InsertOneResult<EventTypes.EventMongoData>} */
         const result = await db.collection("event").insertOne(event);
 
         data._id = result.insertedId.toNumber();
@@ -73,7 +73,7 @@ class EventDb {
     static async get(id) {
         const db = await Db.get();
 
-        const event = /** @type {EventTypes.EventMongoData} */(await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)})); // eslint-disable-line no-extra-parens
+        const event = await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)});
 
         if (!event) {
             return void 0;
@@ -112,14 +112,14 @@ class EventDb {
             range.start = {$lte: end};
         }
 
-        const events = /** @type {EventTypes.EventMongoData[]} */(await db.collection("event").find({ // eslint-disable-line no-extra-parens
+        const events = await db.collection("event").find({
             $and: [
                 {
                     start: {$lte: end},
                     end: {$gte: start}
                 }
             ]
-        }).toArray());
+        }).toArray();
 
         return events.map((e) => ({
             _id: Db.fromLong(e._id),

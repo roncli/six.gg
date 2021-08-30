@@ -5,7 +5,7 @@
  */
 
 const Discord = require("../../src/discord"),
-    HtmlMinifier = require("html-minifier"),
+    HtmlMinifier = require("html-minifier-terser"),
     IndexView = require("../../public/views/index"),
     Minify = require("node-minify"),
     pjson = require("../../package.json"),
@@ -107,6 +107,7 @@ class Common extends RouterBase {
             {
                 collapseBooleanAttributes: true,
                 collapseWhitespace: true,
+                conservativeCollapse: true,
                 decodeEntities: true,
                 html5: true,
                 removeAttributeQuotes: true,

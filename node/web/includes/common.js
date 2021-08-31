@@ -5,7 +5,7 @@
  */
 
 const Discord = require("../../src/discord"),
-    HtmlMinifier = require("html-minifier-terser"),
+    HtmlMinifierTerser = require("html-minifier-terser"),
     IndexView = require("../../public/views/index"),
     Minify = require("node-minify"),
     pjson = require("../../package.json"),
@@ -93,7 +93,7 @@ class Common extends RouterBase {
             guildMember = Discord.findGuildMemberById(user.discord.id);
         }
 
-        return HtmlMinifier.minify(
+        return HtmlMinifierTerser.minify(
             IndexView.get({
                 head,
                 html,

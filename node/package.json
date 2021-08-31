@@ -30,7 +30,7 @@
         "html-minifier-terser": "6.0.0",
         "igdb-api-node": "5.0.1",
         "mongodb": "4.1.1",
-        "node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.3",
+        "node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.4",
         "node-minify": "roncli/node-minify#v1.1.0",
         "node-redis": "roncli/node-redis#v0.1.4",
         "node-schedule": "2.0.0",

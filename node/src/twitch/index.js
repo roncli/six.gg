@@ -1,22 +1,20 @@
 /**
- * @typedef {import("twitch").AuthProvider} AuthProvider
- * @typedef {import("twitch-chat-client").ChatClient} ChatClient
+ * @typedef {import("@twurple/auth").AuthProvider} AuthProvider
+ * @typedef {import("@twurple/chat").ChatClient} ChatClient
  * @typedef {import("../../types/node/igdbTypes").SearchGameResult} IGDBTypes.SearchGameResult
- * @typedef {import("twitch-webhooks").Subscription} WebhooksSubscriptions
  */
 
 const events = require("events"),
     IGDB = require("igdb-api-node"),
     Log = require("node-application-insights-logger"),
-    TwitchAuth = require("twitch-auth"),
-    TwitchClient = require("twitch").ApiClient,
+    TwitchAuth = require("@twurple/auth"),
+    TwitchClient = require("@twurple/api").ApiClient,
 
     Chat = require("./chat"),
+    EventSub = require("./eventsub"),
     Exception = require("../errors/exception"),
     PubSub = require("./pubsub"),
-    Sleep = require("../sleep"),
-    TwitchDb = require("../database/twitch"),
-    Webhooks = require("./webhooks");
+    TwitchDb = require("../database/twitch");
 
 /** @type {AuthProvider} */
 let apiAuthProvider;
@@ -53,12 +51,6 @@ let channelChatClient;
 
 /** @type {PubSub} */
 let pubsub;
-
-/** @type {Webhooks} */
-let webhooks;
-
-/** @type {WebhooksSubscriptions[]} */
-const webhookSubscriptions = [];
 
 const eventEmitter = new events.EventEmitter();
 
@@ -183,12 +175,10 @@ class Twitch {
      * @returns {Promise} A promise that resolves when login is complete.
      */
     static async login() {
-        channelAuthProvider = new TwitchAuth.RefreshableAuthProvider(
-            new TwitchAuth.StaticAuthProvider(process.env.TWITCH_CLIENTID, channelAccessToken, process.env.TWITCH_CHANNEL_SCOPES.split(" "), "user"),
+        channelAuthProvider = new TwitchAuth.RefreshingAuthProvider(
             {
+                clientId: process.env.TWITCH_CLIENTID,
                 clientSecret: process.env.TWITCH_CLIENTSECRET,
-                expiry: null,
-                refreshToken: channelRefreshToken,
                 onRefresh: async (token) => {
                     channelAccessToken = token.accessToken;
                     channelRefreshToken = token.refreshToken;
@@ -203,15 +193,20 @@ class Twitch {
                         throw new Exception("There was an error setting the Twitch tokens on refreshing the channel tokens.", err);
                     }
                 }
+            },
+            {
+                accessToken: channelAccessToken,
+                refreshToken: channelRefreshToken,
+                expiresIn: void 0,
+                obtainmentTimestamp: void 0,
+                scope: process.env.TWITCH_CHANNEL_SCOPES.split(" ")
             }
         );
 
-        botAuthProvider = new TwitchAuth.RefreshableAuthProvider(
-            new TwitchAuth.StaticAuthProvider(process.env.TWITCH_CLIENTID, botAccessToken, process.env.TWITCH_BOT_SCOPES.split(" "), "user"),
+        botAuthProvider = new TwitchAuth.RefreshingAuthProvider(
             {
+                clientId: process.env.TWITCH_CLIENTID,
                 clientSecret: process.env.TWITCH_CLIENTSECRET,
-                expiry: null,
-                refreshToken: botRefreshToken,
                 onRefresh: async (token) => {
                     botAccessToken = token.accessToken;
                     botRefreshToken = token.refreshToken;
@@ -226,6 +221,13 @@ class Twitch {
                         throw new Exception("There was an error setting the Twitch tokens on refreshing the bot tokens.", err);
                     }
                 }
+            },
+            {
+                accessToken: botAccessToken,
+                refreshToken: botRefreshToken,
+                expiresIn: void 0,
+                obtainmentTimestamp: void 0,
+                scope: process.env.TWITCH_BOT_SCOPES.split(" ")
             }
         );
 
@@ -234,8 +236,6 @@ class Twitch {
 
         channelTwitchClient = new TwitchClient({
             authProvider: channelAuthProvider,
-            initialScopes: process.env.TWITCH_CHANNEL_SCOPES.split(" "),
-            preAuth: true,
             logger: {
                 colors: false
             }
@@ -243,8 +243,6 @@ class Twitch {
 
         botTwitchClient = new TwitchClient({
             authProvider: botAuthProvider,
-            initialScopes: process.env.TWITCH_BOT_SCOPES.split(" "),
-            preAuth: true,
             logger: {
                 colors: false
             }
@@ -254,7 +252,6 @@ class Twitch {
 
         await Twitch.setupChat();
         await Twitch.setupPubSub();
-        await Twitch.setupWebhooks();
     }
 
     //               #                      #     ###         #
@@ -280,7 +277,6 @@ class Twitch {
 
         await Twitch.setupChat();
         await Twitch.setupPubSub();
-        await Twitch.setupWebhooks();
     }
 
     //                                #      ##                     #      #            #
@@ -314,7 +310,52 @@ class Twitch {
      * @returns {Promise} A promise that resolves when the stream's info has been set.
      */
     static async setStreamInfo(title, game) {
-        await channelTwitchClient.kraken.channels.updateChannel(process.env.TWITCH_USERID, {status: title, game});
+        let gameId;
+        try {
+            const gameData = await channelTwitchClient.games.getGameByName(game);
+
+            gameId = gameData.id;
+        } catch (err) {}
+
+        await channelTwitchClient.channels.updateChannelInfo(process.env.TWITCH_USERID, {title, gameId});
+    }
+
+    //               #                ####                     #     ##         #
+    //               #                #                        #    #  #        #
+    //  ###    ##   ###   #  #  ###   ###   # #    ##   ###   ###    #    #  #  ###
+    // ##     # ##   #    #  #  #  #  #     # #   # ##  #  #   #      #   #  #  #  #
+    //   ##   ##     #    #  #  #  #  #     # #   ##    #  #   #    #  #  #  #  #  #
+    // ###     ##     ##   ###  ###   ####   #     ##   #  #    ##   ##    ###  ###
+    //                          #
+    /**
+     * Sets up the Twitch EventSub.
+     * @returns {Promise} A promise that resolves when the EventSub is setup.
+     */
+    static async setupEventSub() {
+        await EventSub.client.subscribeToChannelFollowEvents(process.env.TWITCH_USERID, async (follow) => {
+            eventEmitter.emit("follow", {
+                userId: follow.userId,
+                user: (await follow.getUser()).name,
+                name: follow.userDisplayName,
+                date: follow.followDate
+            });
+        });
+
+        await EventSub.client.subscribeToStreamOnlineEvents(process.env.TWITCH_USERID, async (data) => {
+            const stream = await data.getStream();
+
+            eventEmitter.emit("stream", {
+                title: stream.title,
+                game: stream.gameName,
+                id: stream.id,
+                startDate: stream.startDate,
+                thumbnailUrl: stream.thumbnailUrl
+            });
+        });
+
+        await EventSub.client.subscribeToStreamOfflineEvents(process.env.TWITCH_USERID, () => {
+            eventEmitter.emit("offline");
+        });
     }
 
     //               #                 ##   #            #
@@ -407,7 +448,7 @@ class Twitch {
         channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
             let user;
             try {
-                user = (await channelTwitchClient.kraken.search.searchChannels(byChannel)).find((c) => c.displayName === byChannel);
+                user = (await channelTwitchClient.search.searchChannels(byChannel)).data.find((c) => c.displayName === byChannel);
             } catch (err) {} finally {}
 
             eventEmitter.emit("hosted", {
@@ -567,13 +608,15 @@ class Twitch {
     static async setupPubSub() {
         pubsub = new PubSub();
 
-        await pubsub.setup(channelTwitchClient);
+        await pubsub.setup(channelTwitchClient._authProvider);
 
         pubsub.client.onBits(process.env.TWITCH_USERID, async (message) => {
+            const displayName = message.userId ? (await channelTwitchClient.users.getUserById(message.userId)).displayName : "";
+
             eventEmitter.emit("bits", {
                 userId: message.userId,
                 user: message.userName,
-                name: (await message.getUser()).displayName,
+                name: displayName,
                 bits: message.bits,
                 totalBits: message.totalBits,
                 message: message.message,
@@ -589,60 +632,10 @@ class Twitch {
                 message: message.message,
                 date: message.redemptionDate,
                 cost: message.rewardCost,
-                reward: message.rewardName,
+                reward: message.rewardTitle,
                 isQueued: message.rewardIsQueued
             });
         });
-    }
-
-    //               #                #  #        #     #                 #
-    //               #                #  #        #     #                 #
-    //  ###    ##   ###   #  #  ###   #  #   ##   ###   ###    ##    ##   # #    ###
-    // ##     # ##   #    #  #  #  #  ####  # ##  #  #  #  #  #  #  #  #  ##    ##
-    //   ##   ##     #    #  #  #  #  ####  ##    #  #  #  #  #  #  #  #  # #     ##
-    // ###     ##     ##   ###  ###   #  #   ##   ###   #  #   ##    ##   #  #  ###
-    //                          #
-    /**
-     * Sets up the Twitch Webhooks subscriptions.
-     * @returns {Promise} A promise that resolves when the Twitch Webhooks subscriptions are setup.
-     */
-    static async setupWebhooks() {
-        if (webhooks && webhooks.listener) {
-            for (const sub of webhookSubscriptions) {
-                await sub.stop();
-            }
-        }
-
-        Sleep.sleep(1000);
-
-        webhooks = new Webhooks();
-
-        await webhooks.setup(channelTwitchClient);
-
-        webhookSubscriptions.push(await webhooks.listener.subscribeToFollowsToUser(process.env.TWITCH_USERID, async (follow) => {
-            eventEmitter.emit("follow", {
-                userId: follow.userId,
-                user: (await follow.getUser()).name,
-                name: follow.userDisplayName,
-                date: follow.followDate
-            });
-        }));
-
-        webhookSubscriptions.push(await webhooks.listener.subscribeToStreamChanges(process.env.TWITCH_USERID, async (stream) => {
-            if (stream) {
-                const game = await stream.getGame();
-
-                eventEmitter.emit("stream", {
-                    title: stream.title,
-                    game: game ? game.name : "",
-                    id: stream.id,
-                    startDate: stream.startDate,
-                    thumbnailUrl: stream.thumbnailUrl
-                });
-            } else {
-                eventEmitter.emit("offline");
-            }
-        }));
     }
 }
 

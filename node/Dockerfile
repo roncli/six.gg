@@ -21,6 +21,3 @@ RUN chmod +x /var/www/*.sh
 
 # Expose port 3030.
 EXPOSE 3030
-
-# Expose port 8443.
-EXPOSE 8443

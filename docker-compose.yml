@@ -83,8 +83,6 @@ services:
       - redis
     networks:
       - six.gg-network
-    ports:
-      - "8443:8443"
     logging:
       driver: "gelf"
       options:
@@ -115,12 +113,12 @@ services:
       TWITCH_BOT_SCOPES: chat:read chat:edit
       TWITCH_CHANNEL: sixgaminggg
       TWITCH_CHANNEL_ACCESSTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_ACCESSTOKEN_FILE
+      TWITCH_CHANNEL_EVENTSUB_SECRET_FILE: /run/secrets/TWITCH_CHANNEL_EVENTSUB_SECRET_FILE
       TWITCH_CHANNEL_REFRESHTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_REFRESHTOKEN_FILE
       TWITCH_CHANNEL_SCOPES: channel_editor channel_subscriptions channel_check_subscription chat_login bits:read chat:read chat:edit channel:moderate channel:read:subscriptions whispers:read whispers:edit channel:read:redemptions
       TWITCH_CLIENTID_FILE: /run/secrets/TWITCH_CLIENTID_FILE
       TWITCH_CLIENTSECRET_FILE: /run/secrets/TWITCH_CLIENTSECRET_FILE
       TWITCH_USERID: 116508839
-      TWITCH_WEBHOOKSPORT: 8443
       WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
     secrets:
       - APPINSIGHTS_INSTRUMENTATIONKEY
@@ -132,6 +130,7 @@ services:
       - TWITCH_BOT_ACCESSTOKEN_FILE
       - TWITCH_BOT_REFRESHTOKEN_FILE
       - TWITCH_CHANNEL_ACCESSTOKEN_FILE
+      - TWITCH_CHANNEL_EVENTSUB_SECRET_FILE
       - TWITCH_CHANNEL_REFRESHTOKEN_FILE
       - TWITCH_CLIENTID_FILE
       - TWITCH_CLIENTSECRET_FILE
@@ -222,6 +221,8 @@ secrets:
     file: ./secrets/TWITCH_BOT_REFRESHTOKEN_FILE
   TWITCH_CHANNEL_ACCESSTOKEN_FILE:
     file: ./secrets/TWITCH_CHANNEL_ACCESSTOKEN_FILE
+  TWITCH_CHANNEL_EVENTSUB_SECRET_FILE:
+    file: ./secrets/TWITCH_CHANNEL_EVENTSUB_SECRET_FILE
   TWITCH_CHANNEL_REFRESHTOKEN_FILE:
     file: ./secrets/TWITCH_CHANNEL_REFRESHTOKEN_FILE
   TWITCH_CLIENTID_FILE:

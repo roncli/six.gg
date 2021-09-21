@@ -1,6 +1,7 @@
 const Cache = require("node-redis").Cache,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
+    EventSubMiddleware = require("@twurple/eventsub").EventSubMiddleware,
     express = require("express"),
     HotRouter = require("hot-router"),
     Log = require("node-application-insights-logger"),
@@ -10,6 +11,7 @@ const Cache = require("node-redis").Cache,
     util = require("util"),
 
     Discord = require("./src/discord"),
+    EventSub = require("./src/twitch/eventsub"),
     Exception = require("./src/errors/exception"),
     Listeners = require("./src/listeners"),
     Redirects = require("./src/redirects"),
@@ -85,6 +87,15 @@ process.on("unhandledRejection", (reason) => {
     // Trust proxy to get correct IP from web server.
     app.enable("trust proxy");
 
+    // Setup Twurple EventSub.
+    const eventSub = new EventSubMiddleware({
+        apiClient: Twitch.botTwitchClient,
+        hostName: "six.gg",
+        pathPrefix: "/twitch/eventsub",
+        secret: process.env.TWITCH_CHANNEL_EVENTSUB_SECRET
+    });
+    await eventSub.apply(app);
+
     // Setup public redirects.
     app.use(/^(?!\/tsconfig\.json)/, express.static("public"));
 
@@ -153,6 +164,9 @@ process.on("unhandledRejection", (reason) => {
     // Startup web server.
     const port = process.env.PORT || 3030;
 
-    app.listen(port);
+    app.listen(port, async () => {
+        await EventSub.setup(eventSub);
+        await Twitch.setupEventSub();
+    });
     Log.info(`Server PID ${process.pid} listening on port ${port}.`);
 }());

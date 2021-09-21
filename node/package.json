@@ -1,6 +1,7 @@
 {
     "name": "six.gg-node",
     "version": "2.1.9",
+    "version": "2.2.0",
     "description": "The website and bot for Six Gaming.",
     "homepage": "https://github.com/roncli/six.gg",
     "bugs": {
@@ -21,6 +22,11 @@
         "@fullcalendar/core": "5.9.0",
         "@fullcalendar/daygrid": "5.9.0",
         "@fullcalendar/list": "5.9.0",
+        "@twurple/api": "5.0.3",
+        "@twurple/auth": "5.0.3",
+        "@twurple/chat": "5.0.3",
+        "@twurple/eventsub": "5.0.3",
+        "@twurple/pubsub": "5.0.3",
         "compression": "1.7.4",
         "cookie-parser": "1.4.5",
         "discord-oauth2": "2.7.1",
@@ -36,11 +42,6 @@
         "node-schedule": "2.0.0",
         "public-ip": "4.0.4",
         "timezonecomplete": "5.12.4",
-        "twitch": "4.6.7",
-        "twitch-auth": "4.6.7",
-        "twitch-chat-client": "4.6.7",
-        "twitch-pubsub-client": "4.6.7",
-        "twitch-webhooks": "4.6.7",
         "tzdata": "1.0.25"
     },
     "devDependencies": {

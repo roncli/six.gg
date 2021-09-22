@@ -89,7 +89,7 @@ process.on("unhandledRejection", (reason) => {
 
     // Setup Twurple EventSub.
     const eventSub = new EventSubMiddleware({
-        apiClient: Twitch.botTwitchClient,
+        apiClient: Twitch.channelTwitchClient,
         hostName: "six.gg",
         pathPrefix: "/twitch/eventsub",
         secret: process.env.TWITCH_CHANNEL_EVENTSUB_SECRET

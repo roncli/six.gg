@@ -93,6 +93,20 @@ class Twitch {
         return botTwitchClient;
     }
 
+    //       #                             ##    ###          #     #          #      ##   ##     #                 #
+    //       #                              #     #                 #          #     #  #   #                       #
+    //  ##   ###    ###  ###   ###    ##    #     #    #  #  ##    ###    ##   ###   #      #    ##     ##   ###   ###
+    // #     #  #  #  #  #  #  #  #  # ##   #     #    #  #   #     #    #     #  #  #      #     #    # ##  #  #   #
+    // #     #  #  # ##  #  #  #  #  ##     #     #    ####   #     #    #     #  #  #  #   #     #    ##    #  #   #
+    //  ##   #  #   # #  #  #  #  #   ##   ###    #    ####  ###     ##   ##   #  #   ##   ###   ###    ##   #  #    ##
+    /**
+     * Gets the current channel Twitch client.
+     * @returns {TwitchClient} The current Twitch client.
+     */
+    static get channelTwitchClient() {
+        return channelTwitchClient;
+    }
+
     //                                      #
     //                                      #
     //  ##    ##   ###   ###    ##    ##   ###

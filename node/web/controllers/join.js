@@ -58,7 +58,7 @@ class Join extends RouterBase {
             return;
         }
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {},
             JoinView.get(),

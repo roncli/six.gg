@@ -63,7 +63,7 @@ class Me extends RouterBase {
 
         const now = new Date();
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {css: ["/css/me.css"], js: ["/js/me.js", "/js/common/connection.js"]},
             MeView.get({

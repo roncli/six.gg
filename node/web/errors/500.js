@@ -56,7 +56,7 @@ class ServerError extends RouterBase {
             user = await User.getCurrent(req);
         } catch (err) {}
 
-        res.status(500).send(Common.page(
+        res.status(500).send(await Common.page(
             "",
             {css: ["/css/error.css"]},
             ServerErrorView.get(),

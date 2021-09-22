@@ -61,7 +61,7 @@ class Home extends RouterBase {
             streamers.unshift(featured);
         }
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "<script src=\"https://embed.twitch.tv/embed/v1.js\"></script>",
             {css: ["/css/fullcalendar/common.css", "/css/fullcalendar/list.css", "/css/fullcalendar.css", "/css/home.css"], js: ["/js/fullcalendar/core.js", "/js/fullcalendar/list.js", "/js/common/template.js", "/js/home.js"]},
             HomeView.get({streamers, timezone: user && user.timezone ? user.timezone : process.env.DEFAULT_TIMEZONE, defaultTimezone: !(user && user.timezone)}),

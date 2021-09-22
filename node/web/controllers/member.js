@@ -56,7 +56,7 @@ class Member extends RouterBase {
             id = isNaN(+req.params.id) || isNaN(parseFloat(req.params.id)) ? 0 : parseInt(req.params.id, 10);
 
         if (!id) {
-            res.status(404).send(Common.page(
+            res.status(404).send(await Common.page(
                 "",
                 {css: ["/css/error.css"]},
                 NotFoundView.get({message: "This page does not exist."}),
@@ -68,7 +68,7 @@ class Member extends RouterBase {
 
         const member = await User.getMember(id);
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {css: ["/css/member.css"], js: ["/js/common/connection.js"]},
             MemberView.get(member),

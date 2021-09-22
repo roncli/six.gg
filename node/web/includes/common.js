@@ -52,7 +52,7 @@ class Common extends RouterBase {
      * @param {string} html The HTML to make a full web page from.
      * @param {Express.Request} req The request of the page.
      * @param {User} user The user.
-     * @returns {string} The HTML of the full web page.
+     * @returns {Promise<string>} The HTML of the full web page.
      */
     static page(head, files, html, req, user) {
         if (!files) {

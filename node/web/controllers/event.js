@@ -57,7 +57,7 @@ class EventController extends RouterBase {
             id = isNaN(Number.parseInt(req.params.id, 10)) ? 0 : Number.parseInt(req.params.id, 10);
 
         if (id === 0) {
-            res.status(404).send(Common.page(
+            res.status(404).send(await Common.page(
                 "",
                 {css: ["/css/error.css"]},
                 NotFoundView.get({message: "This page does not exist."}),
@@ -70,7 +70,7 @@ class EventController extends RouterBase {
         const event = await Event.get(id);
 
         if (!event) {
-            res.status(404).send(Common.page(
+            res.status(404).send(await Common.page(
                 "",
                 {css: ["/css/error.css"]},
                 NotFoundView.get({message: "This page does not exist."}),
@@ -82,7 +82,7 @@ class EventController extends RouterBase {
 
         const [eventUser, attendees] = await Promise.all([User.getMember(event.userId), User.getByEventAttendees(event.id)]);
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {css: ["/css/event.css"], js: ["/js/event.js"]},
             EventView.get({event, user, eventUser: eventUser.user, guildMember: eventUser.guildMember, attendees}),

@@ -53,7 +53,7 @@ class Calendar extends RouterBase {
     static async get(req, res) {
         const user = await User.getCurrent(req);
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {
                 css: ["/css/fullcalendar/common.css", "/css/fullcalendar/daygrid.css", "/css/fullcalendar.css", "/css/modal.css", "/css/calendar.css"],

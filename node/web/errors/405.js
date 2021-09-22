@@ -53,7 +53,7 @@ class MethodNotAllowed extends RouterBase {
     static async get(req, res) {
         const user = await User.getCurrent(req);
 
-        res.status(405).send(Common.page(
+        res.status(405).send(await Common.page(
             "",
             {css: ["/css/error.css"]},
             MethodNotAllowedView.get({message: "This method is not allowed."}),

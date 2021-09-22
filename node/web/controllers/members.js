@@ -54,7 +54,7 @@ class Members extends RouterBase {
         const user = await User.getCurrent(req),
             members = await User.getMembers();
 
-        res.status(200).send(Common.page(
+        res.status(200).send(await Common.page(
             "",
             {css: ["/css/members.css"], js: ["/js/common/connection.js"]},
             MembersView.get(members),

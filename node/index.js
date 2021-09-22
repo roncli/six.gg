@@ -1,4 +1,5 @@
 const Cache = require("node-redis").Cache,
+    ClientCredentialsAuthProvider = require("@twurple/auth").ClientCredentialsAuthProvider,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     EventSubMiddleware = require("@twurple/eventsub").EventSubMiddleware,
@@ -8,6 +9,7 @@ const Cache = require("node-redis").Cache,
     Minify = require("node-minify"),
     path = require("path"),
     Redis = require("node-redis"),
+    TwitchClient = require("@twurple/api").ApiClient,
     util = require("util"),
 
     Discord = require("./src/discord"),
@@ -89,7 +91,12 @@ process.on("unhandledRejection", (reason) => {
 
     // Setup Twurple EventSub.
     const eventSub = new EventSubMiddleware({
-        apiClient: Twitch.channelTwitchClient,
+        apiClient: new TwitchClient({
+            authProvider: new ClientCredentialsAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET),
+            logger: {
+                colors: false
+            }
+        }),
         hostName: "six.gg",
         pathPrefix: "/twitch/eventsub",
         secret: process.env.TWITCH_CHANNEL_EVENTSUB_SECRET

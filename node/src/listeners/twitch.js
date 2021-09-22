@@ -158,36 +158,31 @@ class TwitchListener {
      * @returns {Promise} A promise that resolves when the event has been processed.
      */
     static async host(ev) {
-        const user = await Twitch.botTwitchClient.helix.users.getUserByName(ev.user);
+        const user = await Twitch.botTwitchClient.users.getUserByName(ev.user);
         if (!user) {
             return;
         }
 
-        const channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
+        const channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
         if (!channel) {
             return;
         }
 
-        const stream = await Twitch.botTwitchClient.helix.streams.getStreamByUserId(user.id);
+        const stream = await Twitch.botTwitchClient.streams.getStreamByUserId(user.id);
 
         const message = Discord.messageEmbed({
             timestamp: new Date(),
             thumbnail: {
-                url: channel.logo,
+                url: user.profilePictureUrl,
                 width: 300,
                 height: 300
             },
-            image: {
-                url: channel.profileBanner,
-                width: 1920,
-                height: 480
-            },
-            url: channel.url,
-            description: `Six Gaming has hosted ${ev.user} on Twitch!  Watch at ${channel.url}`,
+            url: `https://twitch.tv/${user.name}`,
+            description: `Six Gaming has hosted ${ev.user} on Twitch!  Watch at https://twitch.tv/${user.name}`,
             fields: [
                 {
                     name: "Stream Title",
-                    value: channel.status
+                    value: channel.title
                 }
             ]
         });
@@ -335,7 +330,7 @@ class TwitchListener {
             return;
         }
 
-        const channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
+        const channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
         if (!channel) {
             return;
         }
@@ -343,17 +338,12 @@ class TwitchListener {
         const message = Discord.messageEmbed({
             timestamp: new Date(),
             thumbnail: {
-                url: channel.logo,
+                url: user.profilePictureUrl,
                 width: 300,
                 height: 300
             },
-            image: {
-                url: channel.profileBanner,
-                width: 1920,
-                height: 480
-            },
-            url: channel.url,
-            description: `What's going on everyone?  Six Gaming is LIVE on Twitch!  Watch at ${channel.url}`,
+            url: `https://twitch.tv/${user.name}`,
+            description: `What's going on everyone?  Six Gaming is LIVE on Twitch!  Watch at https://twitch.tv/${user.name}`,
             fields: [
                 {
                     name: "Stream Title",

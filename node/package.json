@@ -22,7 +22,7 @@
         "@fullcalendar/daygrid": "5.9.0",
         "@fullcalendar/list": "5.9.0",
         "@twurple/api": "5.0.3",
-        "@twurple/auth": "5.0.3",
+        "@twurple/auth": "5.0.4",
         "@twurple/chat": "5.0.3",
         "@twurple/eventsub": "5.0.3",
         "@twurple/pubsub": "5.0.3",

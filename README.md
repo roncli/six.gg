@@ -22,6 +22,11 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.2.0 - 9/21/2021
+* Replaced twitch.js dependency with twurple.
+* Removed Twitch webhooks in favor of EventSub.
+* Various package updates.
+
 ### v2.1.9 - 8/25/2021
 * Mount Azure File Storage account if the option is set to do so.
 * Update nginx to restart after 1 minute to ensure the first certificate is updated.

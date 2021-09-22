@@ -4,6 +4,7 @@
  */
 
 const Event = require("../../src/models/event"),
+    express = require("express"),
     Log = require("node-application-insights-logger"),
     tc = require("timezonecomplete"),
     RouterBase = require("hot-router").RouterBase,
@@ -37,6 +38,8 @@ class EventsApi extends RouterBase {
         const route = {...super.route};
 
         route.path = "/api/events";
+
+        route.middleware = [express.json()];
 
         return route;
     }

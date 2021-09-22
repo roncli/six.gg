@@ -4,6 +4,7 @@
  */
 
 const DiscordListener = require("../../src/listeners/discord"),
+    express = require("express"),
     Log = require("node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase;
 
@@ -34,6 +35,8 @@ class LiveApi extends RouterBase {
         const route = {...super.route};
 
         route.path = "/api/live";
+
+        route.middleware = [express.json()];
 
         return route;
     }

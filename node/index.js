@@ -82,7 +82,6 @@ process.on("unhandledRejection", (reason) => {
     app.disable("x-powered-by");
 
     // Initialize middleware stack.
-    app.use(express.json());
     app.use(compression());
     app.use(cookieParser());
 

@@ -4,6 +4,7 @@
  */
 
 const Event = require("../../src/models/event"),
+    express = require("express"),
     Log = require("node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
@@ -35,6 +36,8 @@ class EventApi extends RouterBase {
         const route = {...super.route};
 
         route.path = "/api/event/:id";
+
+        route.middleware = [express.json()];
 
         return route;
     }

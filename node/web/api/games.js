@@ -3,7 +3,8 @@
  * @typedef {import("express").Response} Express.Response
  */
 
-const Log = require("node-application-insights-logger"),
+const express = require("express"),
+    Log = require("node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase,
     Twitch = require("../../src/twitch"),
     User = require("../../src/models/user");
@@ -38,6 +39,8 @@ class GamesApi extends RouterBase {
         const route = {...super.route};
 
         route.path = "/api/games";
+
+        route.middleware = [express.json()];
 
         return route;
     }

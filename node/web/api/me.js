@@ -3,7 +3,8 @@
  * @typedef {import("express").Response} Express.Response
  */
 
-const Log = require("node-application-insights-logger"),
+const express = require("express"),
+    Log = require("node-application-insights-logger"),
     tzdata = require("tzdata"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
@@ -35,6 +36,8 @@ class MeApi extends RouterBase {
         const route = {...super.route};
 
         route.path = "/api/me";
+
+        route.middleware = [express.json()];
 
         return route;
     }

@@ -448,7 +448,7 @@ class Twitch {
         // channelChatClient.client.onHost(async (channel, target, viewers) => {
         //     let user;
         //     try {
-        //         user = (await channelTwitchClient.kraken.search.searchChannels(target)).find((c) => c.displayName === target);
+        //         user = (await channelTwitchClient.search.searchChannels(target)).find((c) => c.displayName === target);
         //     } catch (err) {} finally {}
         //
         //     eventEmitter.emit("host", {

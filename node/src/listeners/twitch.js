@@ -325,7 +325,7 @@ class TwitchListener {
      * @returns {Promise} A promise that is resolved when the event has been processed.
      */
     static async stream(ev) {
-        const user = await Twitch.botTwitchClient.helix.users.getUserByName(process.env.TWITCH_CHANNEL);
+        const user = await Twitch.botTwitchClient.users.getUserByName(process.env.TWITCH_CHANNEL);
         if (!user) {
             return;
         }

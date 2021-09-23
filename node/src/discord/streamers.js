@@ -88,27 +88,22 @@ class Streamers {
         lastAnnounced[member.id] = new Date().getTime();
 
         if (notify) {
-            const user = await Twitch.botTwitchClient.helix.users.getUserByName(twitchName),
-                channel = await Twitch.botTwitchClient.kraken.channels.getChannel(user.id);
+            const user = await Twitch.botTwitchClient.users.getUserByName(twitchName),
+                channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
 
             await Discord.richQueue(Discord.messageEmbed({
                 timestamp: new Date(),
                 thumbnail: {
-                    url: channel.logo,
+                    url: user.profilePictureUrl,
                     width: 300,
                     height: 300
                 },
-                image: {
-                    url: channel.profileBanner,
-                    width: 1920,
-                    height: 480
-                },
-                url: channel.url,
-                description: `${member} just went live on Twitch!  Watch at ${channel.url}`,
+                url: `https://twitch.tv/${user.name}`,
+                description: `${member} just went live on Twitch!  Watch at https://twitch.tv/${user.name}`,
                 fields: [
                     {
                         name: "Stream Title",
-                        value: channel.status
+                        value: channel.title
                     },
                     {
                         name: "Now Playing",

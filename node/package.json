@@ -25,7 +25,7 @@
         "@twurple/auth": "5.0.4",
         "@twurple/chat": "5.0.3",
         "@twurple/eventsub": "5.0.4",
-        "@twurple/pubsub": "5.0.3",
+        "@twurple/pubsub": "5.0.4",
         "compression": "1.7.4",
         "cookie-parser": "1.4.5",
         "discord-oauth2": "2.7.1",

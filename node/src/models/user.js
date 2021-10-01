@@ -85,7 +85,7 @@ class User {
             return void 0;
         }
 
-        return new User(data.user, data.session);
+        return new User(data, void 0);
     }
 
     //              #     ##                                  #

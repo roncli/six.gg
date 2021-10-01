@@ -3,7 +3,8 @@
  * @typedef {import("../../types/node/eventTypes").EventMongoData} EventTypes.EventMongoData
  */
 
-const MongoDb = require("mongodb"),
+const Cache = require("node-redis").Cache,
+    MongoDb = require("mongodb"),
 
     Db = require(".");
 
@@ -71,6 +72,15 @@ class EventDb {
      * @returns {Promise<EventTypes.EventData>} A promise that returns the event.
      */
     static async get(id) {
+        const key = `${process.env.REDIS_PREFIX}:db:event:get:${id}`;
+
+        /** @type {EventTypes.EventData} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get();
 
         const event = await db.collection("event").findOne({_id: MongoDb.Long.fromNumber(id)});
@@ -79,7 +89,7 @@ class EventDb {
             return void 0;
         }
 
-        return {
+        cache = {
             _id: Db.fromLong(event._id),
             title: event.title,
             start: event.start,
@@ -89,6 +99,10 @@ class EventDb {
             gameId: event.gameId ? Db.fromLong(event.gameId) : void 0,
             description: event.description
         };
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
+
+        return cache;
     }
 
     //              #    ###         ###          #          ###
@@ -105,6 +119,15 @@ class EventDb {
      * @returns {Promise<EventTypes.EventData[]>} A promise that returns the matching events.
      */
     static async getByDateRange(start, end) {
+        const key = `${process.env.REDIS_PREFIX}:db:event:getByDateRange:${start.toString()}:${end ? end.toString() : void 0}`;
+
+        /** @type {EventTypes.EventData[]} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get(),
             range = {end: {$gte: start}};
 
@@ -121,7 +144,7 @@ class EventDb {
             ]
         }).toArray();
 
-        return events.map((e) => ({
+        cache = events.map((e) => ({
             _id: Db.fromLong(e._id),
             title: e.title,
             start: e.start,
@@ -131,6 +154,10 @@ class EventDb {
             gameId: e.gameId ? Db.fromLong(e.gameId) : void 0,
             description: e.description
         }));
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
+
+        return cache;
     }
 
     // ###    ##   # #    ##   # #    ##

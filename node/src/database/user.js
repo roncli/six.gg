@@ -12,7 +12,8 @@
  * @typedef {import("../../types/node/userTypes").UserMongoData} UserTypes.UserMongoData
  */
 
-const MongoDb = require("mongodb"),
+const Cache = require("node-redis").Cache,
+    MongoDb = require("mongodb"),
 
     Db = require("."),
     Encryption = require("./encryption");
@@ -41,6 +42,15 @@ class UserDb {
      * @returns {Promise<UserTypes.UserData>} A promise that returns the user.
      */
     static async get(id) {
+        const key = `${process.env.REDIS_PREFIX}:db:user:get:${id}`;
+
+        /** @type {UserTypes.UserData} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get();
 
         const user = await db.collection("user").findOne({_id: Db.toLong(id)});
@@ -49,7 +59,7 @@ class UserDb {
             return void 0;
         }
 
-        return {
+        cache = {
             _id: Db.fromLong(user._id),
             discord: user.discord,
             guildMember: user.guildMember,
@@ -57,6 +67,10 @@ class UserDb {
             location: user.location,
             timezone: user.timezone
         };
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:${id}:updated`]);
+
+        return cache;
     }
 
     //              #     ##   ##    ##
@@ -74,11 +88,24 @@ class UserDb {
     static async getAll(discordIds) {
         const db = await Db.get();
 
-        await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
+        const result = await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
+
+        if (result.deletedCount > 0) {
+            await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`]);
+        }
+
+        const key = `${process.env.REDIS_PREFIX}:db;user;getAll`;
+
+        /** @type {UserTypes.UserData[]} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
 
         const users = await db.collection("user").find().toArray();
 
-        return users.map((u) => ({
+        cache = users.map((u) => ({
             _id: Db.fromLong(u._id),
             discord: u.discord,
             guildMember: u.guildMember,
@@ -86,89 +113,54 @@ class UserDb {
             location: u.location,
             timezone: u.timezone
         }));
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:updated`]);
+
+        return cache;
     }
 
-    //              #    ###         ###    #                                #  ###      #
-    //              #    #  #        #  #                                    #   #       #
-    //  ###   ##   ###   ###   #  #  #  #  ##     ###    ##    ##   ###    ###   #     ###
-    // #  #  # ##   #    #  #  #  #  #  #   #    ##     #     #  #  #  #  #  #   #    #  #
-    //  ##   ##     #    #  #   # #  #  #   #      ##   #     #  #  #     #  #   #    #  #
-    // #      ##     ##  ###     #   ###   ###   ###     ##    ##   #      ###  ###    ###
+    //              #    ###          ##          #    ##       #  #  #              #
+    //              #    #  #        #  #               #       #  ####              #
+    //  ###   ##   ###   ###   #  #  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###
+    // #  #  # ##   #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #
+    //  ##   ##     #    #  #   # #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #
+    // #      ##     ##  ###     #    ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #
     //  ###                     #
     /**
      * Gets the user by guild member.
      * @param {DiscordJs.GuildMember} member The guild member.
-     * @returns {Promise<{user: UserTypes.UserData, session: SessionTypes.SessionData}>} A promise that returns the user and the session.
+     * @returns {Promise<UserTypes.UserData>} A promise that returns the user and the session.
      */
     static async getByGuildMember(member) {
+        const key = `${process.env.REDIS_PREFIX}:db:user:getByGuildMember:${member.id}`;
+
+        /** @type {UserTypes.UserData} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get();
 
-        const encryptedData = /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */(await db.collection("session").aggregate([ // eslint-disable-line no-extra-parens
-            {
-                $match: {
-                    "discord.id": member.id
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    session: "$$ROOT"
-                }
-            },
-            {
-                $lookup: {
-                    from: "user",
-                    localField: "session.userId",
-                    foreignField: "_id",
-                    as: "user"
-                }
-            },
-            {
-                $unwind: "$user"
-            }
-        ]).next());
+        const user = await db.collection("user").findOne({"discord.id": member.id});
 
-        if (!encryptedData) {
+        if (!user) {
             return void 0;
         }
 
-        /** @type {{user: UserTypes.UserData, session: SessionTypes.EncryptedSessionData}} */
-        const data = {
-            user: {
-                _id: Db.fromLong(encryptedData.user._id),
-                discord: encryptedData.user.discord,
-                guildMember: encryptedData.user.guildMember,
-                connections: encryptedData.user.connections,
-                location: encryptedData.user.location,
-                timezone: encryptedData.user.timezone
-            },
-            session: {
-                _id: encryptedData.session._id.toHexString(),
-                ip: encryptedData.session.ip,
-                userId: Db.fromLong(encryptedData.session.userId),
-                accessToken: {
-                    salt: encryptedData.session.accessToken.salt.buffer,
-                    encrypted: encryptedData.session.accessToken.encrypted.buffer
-                },
-                refreshToken: {
-                    salt: encryptedData.session.refreshToken.salt.buffer,
-                    encrypted: encryptedData.session.refreshToken.encrypted.buffer
-                },
-                expires: encryptedData.session.expires
-            }
+        cache = {
+            _id: Db.fromLong(user._id),
+            discord: user.discord,
+            guildMember: user.guildMember,
+            connections: user.connections,
+            location: user.location,
+            timezone: user.timezone
         };
 
-        return {
-            user: data.user,
-            session: {
-                _id: data.session._id,
-                ip: data.session.ip,
-                userId: data.session.userId,
-                accessToken: Encryption.decryptWithSalt(data.session.accessToken),
-                refreshToken: Encryption.decryptWithSalt(data.session.refreshToken),
-                expires: data.session.expires
-            }
-        };
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:${user._id}:updated`]);
+
+        return cache;
     }
 
     //              #    ###         ####                     #     ##    #     #                   #
@@ -184,6 +176,15 @@ class UserDb {
      * @returns {Promise<UserTypes.UserData[]>} A promise that returns a list of users that will be attending the event.
      */
     static async getByEventAttendees(eventId) {
+        const key = `${process.env.REDIS_PREFIX}:db:user:getByEventAttendees:${eventId}`;
+
+        /** @type {UserTypes.UserData[]} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get();
 
         const attendees = /** @type {UserTypes.UserMongoData[]} */(await db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
@@ -220,11 +221,15 @@ class UserDb {
             }
         ]).toArray());
 
-        return attendees.map((a) => ({
+        cache = attendees.map((a) => ({
             _id: Db.fromLong(a._id),
             discord: a.discord,
             guildMember: a.guildMember
         }));
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:event:${eventId}:attendees:updated`]);
+
+        return cache;
     }
 
     //              #    ###          ##                        #
@@ -397,6 +402,8 @@ class UserDb {
             expires
         }}, {upsert: true, returnDocument: "after"});
 
+        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`, `${process.env.REDIS_PREFIX}:invalidate:user:${Db.fromLong(userResult._id)}:updated`]);
+
         return {
             user: {
                 _id: Db.fromLong(userResult._id),
@@ -433,6 +440,8 @@ class UserDb {
         const db = await Db.get();
 
         await db.collection("user").findOneAndUpdate({_id: MongoDb.Long.fromNumber(user.id)}, {$set: data});
+
+        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`, `${process.env.REDIS_PREFIX}:invalidate:user:${user.id}:updated`]);
     }
 }
 

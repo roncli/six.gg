@@ -3,7 +3,8 @@
  * @typedef {import("../../types/node/attendeeTypes").AttendeeMongoData} AttendeeTypes.AttendeeMongoData
  */
 
-const MongoDb = require("mongodb"),
+const Cache = require("node-redis").Cache,
+    MongoDb = require("mongodb"),
 
     Db = require(".");
 
@@ -42,6 +43,8 @@ class AttendeeDb {
 
         data._id = result.value._id.toHexString();
 
+        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:event:${data.eventId}:attendees:updated`]);
+
         return data;
     }
 
@@ -58,9 +61,18 @@ class AttendeeDb {
      * @returns {Promise<{discordId: string}[]>} A promise that returns the users attending the event.
      */
     static async getByEventId(id) {
+        const key = `${process.env.REDIS_PREFIX}:db:attendee:getByEventId:${id}`;
+
+        /** @type {{discordId: string}[]} */
+        let cache = await Cache.get(key);
+
+        if (cache) {
+            return cache;
+        }
+
         const db = await Db.get();
 
-        return /** @type {Promise<{discordId: string}[]>} */(db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
+        cache = await /** @type {Promise<{discordId: string}[]>} */(db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
             {
                 $match: {eventId: Db.toLong(id)}
             },
@@ -87,6 +99,10 @@ class AttendeeDb {
                 }
             }
         ]).toArray());
+
+        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:event:${id}:attendees:updated`]);
+
+        return cache;
     }
 
     // ###    ##   # #    ##   # #    ##
@@ -107,6 +123,8 @@ class AttendeeDb {
         };
 
         await db.collection("attendee").deleteOne(data);
+
+        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:event:${Db.fromLong(data.eventId)}:attendees:updated`]);
     }
 }
 

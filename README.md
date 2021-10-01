@@ -22,6 +22,11 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.2.1 - 10/1/2021
+* Added caching for some database calls.
+* Fix for Twitch go live notifications.
+* Various package updates.
+
 ### v2.2.0 - 9/21/2021
 * Replaced twitch.js dependency with twurple.
 * Removed Twitch webhooks in favor of EventSub.

@@ -33,5 +33,5 @@ updates:
     schedule:
       interval: "daily"
     ignore:
-      # This is not the npm versin of node-redis, so we ignore it.
+      # This is not the npm version of node-redis, so we ignore it.
       - dependency-name: "node-redis"

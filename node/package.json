@@ -41,7 +41,7 @@
         "node-schedule": "2.0.0",
         "public-ip": "4.0.4",
         "timezonecomplete": "5.12.4",
-        "tzdata": "1.0.26"
+        "tzdata": "1.0.27"
     },
     "devDependencies": {
         "@babel/core": "7.15.5",

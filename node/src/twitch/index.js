@@ -52,6 +52,9 @@ let channelChatClient;
 /** @type {PubSub} */
 let pubsub;
 
+/** @type {string} */
+let state;
+
 const eventEmitter = new events.EventEmitter();
 
 //  #####           #     #            #
@@ -105,6 +108,28 @@ class Twitch {
      */
     static get channelTwitchClient() {
         return channelTwitchClient;
+    }
+
+    //         #           #
+    //         #           #
+    //  ###   ###    ###  ###    ##
+    // ##      #    #  #   #    # ##
+    //   ##    #    # ##   #    ##
+    // ###      ##   # #    ##   ##
+    /**
+     * Gets the state.
+     * @returns {string} The state.
+     */
+    static get state() {
+        return state;
+    }
+
+    /**
+     * Sets the state.
+     * @param {string} value The state.
+     */
+    static set state(value) {
+        state = value;
     }
 
     //                                      #
@@ -268,6 +293,29 @@ class Twitch {
         await Twitch.setupPubSub();
     }
 
+    // ##                             #
+    //  #                             #
+    //  #     ##    ###   ##   #  #  ###
+    //  #    #  #  #  #  #  #  #  #   #
+    //  #    #  #   ##   #  #  #  #   #
+    // ###    ##   #      ##    ###    ##
+    //              ###
+    /**
+     * Logs out of Twitch.
+     * @returns {Promise} A promise that resolves when the logout is complete.
+     */
+    static async logout() {
+        try {
+            await channelChatClient.client.quit();
+        } catch (err) {}
+        channelChatClient = void 0;
+
+        try {
+            await botChatClient.client.quit();
+        } catch (err) {}
+        botChatClient = void 0;
+    }
+
     //               #                      #     ###         #
     //              # #                     #      #          #
     // ###    ##    #    ###    ##    ###   ###    #     ##   # #    ##   ###    ###
@@ -289,8 +337,9 @@ class Twitch {
             });
         }
 
-        await Twitch.setupChat();
-        await Twitch.setupPubSub();
+        await Twitch.logout();
+        await Twitch.connect();
+        await Twitch.login();
     }
 
     //                                #      ##                     #      #            #

@@ -23,6 +23,8 @@ import Options from "../../public/js/common/options"
 import ServerErrorView from "../../public/views/500"
 import StreamersView from "../../public/views/home/streamers"
 import Template from "../../public/js/common/template"
+import TwitchOAuthView from "../../public/views/twitchOAuth"
+import TwitchRefreshView from "../../public/views/twitchRefresh"
 
 export {}
 
@@ -56,5 +58,7 @@ declare global {
         Template: typeof Template
         timezone: string
         Twitch: any
+        TwitchOAuthView: typeof TwitchOAuthView
+        TwitchRefreshView: typeof TwitchRefreshView
     }
 }

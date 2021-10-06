@@ -118,6 +118,7 @@ services:
       TWITCH_CHANNEL_SCOPES: channel_editor channel_subscriptions channel_check_subscription chat_login bits:read chat:read chat:edit channel:moderate channel:read:subscriptions whispers:read whispers:edit channel:read:redemptions
       TWITCH_CLIENTID_FILE: /run/secrets/TWITCH_CLIENTID_FILE
       TWITCH_CLIENTSECRET_FILE: /run/secrets/TWITCH_CLIENTSECRET_FILE
+      TWITCH_REDIRECT_URI: https://six.gg/twitch/oauth
       TWITCH_USERID: 116508839
       WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
     secrets:

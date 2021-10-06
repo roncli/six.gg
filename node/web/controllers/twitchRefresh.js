@@ -73,7 +73,7 @@ class TwitchRefresh extends RouterBase {
         res.status(200).send(await Common.page(
             "",
             {},
-            TwitchRefreshView.get(process.env.TWITCH_CLIENTID_FILE, process.env.TWITCH_REDIRECT_URI, process.env.TWITCH_CHANNEL_SCOPES, process.env.TWITCH_BOT_SCOPES, Twitch.state),
+            TwitchRefreshView.get(process.env.TWITCH_CLIENTID, process.env.TWITCH_REDIRECT_URI, process.env.TWITCH_CHANNEL_SCOPES, process.env.TWITCH_BOT_SCOPES, Twitch.state),
             req,
             user
         ));

@@ -22,6 +22,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.2.2 - 10/6/2021
+* Add methods for site owner to refresh Twitch tokens.
+* Various package updates.
+
 ### v2.2.1 - 10/1/2021
 * Added caching for some database calls.
 * Fix for Twitch go live notifications.

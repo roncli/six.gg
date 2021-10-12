@@ -5,7 +5,7 @@
 
 const Event = require("../../src/models/event"),
     express = require("express"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 

@@ -5,7 +5,7 @@
  * @typedef {typeof import("../twitch")} Twitch
  */
 
-const Log = require("node-application-insights-logger");
+const Log = require("@roncli/node-application-insights-logger");
 
 /** @type {{[x: string]: number}} */
 const lastAnnounced = {};

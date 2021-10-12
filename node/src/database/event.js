@@ -3,7 +3,7 @@
  * @typedef {import("../../types/node/eventTypes").EventMongoData} EventTypes.EventMongoData
  */
 
-const Cache = require("node-redis").Cache,
+const Cache = require("@roncli/node-redis").Cache,
     MongoDb = require("mongodb"),
 
     Db = require(".");

@@ -5,7 +5,7 @@
 
 const Attendee = require("../../../src/models/attendee"),
     express = require("express"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../../src/models/user");
 

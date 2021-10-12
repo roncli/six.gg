@@ -1,6 +1,6 @@
 const DiscordJs = require("discord.js"),
     events = require("events"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     Notify = require("../notify"),
     util = require("util"),
 

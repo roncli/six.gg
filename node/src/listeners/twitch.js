@@ -23,7 +23,7 @@
  * @typedef {import("../../types/node/twitchListenerTypes").WhisperEvent} TwitchListenerTypes.WhisperEvent
  */
 
-const Log = require("node-application-insights-logger"),
+const Log = require("@roncli/node-application-insights-logger"),
     Discord = require("../discord"),
     Twitch = require("../twitch");
 

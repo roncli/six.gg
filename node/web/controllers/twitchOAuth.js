@@ -4,7 +4,7 @@
  */
 
 const Common = require("../includes/common"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     NotFoundView = require("../../public/views/404"),
     request = require("@root/request"),
     RouterBase = require("hot-router").RouterBase,

@@ -4,7 +4,7 @@
  * @typedef {import("discord.js").VoiceChannel} DiscordJs.VoiceChannel
  */
 
-const Log = require("node-application-insights-logger");
+const Log = require("@roncli/node-application-insights-logger");
 
 /** @type {Discord} */
 let Discord;

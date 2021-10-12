@@ -6,7 +6,7 @@ const AttendeeDb = require("../database/attendee"),
     Encoding = require("../../public/js/common/encoding"),
     EventDb = require("../database/event"),
     Exception = require("../errors/exception"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     Schedule = require("node-schedule"),
     User = require("./user");
 

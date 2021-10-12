@@ -6,7 +6,7 @@
 
 const crypto = require("crypto"),
     DiscordOAuth = require("discord-oauth2"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
 
     oauth = new DiscordOAuth({
         clientId: process.env.DISCORD_CLIENTID,

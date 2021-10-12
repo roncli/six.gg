@@ -4,7 +4,7 @@
  */
 
 const express = require("express"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase,
     Twitch = require("../../src/twitch"),
     User = require("../../src/models/user");

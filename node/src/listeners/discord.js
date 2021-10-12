@@ -8,7 +8,7 @@
 const Commands = require("../discord/commands"),
     Discord = require("../discord"),
     Exception = require("../errors/exception"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     Streamers = require("../discord/streamers"),
     Twitch = require("../twitch"),
     VoiceChannelManagement = require("../discord/voiceChannelManagement"),

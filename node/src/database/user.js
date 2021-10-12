@@ -12,7 +12,7 @@
  * @typedef {import("../../types/node/userTypes").UserMongoData} UserTypes.UserMongoData
  */
 
-const Cache = require("node-redis").Cache,
+const Cache = require("@roncli/node-redis").Cache,
     MongoDb = require("mongodb"),
 
     Db = require("."),

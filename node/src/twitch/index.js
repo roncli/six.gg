@@ -6,7 +6,7 @@
 
 const events = require("events"),
     IGDB = require("igdb-api-node"),
-    Log = require("node-application-insights-logger"),
+    Log = require("@roncli/node-application-insights-logger"),
     TwitchAuth = require("@twurple/auth"),
     TwitchClient = require("@twurple/api").ApiClient,
 

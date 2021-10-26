@@ -41,7 +41,7 @@
         "mongodb": "4.1.3",
         "node-schedule": "2.0.0",
         "timezonecomplete": "5.12.4",
-        "tzdata": "1.0.28"
+        "tzdata": "1.0.29"
     },
     "devDependencies": {
         "@babel/core": "7.15.8",

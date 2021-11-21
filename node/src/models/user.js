@@ -193,7 +193,7 @@ class User {
      * @returns {Promise<{guildMember: DiscordJs.GuildMember, user: User}[]>} A promise that returns the list of members.
      */
     static async getMembers() {
-        const members = Discord.members.array();
+        const members = [...Discord.members.values()];
 
         /** @type {UserTypes.UserData[]} */
         let users;

@@ -167,7 +167,7 @@ class DiscordListener {
         commands = new Commands(Discord, vcm);
         streamers = new Streamers(Discord, Twitch);
 
-        Discord.channels.filter((channel) => channel.type === "voice").forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {
+        Discord.channels.filter((channel) => channel.type === "GUILD_VOICE").forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {
             if (channel.name !== "\u{1F4AC} General" && channel.members.size === 0) {
                 vcm.markEmptyVoiceChannel(channel, true);
             }

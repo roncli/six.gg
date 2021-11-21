@@ -1,6 +1,7 @@
 /**
  * @typedef {typeof import("./index")} Discord
  * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
+ * @typedef {import("discord.js").StageChannel} DiscordJs.StageChannel
  * @typedef {import("discord.js").VoiceChannel} DiscordJs.VoiceChannel
  */
 
@@ -77,7 +78,7 @@ class VoiceChannelManagement {
     async create(member, title) {
         const vcm = this;
 
-        const channel = /** @type {DiscordJs.VoiceChannel} */(await Discord.createChannel(title, "voice")); // eslint-disable-line no-extra-parens
+        const channel = /** @type {DiscordJs.VoiceChannel} */(await Discord.createChannel(title, "GUILD_VOICE")); // eslint-disable-line no-extra-parens
 
         await channel.setParent(Discord.findCategoryByName("Voice"));
 
@@ -123,7 +124,7 @@ class VoiceChannelManagement {
     //                                     #            #
     /**
      * Marks a voice channel as either empty or not, queuing it for deleting in 5 minutes.
-     * @param {DiscordJs.VoiceChannel} channel The voice channel.
+     * @param {DiscordJs.VoiceChannel | DiscordJs.StageChannel} channel The voice channel.
      * @param {boolean} isEmpty Whether the voice channel is empty or not.
      * @returns {void}
      */

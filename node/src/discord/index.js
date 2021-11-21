@@ -5,7 +5,7 @@ const DiscordJs = require("discord.js"),
     util = require("util"),
 
     discord = new DiscordJs.Client({
-        ws: {intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_VOICE_STATES"]}
+        intents: ["DIRECT_MESSAGES", "GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES", "GUILD_PRESENCES", "GUILD_VOICE_STATES"]
     });
 
 let readied = false;
@@ -34,7 +34,7 @@ class Discord {
     //  ##   #  #   # #  #  #  #  #   ##   ###   ###
     /**
      * Returns the channels on the server.
-     * @returns {DiscordJs.Collection<string, DiscordJs.GuildChannel>} The channels.
+     * @returns {DiscordJs.Collection<string, DiscordJs.GuildChannel | DiscordJs.ThreadChannel>} The channels.
      */
     static get channels() {
         if (guild) {
@@ -291,7 +291,7 @@ class Discord {
 
         let msg;
         try {
-            const msgSend = await channel.send("", embed);
+            const msgSend = await channel.send({embeds: [embed]});
 
             if (msgSend instanceof Array) {
                 msg = msgSend[0];
@@ -331,7 +331,7 @@ class Discord {
             embed.setTimestamp(new Date());
         }
 
-        await message.edit("", embed);
+        await message.edit({embeds: [embed]});
     }
 
     //                          #           ##   #                             ##
@@ -343,10 +343,10 @@ class Discord {
     /**
      * Creates a new channel on the Discord server.
      * @param {string} name The name of the channel.
-     * @param {"category" | "text" | "voice"} type The type of channel to create.
+     * @param {"GUILD_CATEGORY" | "GUILD_TEXT" | "GUILD_VOICE"} type The type of channel to create.
      * @param {DiscordJs.PermissionOverwrites[]|DiscordJs.ChannelCreationOverwrites[]} [overwrites] The permissions that should overwrite the default permission set.
      * @param {string} [reason] The reason the channel is being created.
-     * @returns {Promise<DiscordJs.TextChannel|DiscordJs.VoiceChannel|DiscordJs.CategoryChannel>} A promise that returns the created channel.
+     * @returns {Promise<DiscordJs.TextChannel | DiscordJs.NewsChannel | DiscordJs.VoiceChannel | DiscordJs.CategoryChannel | DiscordJs.StoreChannel | DiscordJs.StageChannel>} The created channel.
      */
     static createChannel(name, type, overwrites, reason) {
         if (!guild) {
@@ -364,14 +364,13 @@ class Discord {
     /**
      * Creates a new role on the Discord server.
      * @param {DiscordJs.RoleData} [data] The role data.
-     * @param {string} [reason] The reason the role is being created.
      * @returns {Promise<DiscordJs.Role>} A promise that returns the created role.
      */
-    static createRole(data, reason) {
+    static createRole(data) {
         if (!guild) {
             return void 0;
         }
-        return guild.roles.create({data, reason});
+        return guild.roles.create(data);
     }
 
     //   #    #             #   ##          #                                  ###         #  #
@@ -390,7 +389,7 @@ class Discord {
         if (!guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.CategoryChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "category")); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.CategoryChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "GUILD_CATEGORY")); // eslint-disable-line no-extra-parens
     }
 
     //   #    #             #   ##   #                             ##    ###         ###      #
@@ -403,7 +402,7 @@ class Discord {
     /**
      * Finds a Discord channel by its ID.
      * @param {string} id The ID of the channel.
-     * @returns {DiscordJs.GuildChannel} The Discord channel.
+     * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
      */
     static findChannelById(id) {
         if (!guild) {
@@ -422,7 +421,7 @@ class Discord {
     /**
      * Finds a Discord channel by its name.
      * @param {string} name The name of the channel.
-     * @returns {DiscordJs.GuildChannel} The Discord channel.
+     * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
      */
     static findChannelByName(name) {
         if (!guild) {
@@ -523,7 +522,7 @@ class Discord {
         if (!guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.TextChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "text")); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.TextChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "GUILD_TEXT")); // eslint-disable-line no-extra-parens
     }
 
     //   #    #             #  #  #                     ###         ###      #
@@ -539,7 +538,7 @@ class Discord {
      * @returns {Promise<DiscordJs.User>} A promise that returns the user.
      */
     static findUserById(id) {
-        return discord.users.fetch(id, false);
+        return discord.users.fetch(id, {cache: false});
     }
 
     //   #    #             #  #  #         #                 ##   #                             ##    ###         #  #
@@ -558,7 +557,7 @@ class Discord {
         if (!guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.VoiceChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "voice")); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.VoiceChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === "GUILD_VOICE")); // eslint-disable-line no-extra-parens
     }
 
     //              #    #  #

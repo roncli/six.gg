@@ -31,7 +31,7 @@
         "@twurple/eventsub": "5.0.9",
         "@twurple/pubsub": "5.0.9",
         "compression": "1.7.4",
-        "cookie-parser": "1.4.5",
+        "cookie-parser": "1.4.6",
         "discord-oauth2": "2.8.0",
         "discord.js": "13.3.1",
         "express": "4.17.1",

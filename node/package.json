@@ -26,7 +26,7 @@
         "@roncli/node-redis": "roncli/node-redis#v0.1.10",
         "@root/request": "1.8.0",
         "@twurple/api": "5.0.10",
-        "@twurple/auth": "5.0.9",
+        "@twurple/auth": "5.0.10",
         "@twurple/chat": "5.0.10",
         "@twurple/eventsub": "5.0.9",
         "@twurple/pubsub": "5.0.10",

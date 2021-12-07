@@ -22,7 +22,7 @@
         "@fullcalendar/daygrid": "5.10.1",
         "@fullcalendar/list": "5.10.1",
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.6",
-        "@roncli/node-minify": "roncli/node-minify#v1.1.2",
+        "@roncli/node-minify": "roncli/node-minify#v1.1.3",
         "@roncli/node-redis": "roncli/node-redis#v0.1.11",
         "@root/request": "1.8.0",
         "@twurple/api": "5.0.10",

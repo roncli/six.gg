@@ -22,6 +22,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.2.6 - 12/11/2021
+* Do not mount Azure file storage for Mongo, use the host's mount instead.
+* Package updates.
+
 ### v2.2.5 - 11/24/2021
 * Package updates.
 

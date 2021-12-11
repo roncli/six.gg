@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ $USE_AZURE_FILE_STORAGE -eq 1 ];
-then
-    # Mount Azure Storage file share.
-    mount -t cifs $(cat $DB_FILES_URI) /data/db -o vers=3.0,username=$(cat $DB_FILES_USERNAME),password=$(cat $DB_FILES_PASSWORD),dir_mode=0755,file_mode=0755,serverino,uid=mongodb,gid=mongodb
-fi
-
 if [ -f /data/db/initialized ];
 then
     # Location of temp files to tell us mongod is running.

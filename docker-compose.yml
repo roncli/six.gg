@@ -33,24 +33,17 @@ services:
       options:
         gelf-address: "udp://localhost:12201"
     environment:
-      DB_FILES_URI: /run/secrets/DB_FILES_URI
-      DB_FILES_USERNAME: /run/secrets/DB_FILES_USERNAME
-      DB_FILES_PASSWORD: /run/secrets/DB_FILES_PASSWORD
       MONGO_INITDB_DATABASE: sixgg
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/MONGO_INITDB_ROOT_USERNAME_FILE
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
-      USE_AZURE_FILE_STORAGE: 1
       WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
-    volumes:
-      - /mnt/mongodb:/data/db:rw
     secrets:
-      - DB_FILES_URI
-      - DB_FILES_USERNAME
-      - DB_FILES_PASSWORD
       - MONGO_INITDB_ROOT_USERNAME_FILE
       - MONGO_INITDB_ROOT_PASSWORD_FILE
       - WEB_SIXGG_PASSWORD_FILE
     restart: always
+    volumes:
+      - /mnt/db:/data/db:rw
     entrypoint: /var/mongo/start.sh
     privileged: true
 
@@ -196,12 +189,6 @@ volumes:
 secrets:
   APPINSIGHTS_INSTRUMENTATIONKEY:
     file: ./secrets/APPINSIGHTS_INSTRUMENTATIONKEY
-  DB_FILES_URI:
-    file: ./secrets/DB_FILES_URI
-  DB_FILES_USERNAME:
-    file: ./secrets/DB_FILES_USERNAME
-  DB_FILES_PASSWORD:
-    file: ./secrets/DB_FILES_PASSWORD
   DISCORD_CLIENTID_FILE:
     file: ./secrets/DISCORD_CLIENTID_FILE
   DISCORD_CLIENTSECRET_FILE:

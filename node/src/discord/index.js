@@ -363,7 +363,7 @@ class Discord {
     //  ##   #      ##    # #    ##   ##   #  #   ##   ###    ##
     /**
      * Creates a new role on the Discord server.
-     * @param {DiscordJs.RoleData} [data] The role data.
+     * @param {DiscordJs.CreateRoleOptions} [data] The role data.
      * @returns {Promise<DiscordJs.Role>} A promise that returns the created role.
      */
     static createRole(data) {

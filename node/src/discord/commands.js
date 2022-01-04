@@ -44,7 +44,7 @@ class Commands {
      * @returns {boolean} Whether the channel is on the correct server.
      */
     static checkChannelIsOnServer(channel) {
-        return channel.type === "text" && channel.guild.name === process.env.DISCORD_GUILD;
+        return channel.type === "GUILD_TEXT" && channel.guild.name === process.env.DISCORD_GUILD;
     }
 
     //       #                 #     #  #               ###                                  #
@@ -461,8 +461,8 @@ class Commands {
         }
 
         try {
-            await createdChannel.createOverwrite(Discord.id, {"CONNECT": false});
-            await createdChannel.createOverwrite(member, {"CONNECT": true});
+            await createdChannel.permissionOverwrites.create(Discord.id, {"CONNECT": false});
+            await createdChannel.permissionOverwrites.create(member, {"CONNECT": true});
         } catch (err) {
             await Discord.queue(`Sorry, ${message}, but something broke.  Try later, or get a hold of @roncli for fixing.`, channel);
             throw new Exception("There was a Discord error while attempting to make a voice channel private.", err);
@@ -515,7 +515,7 @@ class Commands {
         }
 
         try {
-            await createdChannel.createOverwrite(permitMember, {"CONNECT": true});
+            await createdChannel.permissionOverwrites.create(permitMember, {"CONNECT": true});
         } catch (err) {
             await Discord.queue(`Sorry, ${message}, but something broke.  Try later, or get a hold of @roncli for fixing.`, channel);
             throw new Exception("There was a Discord error while attempting to permit a user to a voice channel.", err);

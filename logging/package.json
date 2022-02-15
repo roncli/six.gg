@@ -26,6 +26,6 @@
         "@babel/core": "7.17.2",
         "@babel/eslint-parser": "7.17.0",
         "@types/dockerode": "3.3.3",
-        "@types/node": "17.0.17"
+        "@types/node": "17.0.18"
     }
 }

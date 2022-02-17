@@ -34,7 +34,7 @@
         "cookie-parser": "1.4.6",
         "discord-oauth2": "2.9.0",
         "discord.js": "13.6.0",
-        "express": "4.17.2",
+        "express": "4.17.3",
         "hot-router": "1.0.0-beta.8",
         "html-minifier-terser": "6.1.0",
         "igdb-api-node": "5.0.1",

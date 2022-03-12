@@ -44,6 +44,7 @@ services:
     restart: always
     volumes:
       - /mnt/db:/data/db:rw
+      - /mnt/backup:/data/backup:rw
     entrypoint: /var/mongo/start.sh
     privileged: true
 

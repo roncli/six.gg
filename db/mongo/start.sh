@@ -60,6 +60,12 @@ then
 
     # Remove pidfile.
     rm -f "$pidfile"
+
+    # Do a backup after 1 minute.
+    $(sleep 1m; /var/mongo/backup.sh) &
+
+    # Do a backup every day.
+    $(while true; do sleep 1d; /var/mongo/backup.sh; done) &
 fi
 
 echo "Starting Mongo."

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-BACKUP_FILENAME=db-$(date +%Y-%m-%d-%H-%M-%S).gz
-
-mongodump --gzip --archive=$BACKUP_FILENAME
+mongodump --gzip --archive=/data/backup/db-$(date +%Y-%m-%d-%H-%M-%S).gz
 
 find /data/backup -mtime +7 -delete

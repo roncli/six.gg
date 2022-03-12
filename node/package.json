@@ -1,6 +1,6 @@
 {
     "name": "six.gg-node",
-    "version": "2.2.6",
+    "version": "2.2.7",
     "description": "The website and bot for Six Gaming.",
     "homepage": "https://github.com/roncli/six.gg",
     "bugs": {
@@ -22,7 +22,7 @@
         "@fullcalendar/daygrid": "5.10.1",
         "@fullcalendar/list": "5.10.1",
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.9",
-        "@roncli/node-minify": "roncli/node-minify#v1.1.5",
+        "@roncli/node-minify": "roncli/node-minify#v1.1.6",
         "@roncli/node-redis": "roncli/node-redis#v0.1.13",
         "@root/request": "1.8.1",
         "@twurple/api": "5.0.18",
@@ -35,7 +35,7 @@
         "discord-oauth2": "2.9.0",
         "discord.js": "13.6.0",
         "express": "4.17.3",
-        "hot-router": "1.0.0-beta.8",
+        "hot-router": "1.0.0-beta.9",
         "html-minifier-terser": "6.1.0",
         "igdb-api-node": "5.0.1",
         "mongodb": "4.4.1",

@@ -21,7 +21,7 @@
         "@fullcalendar/core": "5.11.0",
         "@fullcalendar/daygrid": "5.11.0",
         "@fullcalendar/list": "5.11.0",
-        "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.9",
+        "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.10",
         "@roncli/node-minify": "roncli/node-minify#v1.1.6",
         "@roncli/node-redis": "roncli/node-redis#v0.1.13",
         "@root/request": "1.8.1",

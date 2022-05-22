@@ -23,7 +23,7 @@
         "@fullcalendar/list": "5.11.0",
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.11",
         "@roncli/node-minify": "roncli/node-minify#v1.1.7",
-        "@roncli/node-redis": "roncli/node-redis#v0.1.13",
+        "@roncli/node-redis": "roncli/node-redis#v0.1.14",
         "@root/request": "1.8.1",
         "@twurple/api": "5.1.6",
         "@twurple/auth": "5.1.6",

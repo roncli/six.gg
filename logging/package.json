@@ -1,6 +1,6 @@
 {
     "name": "six.gg-logging",
-    "version": "2.2.7",
+    "version": "2.2.8",
     "description": "gelf logging for six.gg.",
     "homepage": "https://github.com/roncli/six.gg",
     "bugs": {

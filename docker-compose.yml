@@ -43,7 +43,7 @@ services:
       - WEB_SIXGG_PASSWORD_FILE
     restart: always
     volumes:
-      - /mnt/db:/data/db:rw
+      - /data/db:/data/db:rw
       - /mnt/backup:/data/backup:rw
     entrypoint: /var/mongo/start.sh
     privileged: true

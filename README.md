@@ -22,6 +22,9 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.2.9 - 7/19/2022
+* Package updates.
+
 ### v2.2.8 - 5/22/2022
 * Package updates.
 

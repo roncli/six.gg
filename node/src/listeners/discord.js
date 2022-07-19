@@ -1,12 +1,6 @@
-/**
- * @typedef {import("discord.js").Message} DiscordJs.Message
- * @typedef {import("discord.js").Presence} DiscordJs.Presence
- * @typedef {import("discord.js").VoiceChannel} DiscordJs.VoiceChannel
- * @typedef {import("discord.js").VoiceState} DiscordJs.VoiceState
- */
-
 const Commands = require("../discord/commands"),
     Discord = require("../discord"),
+    DiscordJs = require("discord.js"),
     Exception = require("../errors/exception"),
     Log = require("@roncli/node-application-insights-logger"),
     Streamers = require("../discord/streamers"),
@@ -167,7 +161,7 @@ class DiscordListener {
         commands = new Commands(Discord, vcm);
         streamers = new Streamers(Discord, Twitch);
 
-        Discord.channels.filter((channel) => channel.type === "GUILD_VOICE").forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {
+        Discord.channels.filter((channel) => channel.type === DiscordJs.ChannelType.GuildVoice).forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {
             if (channel.name !== "\u{1F4AC} General" && channel.members.size === 0) {
                 vcm.markEmptyVoiceChannel(channel, true);
             }

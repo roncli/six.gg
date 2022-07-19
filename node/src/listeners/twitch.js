@@ -170,7 +170,7 @@ class TwitchListener {
 
         const stream = await Twitch.botTwitchClient.streams.getStreamByUserId(user.id);
 
-        const message = Discord.messageEmbed({
+        const message = Discord.embedBuilder({
             timestamp: new Date(),
             thumbnail: {
                 url: user.profilePictureUrl,
@@ -191,7 +191,7 @@ class TwitchListener {
             const game = await stream.getGame();
 
             if (game && game.name) {
-                message.fields.push({
+                message.addFields({
                     name: "Now Playing",
                     value: game.name,
                     inline: false
@@ -335,7 +335,7 @@ class TwitchListener {
             return;
         }
 
-        const message = Discord.messageEmbed({
+        const message = Discord.embedBuilder({
             timestamp: new Date(),
             thumbnail: {
                 url: user.profilePictureUrl,
@@ -353,7 +353,7 @@ class TwitchListener {
         });
 
         if (ev.game) {
-            message.fields.push({
+            message.addFields({
                 name: "Now Playing",
                 value: ev.game,
                 inline: false

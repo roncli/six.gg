@@ -52,36 +52,36 @@ class Event {
         try {
             const user = await User.getMember(data.userId);
 
-            const embed = Discord.messageEmbed({
+            const embed = Discord.embedBuilder({
                 title: `New event posted: **${Encoding.discordEncode(data.title)}** by ${user.guildMember.user}`,
                 fields: []
             });
 
             if (data.description) {
-                embed.description = `${data.description.substring(0, 512)}${data.description.length > 512 ? "..." : ""}`;
+                embed.setDescription(`${data.description.substring(0, 512)}${data.description.length > 512 ? "..." : ""}`);
             }
 
             if (data.game) {
-                embed.fields.push({
+                embed.addFields({
                     name: "Game",
                     value: data.game,
                     inline: false
                 });
             }
 
-            embed.fields.push({
+            embed.addFields({
                 name: "Time",
                 value: `${data.start.toLocaleString("en-US", {timeZone: process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})} to ${data.end.toLocaleString("en-US", {timeZone: process.env.DEFAULT_TIMEZONE, hour12: true, month: "numeric", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"})}`,
                 inline: false
             });
 
-            embed.fields.push({
+            embed.addFields({
                 name: "Joining",
                 value: `Type \`!join ${data._id}\` to be notified within 30 minutes of the event's start.`,
                 inline: true
             });
 
-            embed.fields.push({
+            embed.addFields({
                 name: "Leaving",
                 value: `If you've already joined the event but no longer wish to take part, type \`!leave ${data._id}\`.`,
                 inline: true

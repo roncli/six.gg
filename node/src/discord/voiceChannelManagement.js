@@ -1,11 +1,9 @@
 /**
  * @typedef {typeof import("./index")} Discord
- * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
- * @typedef {import("discord.js").StageChannel} DiscordJs.StageChannel
- * @typedef {import("discord.js").VoiceChannel} DiscordJs.VoiceChannel
  */
 
-const Log = require("@roncli/node-application-insights-logger");
+const DiscordJs = require("discord.js"),
+    Log = require("@roncli/node-application-insights-logger");
 
 /** @type {Discord} */
 let Discord;
@@ -78,7 +76,7 @@ class VoiceChannelManagement {
     async create(member, title) {
         const vcm = this;
 
-        const channel = /** @type {DiscordJs.VoiceChannel} */(await Discord.createChannel(title, "GUILD_VOICE")); // eslint-disable-line no-extra-parens
+        const channel = /** @type {DiscordJs.VoiceChannel} */(await Discord.createChannel(title, DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line no-extra-parens
 
         await channel.setParent(Discord.findCategoryByName("Voice"));
 
@@ -133,7 +131,7 @@ class VoiceChannelManagement {
 
         if (isEmpty) {
             vcm.channelDeletionTimeouts[channel.id] = setTimeout(async () => {
-                if (channel && !channel.deleted) {
+                if (channel) {
                     try {
                         await channel.delete();
                     } catch (err) {

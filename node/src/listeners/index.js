@@ -22,7 +22,7 @@ class Listeners {
     // ###     ##     ##   ###  ###
     //                          #
     /**
-     * Sets up the listeners for Twitch and Websockets.
+     * Sets up the listeners for Discord and Twitch.
      * @returns {void}
      */
     static setup() {

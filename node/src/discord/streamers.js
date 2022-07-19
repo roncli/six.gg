@@ -91,7 +91,7 @@ class Streamers {
             const user = await Twitch.botTwitchClient.users.getUserByName(twitchName),
                 channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
 
-            await Discord.richQueue(Discord.messageEmbed({
+            await Discord.richQueue(Discord.embedBuilder({
                 timestamp: new Date(),
                 thumbnail: {
                     url: user.profilePictureUrl,

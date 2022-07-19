@@ -90,22 +90,14 @@ class TwitchDb {
         };
 
         await db.collection("twitch").findOneAndUpdate({}, {$set: {
-            botAccessToken: {
-                salt: new MongoDb.Binary(encryptedTokens.botAccessToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.botAccessToken.encrypted)
-            },
-            botRefreshToken: {
-                salt: new MongoDb.Binary(encryptedTokens.botRefreshToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.botRefreshToken.encrypted)
-            },
-            channelAccessToken: {
-                salt: new MongoDb.Binary(encryptedTokens.channelAccessToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.channelAccessToken.encrypted)
-            },
-            channelRefreshToken: {
-                salt: new MongoDb.Binary(encryptedTokens.channelRefreshToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.channelRefreshToken.encrypted)
-            }
+            "botAccessToken.salt": new MongoDb.Binary(encryptedTokens.botAccessToken.salt),
+            "botAccessToken.encrypted": new MongoDb.Binary(encryptedTokens.botAccessToken.encrypted),
+            "botRefreshToken.salt": new MongoDb.Binary(encryptedTokens.botRefreshToken.salt),
+            "botRefreshToken.encrypted": new MongoDb.Binary(encryptedTokens.botRefreshToken.encrypted),
+            "channelAccessToken.salt": new MongoDb.Binary(encryptedTokens.channelAccessToken.salt),
+            "channelAccessToken.encrypted": new MongoDb.Binary(encryptedTokens.channelAccessToken.encrypted),
+            "channelRefreshToken.salt": new MongoDb.Binary(encryptedTokens.channelRefreshToken.salt),
+            "channelRefreshToken.encrypted": new MongoDb.Binary(encryptedTokens.channelRefreshToken.encrypted)
         }}, {upsert: true});
     }
 }

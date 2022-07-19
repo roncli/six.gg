@@ -338,15 +338,11 @@ class UserDb {
         let userResult;
         if (await db.collection("user").findOne({"discord.id": user.id})) {
             const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
-                discord: {
-                    id: user.id,
-                    username: user.username,
-                    discriminator: user.discriminator
-                },
-                guildMember: {
-                    nick: guildMember.nickname,
-                    joinedAt: guildMember.joinedAt
-                },
+                "discord.id": user.id,
+                "discord.username": user.username,
+                "discord.discriminator": user.discriminator,
+                "guildMember.nick": guildMember.nickname,
+                "guildMember.joinedAt": guildMember.joinedAt,
                 connections: connections.filter((c) => c.verified && !c.revoked && c.visibility !== 0).map((c) => ({
                     name: c.name,
                     id: c.id,
@@ -391,14 +387,10 @@ class UserDb {
         const sessionResult = await db.collection("session").findOneAndUpdate({ip: req.ip, userId: userResult._id}, {$set: {
             ip: req.ip,
             userId: userResult._id,
-            accessToken: {
-                salt: new MongoDb.Binary(encryptedTokens.accessToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.accessToken.encrypted)
-            },
-            refreshToken: {
-                salt: new MongoDb.Binary(encryptedTokens.refreshToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.refreshToken.encrypted)
-            },
+            "accessToken.salt": new MongoDb.Binary(encryptedTokens.accessToken.salt),
+            "accessToken.encrypted": new MongoDb.Binary(encryptedTokens.accessToken.encrypted),
+            "refreshToken.salt": new MongoDb.Binary(encryptedTokens.refreshToken.salt),
+            "refreshToken.encrypted": new MongoDb.Binary(encryptedTokens.refreshToken.encrypted),
             expires
         }}, {upsert: true, returnDocument: "after"});
 

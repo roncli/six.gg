@@ -58,14 +58,10 @@ class SessionDb {
         await db.collection("session").findOneAndUpdate({_id: MongoDb.ObjectId.createFromHexString(session._id), ip: session.ip, userId: MongoDb.Long.fromNumber(session.userId)}, {$set: {
             ip: session.ip,
             userId: MongoDb.Long.fromNumber(session.userId),
-            accessToken: {
-                salt: new MongoDb.Binary(encryptedTokens.accessToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.accessToken.encrypted)
-            },
-            refreshToken: {
-                salt: new MongoDb.Binary(encryptedTokens.refreshToken.salt),
-                encrypted: new MongoDb.Binary(encryptedTokens.refreshToken.encrypted)
-            },
+            "accessToken.salt": new MongoDb.Binary(encryptedTokens.accessToken.salt),
+            "accessToken.encrypted": new MongoDb.Binary(encryptedTokens.accessToken.encrypted),
+            "refreshToken.salt": new MongoDb.Binary(encryptedTokens.refreshToken.salt),
+            "refreshToken.encrypted": new MongoDb.Binary(encryptedTokens.refreshToken.encrypted),
             expires: session.expires
         }});
     }

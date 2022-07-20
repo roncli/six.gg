@@ -12,7 +12,10 @@ const DiscordJs = require("discord.js"),
             DiscordJs.GatewayIntentBits.GuildMessages,
             DiscordJs.GatewayIntentBits.GuildPresences,
             DiscordJs.GatewayIntentBits.GuildVoiceStates
-        ]
+        ],
+        rest: {
+            retries: 999999999
+        }
     });
 
 let readied = false;

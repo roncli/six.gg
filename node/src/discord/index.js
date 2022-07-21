@@ -290,11 +290,11 @@ class Discord {
             });
         }
 
-        if (!embed.data && !embed.data.color) {
+        if (!embed.data || !embed.data.color) {
             embed.setColor(0x16f6f8);
         }
 
-        if (!embed.data && !embed.data.timestamp) {
+        if (!embed.data || !embed.data.timestamp) {
             embed.setTimestamp(new Date());
         }
 
@@ -336,7 +336,7 @@ class Discord {
 
         embed.data.color = message.embeds[0].color;
 
-        if (!embed.data && !embed.data.timestamp) {
+        if (!embed.data || !embed.data.timestamp) {
             embed.setTimestamp(new Date());
         }
 

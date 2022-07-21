@@ -68,7 +68,7 @@ class GamesApi extends RouterBase {
 
             throttle[req.ip] = new Date().getTime() + 250;
 
-            if (!req.body && !req.body.search) {
+            if (!req.body || !req.body.search) {
                 res.status(400).json({error: "Bad request, you must send a body with a search request in it."});
                 return;
             }

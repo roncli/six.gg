@@ -68,6 +68,17 @@ class Member extends RouterBase {
 
         const member = await User.getMember(id);
 
+        if (!member || !member.user || !member.guildMember) {
+            res.status(404).send(await Common.page(
+                "",
+                {css: ["/css/error.css"]},
+                NotFoundView.get({message: "This page does not exist."}),
+                req,
+                user
+            ));
+            return;
+        }
+
         res.status(200).send(await Common.page(
             "",
             {css: ["/css/member.css"], js: ["/js/common/connection.js"]},

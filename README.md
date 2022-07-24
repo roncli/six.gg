@@ -24,6 +24,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ### v2.2.9 - 7/19/2022
 * Package updates.
+* Fix bugs with backups.
+* Retry Discord when it goes down.
+* 404 member pages when they don't exist.
+* Various bug fixes.
 
 ### v2.2.8 - 5/22/2022
 * Package updates.

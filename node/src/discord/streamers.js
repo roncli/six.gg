@@ -89,7 +89,7 @@ class Streamers {
 
         if (notify) {
             const user = await Twitch.botTwitchClient.users.getUserByName(twitchName),
-                channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
+                channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
 
             await Discord.richQueue(Discord.embedBuilder({
                 timestamp: Date.now(), // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323

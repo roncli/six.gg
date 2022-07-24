@@ -163,7 +163,7 @@ class TwitchListener {
             return;
         }
 
-        const channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
+        const channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
         if (!channel) {
             return;
         }
@@ -330,7 +330,7 @@ class TwitchListener {
             return;
         }
 
-        const channel = await Twitch.botTwitchClient.channels.getChannelInfo(user.id);
+        const channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
         if (!channel) {
             return;
         }

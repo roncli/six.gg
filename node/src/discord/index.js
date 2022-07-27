@@ -153,7 +153,7 @@ class Discord {
             Log.error("Disconnected from Discord.", {err: ev instanceof Error ? ev : new Error(util.inspect(ev))});
         });
 
-        discord.on("message", (message) => {
+        discord.on("messageCreate", (message) => {
             eventEmitter.emit("message", message);
         });
 

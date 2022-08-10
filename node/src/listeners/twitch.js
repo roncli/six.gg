@@ -176,7 +176,7 @@ class TwitchListener {
         const stream = await Twitch.botTwitchClient.streams.getStreamByUserId(user.id);
 
         const message = Discord.embedBuilder({
-            timestamp: new Date(),
+            timestamp: Date.now(), // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
             thumbnail: {
                 url: user.profilePictureUrl,
                 width: 300,

@@ -25,6 +25,7 @@
 
 const Log = require("@roncli/node-application-insights-logger"),
     Discord = require("../discord"),
+    DiscordListener = require("./discord"),
     Twitch = require("../twitch");
 
 //              #    ###    #                #  #
@@ -160,6 +161,10 @@ class TwitchListener {
     static async host(ev) {
         const user = await Twitch.botTwitchClient.users.getUserByName(ev.user);
         if (!user) {
+            return;
+        }
+
+        if (user.name === DiscordListener.streamers.featuredChannel) {
             return;
         }
 

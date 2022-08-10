@@ -28,7 +28,7 @@ class Time {
 
         const local = time.toLocaleString("en-US", {timeZone: timezone, hour12: false, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});
 
-        return `${local.substr(6, 4)}-${local.substr(0, 2)}-${local.substr(3, 2)}T${local.substr(12, 8)}`;
+        return `${local.substring(6, 10)}-${local.substring(0, 2)}-${local.substring(3, 5)}T${local.substring(12, 20)}`;
     }
 }
 

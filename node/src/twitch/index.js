@@ -1,5 +1,4 @@
 /**
- * @typedef {import("@twurple/auth").AuthProvider} AuthProvider
  * @typedef {import("@twurple/chat").ChatClient} ChatClient
  * @typedef {import("../../types/node/igdbTypes").SearchGameResult} IGDBTypes.SearchGameResult
  */
@@ -16,13 +15,13 @@ const events = require("events"),
     PubSub = require("./pubsub"),
     TwitchDb = require("../database/twitch");
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.AuthProvider} */
 let apiAuthProvider;
 
 /** @type {string} */
 let botAccessToken;
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.AuthProvider} */
 let botAuthProvider;
 
 /** @type {string} */
@@ -37,7 +36,7 @@ let botTwitchClient;
 /** @type {string} */
 let channelAccessToken;
 
-/** @type {AuthProvider} */
+/** @type {TwitchAuth.AuthProvider} */
 let channelAuthProvider;
 
 /** @type {string} */
@@ -450,7 +449,7 @@ class Twitch {
 
         channelChatClient.client.onAction((channel, user, message, msg) => {
             eventEmitter.emit("action", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: msg.userInfo.displayName,
                 message
@@ -459,7 +458,7 @@ class Twitch {
 
         channelChatClient.client.onCommunityPayForward((channel, user, forwardInfo) => {
             eventEmitter.emit("subGiftCommunityPayForward", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: forwardInfo.displayName,
                 originalGifter: forwardInfo.originalGifterDisplayName
@@ -468,7 +467,7 @@ class Twitch {
 
         channelChatClient.client.onCommunitySub((channel, user, subInfo) => {
             eventEmitter.emit("subGiftCommunity", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.gifterDisplayName,
                 giftCount: subInfo.count,
@@ -485,7 +484,7 @@ class Twitch {
 
         channelChatClient.client.onGiftPaidUpgrade((channel, user, subInfo) => {
             eventEmitter.emit("subGiftUpgrade", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.displayName,
                 gifter: subInfo.gifterDisplayName,
@@ -493,20 +492,19 @@ class Twitch {
             });
         });
 
-        // TODO: Requires Twitch API to expose auto hosting information. See https://github.com/roncli/six.gg/issues/3
-        // channelChatClient.client.onHost(async (channel, target, viewers) => {
-        //     let user;
-        //     try {
-        //         user = (await channelTwitchClient.search.searchChannels(target)).find((c) => c.displayName === target);
-        //     } catch (err) {} finally {}
-        //
-        //     eventEmitter.emit("host", {
-        //         channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
-        //         user: user ? user.name : target,
-        //         name: target,
-        //         viewerCount: viewers
-        //     });
-        // });
+        channelChatClient.client.onHost(async (channel, target, viewers) => {
+            let user;
+            try {
+                user = (await channelTwitchClient.search.searchChannels(target)).data.find((c) => c.displayName === target);
+            } catch (err) {} finally {}
+
+            eventEmitter.emit("host", {
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
+                user: user ? user.name : target,
+                name: target,
+                viewerCount: viewers
+            });
+        });
 
         channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
             let user;
@@ -515,9 +513,9 @@ class Twitch {
             } catch (err) {} finally {}
 
             eventEmitter.emit("hosted", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user: user ? user.name : byChannel,
-                name: byChannel.charAt(0) === "#" ? byChannel.substr(1) : byChannel,
+                name: byChannel.charAt(0) === "#" ? byChannel.substring(1) : byChannel,
                 auto,
                 viewerCount: viewers
             });
@@ -525,7 +523,7 @@ class Twitch {
 
         channelChatClient.client.onMessage((channel, user, message, msg) => {
             eventEmitter.emit("message", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: msg.userInfo.displayName,
                 message,
@@ -535,7 +533,7 @@ class Twitch {
 
         channelChatClient.client.onPrimeCommunityGift((channel, user, subInfo) => {
             eventEmitter.emit("giftPrime", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user: subInfo.gifter,
                 name: subInfo.gifterDisplayName,
                 gift: subInfo.name
@@ -544,7 +542,7 @@ class Twitch {
 
         channelChatClient.client.onPrimePaidUpgrade((channel, user, subInfo) => {
             eventEmitter.emit("subPrimeUpgraded", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.displayName,
                 tier: subInfo.plan
@@ -553,7 +551,7 @@ class Twitch {
 
         channelChatClient.client.onRaid((channel, user, raidInfo) => {
             eventEmitter.emit("raided", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: raidInfo.displayName,
                 viewerCount: raidInfo.viewerCount
@@ -562,7 +560,7 @@ class Twitch {
 
         channelChatClient.client.onResub((channel, user, subInfo) => {
             eventEmitter.emit("resub", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.displayName,
                 isPrime: subInfo.isPrime,
@@ -575,7 +573,7 @@ class Twitch {
 
         channelChatClient.client.onRitual((channel, user, ritualInfo, msg) => {
             eventEmitter.emit("ritual", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: msg.userInfo.displayName,
                 message: ritualInfo.message,
@@ -585,7 +583,7 @@ class Twitch {
 
         channelChatClient.client.onStandardPayForward((channel, user, forwardInfo) => {
             eventEmitter.emit("subGiftPayForward", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: forwardInfo.displayName,
                 originalGifter: forwardInfo.originalGifterDisplayName,
@@ -595,7 +593,7 @@ class Twitch {
 
         channelChatClient.client.onSub((channel, user, subInfo) => {
             eventEmitter.emit("sub", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.displayName,
                 isPrime: subInfo.isPrime,
@@ -608,7 +606,7 @@ class Twitch {
 
         channelChatClient.client.onSubExtend((channel, user, subInfo) => {
             eventEmitter.emit("subExtend", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 displayName: subInfo.displayName,
                 months: subInfo.months,
@@ -618,7 +616,7 @@ class Twitch {
 
         channelChatClient.client.onSubGift((channel, user, subInfo) => {
             eventEmitter.emit("subGift", {
-                channel: channel.charAt(0) === "#" ? channel.substr(1) : channel,
+                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
                 user,
                 name: subInfo.displayName,
                 gifterUser: subInfo.gifter,

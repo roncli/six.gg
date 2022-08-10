@@ -55,6 +55,9 @@ class Streamers {
 
         /** @type {string} */
         this.featured = void 0;
+
+        /** @type {string} */
+        this.featuredChannel = void 0;
     }
 
     //          #     #
@@ -132,6 +135,7 @@ class Streamers {
      */
     async feature(id, channel) {
         this.featured = id;
+        this.featuredChannel = channel;
         const index = this.previouslyFeatured.indexOf(id);
         if (index !== -1) {
             this.previouslyFeatured.splice(index, 1);

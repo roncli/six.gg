@@ -95,7 +95,7 @@ class Streamers {
                 channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
 
             await Discord.richQueue(Discord.embedBuilder({
-                timestamp: Date.now(), // TODO: Use new Date() again once this is fixed: https://github.com/discordjs/discord.js/issues/8323
+                timestamp: new Date(),
                 thumbnail: {
                     url: user.profilePictureUrl,
                     width: 300,

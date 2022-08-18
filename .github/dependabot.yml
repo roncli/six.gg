@@ -18,6 +18,9 @@ updates:
       interval: "daily"
       time: "05:00"
       timezone: "America/Los_Angeles"
+    ignore:
+      - dependency-name: "node"
+        versions: [">= 17.0"]
   - package-ecosystem: "docker"
     directory: /nginx/
     schedule:
@@ -30,6 +33,9 @@ updates:
       interval: "daily"
       time: "05:00"
       timezone: "America/Los_Angeles"
+    ignore:
+      - dependency-name: "node"
+        versions: [">= 17.0"]
   - package-ecosystem: "docker"
     directory: /redis/
     schedule:

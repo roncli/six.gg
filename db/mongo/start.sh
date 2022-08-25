@@ -7,7 +7,7 @@ then
     logfile="${TMPDIR:-/tmp}/start-temp-mongod.log"
 
     # The command line to use for mongo.
-    mongo=( mongo --host 127.0.0.1 --port 27017 -u "$(cat $MONGO_INITDB_ROOT_USERNAME_FILE)" -p "$(cat $MONGO_INITDB_ROOT_PASSWORD_FILE)" )
+    mongo=( mongosh --host 127.0.0.1 --port 27017 -u "$(cat $MONGO_INITDB_ROOT_USERNAME_FILE)" -p "$(cat $MONGO_INITDB_ROOT_PASSWORD_FILE)" )
 
     # Remove any existing temp file.
     rm -f "$pidfile"

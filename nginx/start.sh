@@ -117,4 +117,4 @@ $(while true; do sleep 15d; nginx -s reload; done) &
 echo "Starting..."
 
 # Start nginx.
-nginx -g "daemon off;"
+exec nginx -g "daemon off;"

@@ -83,4 +83,4 @@ sysctl vm.overcommit_memory=1
 echo never > /sys/kernel/mm/transparent_hugepage/enabled
 
 # Start redis.
-redis-server /var/redis/redis.conf
+exec redis-server /var/redis/redis.conf

@@ -71,4 +71,4 @@ fi
 echo "Starting Mongo."
 
 # Start up mongod normally.
-/usr/local/bin/docker-entrypoint.sh mongod --setParameter diagnosticDataCollectionEnabled=false
+exec /usr/local/bin/docker-entrypoint.sh mongod --setParameter diagnosticDataCollectionEnabled=false

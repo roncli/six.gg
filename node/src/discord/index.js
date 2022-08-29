@@ -1,7 +1,10 @@
 const DiscordJs = require("discord.js"),
     events = require("events"),
+    fs = require("fs/promises"),
     Log = require("@roncli/node-application-insights-logger"),
     Notify = require("../notify"),
+    path = require("path"),
+    Rest = require("@discordjs/rest"),
     util = require("util"),
 
     discord = new DiscordJs.Client({
@@ -9,10 +12,8 @@ const DiscordJs = require("discord.js"),
             DiscordJs.GatewayIntentBits.DirectMessages,
             DiscordJs.GatewayIntentBits.Guilds,
             DiscordJs.GatewayIntentBits.GuildMembers,
-            DiscordJs.GatewayIntentBits.GuildMessages,
             DiscordJs.GatewayIntentBits.GuildPresences,
-            DiscordJs.GatewayIntentBits.GuildVoiceStates,
-            DiscordJs.GatewayIntentBits.MessageContent
+            DiscordJs.GatewayIntentBits.GuildVoiceStates
         ],
         rest: {
             retries: 999999999
@@ -135,10 +136,43 @@ class Discord {
      * @returns {void}
      */
     static startup() {
-        discord.on("ready", () => {
+        discord.on("ready", async () => {
             Log.verbose("Connected to Discord.");
 
             guild = discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);
+
+            const files = await fs.readdir(path.join(__dirname, "commands")),
+                simulate = new DiscordJs.SlashCommandBuilder(),
+                commands = [];
+
+            simulate
+                .setName("simulate")
+                .setDescription("Simulates a command from another user.");
+
+            for (const file of files) {
+                const commandFile = require(`./commands/${file}`);
+
+                /** @type {DiscordJs.SlashCommandBuilder} */
+                const command = commandFile.command();
+
+                commands.push(command);
+
+                if (commandFile.simulate) {
+                    commandFile.simulate(simulate);
+                }
+            }
+
+            simulate.setDefaultMemberPermissions(0);
+
+            commands.push(simulate);
+
+            try {
+                const rest = new Rest.REST().setToken(process.env.DISCORD_TOKEN);
+
+                await rest.put(DiscordJs.Routes.applicationGuildCommands(process.env.DISCORD_CLIENTID, guild.id), {body: commands});
+            } catch (err) {
+                Log.error("Error adding slash commands.", {err});
+            }
 
             eventEmitter.emit("ready");
 
@@ -153,8 +187,8 @@ class Discord {
             Log.error("Disconnected from Discord.", {err: ev instanceof Error ? ev : new Error(util.inspect(ev))});
         });
 
-        discord.on("messageCreate", (message) => {
-            eventEmitter.emit("message", message);
+        discord.on("interactionCreate", (interaction) => {
+            eventEmitter.emit("interactionCreate", interaction);
         });
 
         discord.on("presenceUpdate", (oldPresence, newPresence) => {
@@ -227,7 +261,7 @@ class Discord {
 
         let msg;
         try {
-            msg = await Discord.richQueue(new DiscordJs.EmbedBuilder({description: message}), channel);
+            msg = await Discord.richQueue(Discord.embedBuilder({description: message}), channel);
         } catch {}
         return msg;
     }
@@ -260,7 +294,19 @@ class Discord {
      * @returns {DiscordJs.EmbedBuilder} The EmbedBuilder object.
      */
     static embedBuilder(options) {
-        return new DiscordJs.EmbedBuilder(options);
+        const embed = new DiscordJs.EmbedBuilder(options);
+
+        embed.setFooter({text: embed.data && embed.data.footer ? embed.data.footer.text : "Six Gaming", iconURL: Discord.icon});
+
+        if (!embed.data || !embed.data.color) {
+            embed.setColor(0x16f6f8);
+        }
+
+        if (!embed.data || !embed.data.timestamp) {
+            embed.setTimestamp(new Date());
+        }
+
+        return embed;
     }
 
     //        #          #      ##
@@ -281,22 +327,12 @@ class Discord {
             return void 0;
         }
 
-        embed.setFooter({text: embed.data && embed.data.footer ? embed.data.footer.text : "Six Gaming", iconURL: Discord.icon});
-
         if (embed && embed.data && embed.data.fields) {
             embed.data.fields.forEach((field) => {
                 if (field.value && field.value.length > 1024) {
                     field.value = field.value.substring(0, 1024);
                 }
             });
-        }
-
-        if (!embed.data || !embed.data.color) {
-            embed.setColor(0x16f6f8);
-        }
-
-        if (!embed.data || !embed.data.timestamp) {
-            embed.setTimestamp(new Date());
         }
 
         let msg;
@@ -594,7 +630,7 @@ class Discord {
     // ###   ###     ##   ####  #  #   ##   #
     /**
      * Determines whether the user is the owner.
-     * @param {DiscordJs.GuildMember} member The user to check.
+     * @param {DiscordJs.GuildMember | DiscordJs.APIInteractionGuildMember} member The user to check.
      * @returns {boolean} Whether the user is the owner.
      */
     static isOwner(member) {

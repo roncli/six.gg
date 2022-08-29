@@ -1,5 +1,4 @@
-const Commands = require("../discord/commands"),
-    Discord = require("../discord"),
+const Discord = require("../discord"),
     DiscordJs = require("discord.js"),
     Exception = require("../errors/exception"),
     Log = require("@roncli/node-application-insights-logger"),
@@ -8,11 +7,7 @@ const Commands = require("../discord/commands"),
     VoiceChannelManagement = require("../discord/voiceChannelManagement"),
     Warning = require("../errors/warning"),
 
-    messageParse = /^!(?<cmd>[^ ]+)(?: +(?<args>.*[^ ]))? *$/,
     urlParse = /^https:\/\/www.twitch.tv\/(?<user>.+)$/;
-
-/** @type {Commands} */
-let commands;
 
 /** @type {Streamers} */
 let streamers;
@@ -60,47 +55,46 @@ class DiscordListener {
         return vcm;
     }
 
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
+    //  #           #                             #     #                 ##                      #
+    //              #                             #                      #  #                     #
+    // ##    ###   ###    ##   ###    ###   ##   ###   ##     ##   ###   #     ###    ##    ###  ###    ##
+    //  #    #  #   #    # ##  #  #  #  #  #      #     #    #  #  #  #  #     #  #  # ##  #  #   #    # ##
+    //  #    #  #   #    ##    #     # ##  #      #     #    #  #  #  #  #  #  #     ##    # ##   #    ##
+    // ###   #  #    ##   ##   #      # #   ##     ##  ###    ##   #  #   ##   #      ##    # #    ##   ##
     /**
-     * Handles when a message is posted in Discord.
-     * @param {DiscordJs.Message} message The message.
-     * @returns {Promise} A promise that resolves when the event has been processed.
+     * Handles when an interaction is created in Discord.
+     * @param {DiscordJs.Interaction<DiscordJs.CacheType>} interaction The interaction.
+     * @returns {Promise} A promise that resolves when the interaction has been handled.
      */
-    static async message(message) {
-        const member = Discord.findGuildMemberById(message.author.id);
+    static async interactionCreate(interaction) {
+        if (!interaction.isChatInputCommand()) {
+            return;
+        }
 
-        for (const text of message.content.split("\n")) {
-            if (!messageParse.test(text)) {
-                continue;
+        let success = false;
+
+        try {
+            if (interaction.commandName === "simulate") {
+                const module = require(`../discord/commands/${interaction.options.getSubcommand(true).toLowerCase()}`);
+
+                success = await module.handle(interaction, interaction.options.getUser("from", true));
+            } else {
+                const module = require(`../discord/commands/${interaction.commandName.toLowerCase()}`);
+
+                success = await module.handle(interaction, interaction.user);
             }
-
-            const {groups: {cmd, args}} = messageParse.exec(text),
-                command = cmd.toLocaleLowerCase();
-
-            if (Object.getOwnPropertyNames(Commands.prototype).filter((p) => typeof Commands.prototype[p] === "function" && p !== "constructor").indexOf(command) !== -1) {
-                let success;
-                try {
-                    success = await commands[command](member, message.channel, args);
-                } catch (err) {
-                    if (err instanceof Warning) {
-                        Log.warn(`${message.channel} ${member}: ${text} - ${err.message || err}`);
-                    } else if (err instanceof Exception) {
-                        Log.error(`${message.channel} ${member}: ${text} - ${err.message}`, {err: err.innerError});
-                    } else {
-                        Log.error(`${message.channel} ${member}: ${text}`, {err});
-                    }
-
-                    return;
-                }
-
-                if (success) {
-                    Log.verbose(`${message.channel} ${member}: ${text}`);
-                }
+        } catch (err) {
+            if (err instanceof Warning) {
+                Log.warn(`${interaction.channel} ${interaction.user}: ${interaction} - ${err.message || err}`);
+            } else if (err instanceof Exception) {
+                Log.error(`${interaction.channel} ${interaction.user}: ${interaction} - ${err.message}`, {err: err.innerError});
+            } else {
+                Log.error(`${interaction.channel} ${interaction.user}: ${interaction}`, {err});
             }
+        }
+
+        if (success) {
+            Log.verbose(`${interaction.channel} ${interaction.user}: ${interaction}`);
         }
     }
 
@@ -158,7 +152,6 @@ class DiscordListener {
      */
     static async ready() {
         vcm = new VoiceChannelManagement(Discord);
-        commands = new Commands(Discord, vcm);
         streamers = new Streamers(Discord, Twitch);
 
         Discord.channels.filter((channel) => channel.type === DiscordJs.ChannelType.GuildVoice).forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {

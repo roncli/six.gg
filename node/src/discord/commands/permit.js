@@ -90,7 +90,7 @@ class Permit {
         const createdChannel = DiscordListener.voiceChannelManagement.getCreatedChannel(member);
         if (!createdChannel) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`!addchannel\`.`
+                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`
             });
             throw new Warning("No channel found.");
         }

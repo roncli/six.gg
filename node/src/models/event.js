@@ -77,13 +77,13 @@ class Event {
 
             embed.addFields({
                 name: "Joining",
-                value: `Type \`!join ${data._id}\` to be notified within 30 minutes of the event's start.`,
+                value: `Type \`/join ${data._id}\` to be notified within 30 minutes of the event's start.`,
                 inline: true
             });
 
             embed.addFields({
                 name: "Leaving",
-                value: `If you've already joined the event but no longer wish to take part, type \`!leave ${data._id}\`.`,
+                value: `If you've already joined the event but no longer wish to take part, type \`/leave ${data._id}\`.`,
                 inline: true
             });
 

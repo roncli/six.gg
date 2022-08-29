@@ -40,39 +40,49 @@ class AboutView {
 
                 <div class="section">Basic Commands</div>
 
-                <div class="command">!help</div>
+                <div class="command">/help</div>
                 <div>Get a link to this page.</div>
-                <div class="example">!help</div>
+                <div class="example">/help</div>
 
-                <div class="command">!version</div>
+                <div class="command">/version</div>
                 <div>Get the version of the bot.</div>
-                <div class="example">!version</div>
+                <div class="example">/version</div>
 
-                <div class="command">!website</div>
+                <div class="command">/website</div>
                 <div>Get a link to the website.</div>
-                <div class="example">!website</div>
+                <div class="example">/website</div>
 
-                <div class="command">!timezone &lt;timezone></div>
+                <div class="command">/timezone &lt;timezone></div>
                 <div>Sets your timezone.  You must have an account on the website before using this command.</div>
-                <div class="example">!timezone America/Los_Angeles</div>
+                <div class="example">/timezone America/Los_Angeles</div>
 
                 <div class="section">Voice Channels</div>
 
-                <div class="command">!addchannel &lt;name&gt;</div>
+                <div class="command">/addchannel &lt;name&gt;</div>
                 <div>Adds a voice channel to the Discord server.  You are limited to one channel per 5 minutes.  Channels will be removed after 5 minutes of inactivity.</div>
-                <div class="example">!addchannel WoW Raid</div>
+                <div class="example">/addchannel WoW Raid</div>
 
-                <div class="command">!limit (0-99)</div>
+                <div class="command">/limit (0-99)</div>
                 <div>Limits the number of people that can chat in your most recently-created voice channel.  Use 0 to remove the limit.</div>
-                <div class="example">!limit 25</div>
+                <div class="example">/limit 25</div>
 
-                <div class="command">!private</div>
-                <div>Makes your most recently-created voice channel private so that only you can join it.  Use with !permit to allow other users to join your channel.</div>
-                <div class="example">!private</div>
+                <div class="command">/private</div>
+                <div>Makes your most recently-created voice channel private so that only you can join it.  Use with /permit to allow other users to join your channel.</div>
+                <div class="example">/private</div>
 
-                <div class="command">!permit &lt;user&gt;</div>
+                <div class="command">/permit &lt;user&gt;</div>
                 <div>Permits a user to join your most recently-created voice channel.</div>
-                <div class="example">!permit @roncli</div>
+                <div class="example">/permit @roncli</div>
+
+                <div class="section">Events</div>
+
+                <div class="command">/join &lt;event ID&gt;</div>
+                <div>Join an event.  You will be listed on the website as attending the event, and you will get a reminder from the bot 30 minutes prior to the event.  Event IDs are listed in the #event-announcements channel on Discord.</div>
+                <div class="example">/join 13</div>
+
+                <div class="command">/leave &lt;event ID&gt;</div>
+                <div>Leaves an event.  You will no longer be listed on the website as attending the event, and you will not be reminded about the event by the bot.  Event IDs are listed in the #event-announcements channel on Discord.</div>
+                <div class="example">/leave 13</div>
             </div>
         `;
     }

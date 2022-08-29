@@ -74,18 +74,16 @@ class Timezone {
         try {
             sixUser = await User.getByGuildMember(member);
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw err;
         }
 
         if (timezone) {
             if (!tzdata.zones[timezone]) {
-                await interaction.reply({
-                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.  See #timezone-faq for a complete list of time zones.`,
-                    ephemeral: true
+                await interaction.editReply({
+                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`
                 });
                 throw new Warning("Invalid time zone, not in tzdata.");
             }
@@ -94,9 +92,8 @@ class Timezone {
             try {
                 time = new Date().toLocaleString("en-US", {timeZone: timezone, hour12: true, hour: "numeric", minute: "2-digit", timeZoneName: "short"});
             } catch (err) {
-                await interaction.reply({
-                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.  See #timezone-faq for a complete list of time zones.`,
-                    ephemeral: true
+                await interaction.editReply({
+                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`
                 });
                 throw new Warning("Invalid time zone, not recognized by toLocaleString.");
             }
@@ -104,16 +101,14 @@ class Timezone {
             try {
                 await sixUser.setTimezone(timezone);
             } catch (err) {
-                await interaction.reply({
-                    content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                    ephemeral: true
+                await interaction.editReply({
+                    content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
                 });
                 throw err;
             }
 
-            await interaction.reply({
-                content: `${member}, your time zone has been set to ${timezone}, where the current local time is ${time}.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `${member}, your time zone has been set to ${timezone}, where the current local time is ${time}.`
             });
             return true;
         }
@@ -121,16 +116,14 @@ class Timezone {
         try {
             await sixUser.setTimezone();
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw err;
         }
 
-        await interaction.reply({
-            content: `${member}, your time zone has been cleared.`,
-            ephemeral: true
+        await interaction.editReply({
+            content: `${member}, your time zone has been cleared.`
         });
         return true;
     }

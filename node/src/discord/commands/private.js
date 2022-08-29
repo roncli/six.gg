@@ -69,15 +69,14 @@ class Private {
      * @returns {Promise<boolean>} A promise that returns whether the interaction was successfully handled.
      */
     static async handle(interaction, user) {
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         const member = Discord.findGuildMemberById(user.id);
 
         const createdChannel = await DiscordListener.voiceChannelManagement.getCreatedChannel(member);
         if (!createdChannel) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`
             });
             throw new Warning("No channel found.");
         }
@@ -86,25 +85,16 @@ class Private {
             await createdChannel.permissionOverwrites.create(Discord.id, {Connect: false});
             await createdChannel.permissionOverwrites.create(member, {Connect: true});
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw new Exception("There was a Discord error while attempting to make a voice channel private.", err);
         }
 
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [
                 Discord.embedBuilder({
-                    title: "Channel Private",
-                    description: `${createdChannel} is now a private channel.`
-                })
-            ]
-        });
-        await interaction.followUp({
-            embeds: [
-                Discord.embedBuilder({
-                    title: "Additional Commands",
+                    title: "Private Voice Channel Commands",
                     description: `Use these additional commands to further manage ${createdChannel}.`,
                     fields: [
                         {
@@ -113,8 +103,17 @@ class Private {
                         }
                     ]
                 })
+            ]
+        });
+
+        await interaction.followUp({
+            embeds: [
+                Discord.embedBuilder({
+                    title: "Channel Private",
+                    description: `${createdChannel} is now a private channel.`
+                })
             ],
-            ephemeral: true
+            ephemeral: false
         });
 
         return true;

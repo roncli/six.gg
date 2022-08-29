@@ -66,7 +66,7 @@ class Leave {
      * @returns {Promise<boolean>} A promise that returns whether the interaction was successfully handled.
      */
     static async handle(interaction, user) {
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         const eventId = interaction.options.getInteger("eventid", true),
             member = Discord.findGuildMemberById(user.id);
@@ -76,17 +76,15 @@ class Leave {
             sixUser = await User.getByGuildMember(member);
             event = await Event.get(eventId);
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw err;
         }
 
         if (!event) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but that is an invalid event ID.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but that is an invalid event ID.`
             });
             throw new Warning("Invalid event ID.");
         }
@@ -94,16 +92,14 @@ class Leave {
         try {
             await Attendee.remove(eventId, sixUser.id);
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw err;
         }
 
-        await interaction.reply({
-            content: `${member}, you are no longer scheduled to attend the event **${Encoding.discordEncode(event.title)}**.`,
-            ephemeral: true
+        await interaction.editReply({
+            content: `${member}, you are no longer scheduled to attend the event **${Encoding.discordEncode(event.title)}**.`
         });
 
         return true;

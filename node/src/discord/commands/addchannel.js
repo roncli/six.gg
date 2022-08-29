@@ -73,23 +73,21 @@ class AddChannel {
      * @returns {Promise<boolean>} A promise that returns whether the interaction was successfully handled.
      */
     static async handle(interaction, user) {
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         const name = interaction.options.getString("name", true),
             member = Discord.findGuildMemberById(user.id);
 
         if (!DiscordListener.voiceChannelManagement.canCreateChannel(member)) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but you can only create a voice channel once every five minutes.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but you can only create a voice channel once every five minutes.`
             });
             throw new Warning("Can only create a voice channel once every 5 minutes.");
         }
 
         if (Discord.findChannelByName(name)) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but ${name} already exists as a voice channel.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but ${name} already exists as a voice channel.`
             });
             throw new Warning("Channel already exists.");
         }
@@ -98,26 +96,17 @@ class AddChannel {
         try {
             newChannel = await DiscordListener.voiceChannelManagement.create(member, name);
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw new Exception("There was a Discord error while attempting to create a voice channel.", err);
         }
 
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [
                 Discord.embedBuilder({
-                    title: "Channel Created",
-                    description: `${newChannel}`
-                })
-            ]
-        });
-        await interaction.followUp({
-            embeds: [
-                Discord.embedBuilder({
-                    title: "Additional Commands",
-                    description: `Use these additional commands to further manage ${newChannel}.`,
+                    title: "Voice Channel Commands",
+                    description: `Use these commands to further manage ${newChannel}.`,
                     fields: [
                         {
                             name: "/limit <0-99>",
@@ -131,8 +120,17 @@ class AddChannel {
                         }
                     ]
                 })
+            ]
+        });
+
+        await interaction.followUp({
+            embeds: [
+                Discord.embedBuilder({
+                    title: "New Voice Channel Created",
+                    description: `${newChannel}`
+                })
             ],
-            ephemeral: true
+            ephemeral: false
         });
 
         return true;

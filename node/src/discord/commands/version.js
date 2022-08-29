@@ -41,9 +41,8 @@ class Version {
      */
     static async handle(interaction) {
         await interaction.deferReply({ephemeral: true});
-        await interaction.reply({
-            content: `Six Gaming.  Messy but effective.  By roncli, Version ${pjson.version}.  Project is open source, visit https://github.com/roncli/six.gg.`,
-            ephemeral: true
+        await interaction.editReply({
+            content: `Six Gaming.  Messy but effective.  By roncli, Version ${pjson.version}.  Project is open source, visit https://github.com/roncli/six.gg.`
         });
         return true;
     }

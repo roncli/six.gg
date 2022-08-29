@@ -73,7 +73,7 @@ class Permit {
      * @returns {Promise<boolean>} A promise that returns whether the interaction was successfully handled.
      */
     static async handle(interaction, user) {
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         const permitUser = interaction.options.getUser("user", true),
             member = Discord.findGuildMemberById(user.id);
@@ -81,18 +81,16 @@ class Permit {
         const permitMember = Discord.findGuildMemberById(permitUser.id);
 
         if (!member) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but I can't find a member by that name on this server.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but I can't find a member by that name on this server.`
             });
             throw new Warning("Member not on the server.");
         }
 
         const createdChannel = DiscordListener.voiceChannelManagement.getCreatedChannel(member);
         if (!createdChannel) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`!addchannel\`.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`!addchannel\`.`
             });
             throw new Warning("No channel found.");
         }
@@ -100,20 +98,24 @@ class Permit {
         try {
             await createdChannel.permissionOverwrites.create(permitMember, {Connect: true});
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw new Exception("There was a Discord error while attempting to permit a user to a voice channel.", err);
         }
 
-        await interaction.reply({
+        await interaction.editReply({
+            content: "Voice channel permissions applied successfully."
+        });
+
+        await interaction.followUp({
             embeds: [
                 Discord.embedBuilder({
-                    title: "Channel Permissions",
+                    title: "Voice Channel Permissions",
                     description: `${permitMember} is now permitted to join ${createdChannel}.`
                 })
-            ]
+            ],
+            ephemeral: false
         });
 
         return true;

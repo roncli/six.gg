@@ -75,16 +75,15 @@ class Limit {
      * @returns {Promise<boolean>} A promise that returns whether the interaction was successfully handled.
      */
     static async handle(interaction, user) {
-        await interaction.deferReply();
+        await interaction.deferReply({ephemeral: true});
 
         const limit = interaction.options.getInteger("limit", true),
             member = Discord.findGuildMemberById(user.id);
 
         const createdChannel = await DiscordListener.voiceChannelManagement.getCreatedChannel(member);
         if (!createdChannel) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`
             });
             throw new Warning("No channel found.");
         }
@@ -92,30 +91,35 @@ class Limit {
         try {
             await createdChannel.setUserLimit(limit);
         } catch (err) {
-            await interaction.reply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
-                ephemeral: true
+            await interaction.editReply({
+                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
             });
             throw new Exception("There was a Discord error while attempting to limit a voice channel.", err);
         }
 
+        await interaction.editReply({
+            content: "Voice channel limit changed successfully."
+        });
+
         if (limit === 0) {
-            await interaction.reply({
+            await interaction.followUp({
                 embeds: [
                     Discord.embedBuilder({
-                        title: "Channel Limit Lifted",
+                        title: "Voice Channel Limit Lifted",
                         description: `${createdChannel} no longer has a channel limit.`
                     })
-                ]
+                ],
+                ephemeral: false
             });
         } else {
-            await interaction.reply({
+            await interaction.followUp({
                 embeds: [
                     Discord.embedBuilder({
-                        title: "Channel Limit Applied",
+                        title: "Voice Channel Limit Applied",
                         description: `${createdChannel} is now limited to a maximum of ${limit} members.`
                     })
-                ]
+                ],
+                ephemeral: false
             });
         }
 

@@ -40,9 +40,8 @@ class Website {
      */
     static async handle(interaction) {
         await interaction.deferReply({ephemeral: true});
-        await interaction.reply({
-            content: `We have a website?  Yes!  Visit our website at https://${process.env.DOMAIN} for more about Six Gaming!`,
-            ephemeral: true
+        await interaction.editReply({
+            content: `We have a website?  Yes!  Visit our website at https://${process.env.DOMAIN} for more about Six Gaming!`
         });
         return true;
     }

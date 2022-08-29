@@ -47,9 +47,8 @@ class Help {
 
         const member = Discord.findGuildMemberById(user.id);
 
-        await interaction.reply({
-            content: `${member}, see the about page https://${process.env.DOMAIN}/about.`,
-            ephemeral: true
+        await interaction.editReply({
+            content: `${member}, see the about page https://${process.env.DOMAIN}/about.`
         });
         return true;
     }

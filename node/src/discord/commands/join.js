@@ -30,7 +30,7 @@ class Join {
      */
     static builder(builder) {
         builder
-            .addStringOption((option) => option
+            .addIntegerOption((option) => option
                 .setName("eventid")
                 .setDescription("The event ID to join.  Get this from the #event-announcements channel.")
                 .setRequired(true))

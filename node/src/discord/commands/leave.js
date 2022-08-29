@@ -29,7 +29,7 @@ class Leave {
      */
     static builder(builder) {
         builder
-            .addStringOption((option) => option
+            .addIntegerOption((option) => option
                 .setName("eventid")
                 .setDescription("The event ID to leave.")
                 .setRequired(true))

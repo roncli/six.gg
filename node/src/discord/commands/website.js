@@ -1,4 +1,5 @@
-const DiscordJs = require("discord.js");
+const Discord = require("../index"),
+    DiscordJs = require("discord.js");
 
 //  #   #         #               #     #
 //  #   #         #                     #
@@ -41,7 +42,11 @@ class Website {
     static async handle(interaction) {
         await interaction.deferReply({ephemeral: true});
         await interaction.editReply({
-            content: `We have a website?  Yes!  Visit our website at https://${process.env.DOMAIN} for more about Six Gaming!`
+            embeds: [
+                Discord.embedBuilder({
+                    description: `We have a website?  Yes!  Visit our website at https://${process.env.DOMAIN} for more about Six Gaming!`
+                })
+            ]
         });
         return true;
     }

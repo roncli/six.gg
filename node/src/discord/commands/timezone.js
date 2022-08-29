@@ -75,7 +75,12 @@ class Timezone {
             sixUser = await User.getByGuildMember(member);
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw err;
         }
@@ -83,7 +88,12 @@ class Timezone {
         if (timezone) {
             if (!tzdata.zones[timezone]) {
                 await interaction.editReply({
-                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`
+                    embeds: [
+                        Discord.embedBuilder({
+                            description: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`,
+                            color: 0xff0000
+                        })
+                    ]
                 });
                 throw new Warning("Invalid time zone, not in tzdata.");
             }
@@ -93,7 +103,12 @@ class Timezone {
                 time = new Date().toLocaleString("en-US", {timeZone: timezone, hour12: true, hour: "numeric", minute: "2-digit", timeZoneName: "short"});
             } catch (err) {
                 await interaction.editReply({
-                    content: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`
+                    embeds: [
+                        Discord.embedBuilder({
+                            description: `Sorry, ${member}, but that time zone is not recognized.  Please note that this command is case sensitive.`,
+                            color: 0xff0000
+                        })
+                    ]
                 });
                 throw new Warning("Invalid time zone, not recognized by toLocaleString.");
             }
@@ -102,13 +117,22 @@ class Timezone {
                 await sixUser.setTimezone(timezone);
             } catch (err) {
                 await interaction.editReply({
-                    content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                    embeds: [
+                        Discord.embedBuilder({
+                            description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                            color: 0xff0000
+                        })
+                    ]
                 });
                 throw err;
             }
 
             await interaction.editReply({
-                content: `${member}, your time zone has been set to ${timezone}, where the current local time is ${time}.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `${member}, your time zone has been set to ${timezone}, where the current local time is ${time}.`
+                    })
+                ]
             });
             return true;
         }
@@ -117,13 +141,22 @@ class Timezone {
             await sixUser.setTimezone();
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw err;
         }
 
         await interaction.editReply({
-            content: `${member}, your time zone has been cleared.`
+            embeds: [
+                Discord.embedBuilder({
+                    description: `${member}, your time zone has been cleared.`
+                })
+            ]
         });
         return true;
     }

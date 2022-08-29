@@ -80,14 +80,24 @@ class AddChannel {
 
         if (!DiscordListener.voiceChannelManagement.canCreateChannel(member)) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but you can only create a voice channel once every five minutes.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but you can only create a voice channel once every five minutes.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Warning("Can only create a voice channel once every 5 minutes.");
         }
 
         if (Discord.findChannelByName(name)) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but ${name} already exists as a voice channel.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but ${name} already exists as a voice channel.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Warning("Channel already exists.");
         }
@@ -97,7 +107,12 @@ class AddChannel {
             newChannel = await DiscordListener.voiceChannelManagement.create(member, name);
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Exception("There was a Discord error while attempting to create a voice channel.", err);
         }

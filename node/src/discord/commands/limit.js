@@ -83,7 +83,12 @@ class Limit {
         const createdChannel = await DiscordListener.voiceChannelManagement.getCreatedChannel(member);
         if (!createdChannel) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but I don't see a channel you've created recently.  You can create a new channel with \`/addchannel\`.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Warning("No channel found.");
         }
@@ -92,13 +97,22 @@ class Limit {
             await createdChannel.setUserLimit(limit);
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Exception("There was a Discord error while attempting to limit a voice channel.", err);
         }
 
         await interaction.editReply({
-            content: "Voice channel limit changed successfully."
+            embeds: [
+                Discord.embedBuilder({
+                    description: "Voice channel limit changed successfully."
+                })
+            ]
         });
 
         if (limit === 0) {

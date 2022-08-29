@@ -48,7 +48,11 @@ class Help {
         const member = Discord.findGuildMemberById(user.id);
 
         await interaction.editReply({
-            content: `${member}, see the about page https://${process.env.DOMAIN}/about.`
+            embeds: [
+                Discord.embedBuilder({
+                    description: `${member}, see the about page https://${process.env.DOMAIN}/about.`
+                })
+            ]
         });
         return true;
     }

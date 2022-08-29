@@ -77,14 +77,24 @@ class Leave {
             event = await Event.get(eventId);
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw err;
         }
 
         if (!event) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but that is an invalid event ID.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but that is an invalid event ID.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw new Warning("Invalid event ID.");
         }
@@ -93,13 +103,22 @@ class Leave {
             await Attendee.remove(eventId, sixUser.id);
         } catch (err) {
             await interaction.editReply({
-                content: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`
+                embeds: [
+                    Discord.embedBuilder({
+                        description: `Sorry, ${member}, but something broke.  Try later, or get a hold of @roncli for fixing.`,
+                        color: 0xff0000
+                    })
+                ]
             });
             throw err;
         }
 
         await interaction.editReply({
-            content: `${member}, you are no longer scheduled to attend the event **${Encoding.discordEncode(event.title)}**.`
+            embeds: [
+                Discord.embedBuilder({
+                    description: `${member}, you are no longer scheduled to attend the event **${Encoding.discordEncode(event.title)}**.`
+                })
+            ]
         });
 
         return true;

@@ -31,7 +31,7 @@ class Join {
     static builder(builder) {
         builder
             .addStringOption((option) => option
-                .setName("eventId")
+                .setName("eventid")
                 .setDescription("The event ID to join.  Get this from the #event-announcements channel.")
                 .setRequired(true))
             .setName("join")
@@ -69,7 +69,7 @@ class Join {
     static async handle(interaction, user) {
         await interaction.deferReply();
 
-        const eventId = interaction.options.getInteger("eventId", true),
+        const eventId = interaction.options.getInteger("eventid", true),
             member = Discord.findGuildMemberById(user.id);
 
         let sixUser, event;

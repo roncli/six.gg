@@ -151,7 +151,8 @@ class Timezone {
             command
                 .addUserOption((option) => option
                     .setName("from")
-                    .setDescription("The user to simulate the command with."));
+                    .setDescription("The user to simulate the command with.")
+                    .setRequired(true));
             Timezone.builder(command);
             return command;
         });

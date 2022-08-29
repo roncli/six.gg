@@ -136,7 +136,8 @@ class Private {
             command
                 .addUserOption((option) => option
                     .setName("from")
-                    .setDescription("The user to simulate the command with."));
+                    .setDescription("The user to simulate the command with.")
+                    .setRequired(true));
             Private.builder(command);
             return command;
         });

@@ -135,7 +135,8 @@ class Permit {
             command
                 .addUserOption((option) => option
                     .setName("from")
-                    .setDescription("The user to simulate the command with."));
+                    .setDescription("The user to simulate the command with.")
+                    .setRequired(true));
             Permit.builder(command);
             return command;
         });

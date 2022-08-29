@@ -125,7 +125,8 @@ class Leave {
             command
                 .addUserOption((option) => option
                     .setName("from")
-                    .setDescription("The user to simulate the command with."));
+                    .setDescription("The user to simulate the command with.")
+                    .setRequired(true));
             Leave.builder(command);
             return command;
         });

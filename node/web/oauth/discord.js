@@ -51,9 +51,15 @@ class OAuthDiscord extends RouterBase {
      * @returns {Promise} A promise that resolves when the request has been processed.
      */
     static async get(req, res) {
-        const code = req.query.code.toString(),
-            state = req.query.state.toString(),
-            token = await DiscordUser.getToken(state, code);
+        const code = req.query.code ? req.query.code.toString() : void 0,
+            state = req.query.state ? req.query.state.toString() : void 0;
+
+        if (!code || !state) {
+            res.redirect(302, "/join");
+            return;
+        }
+
+        const token = await DiscordUser.getToken(state, code);
 
         if (!token) {
             res.redirect(302, "/join");

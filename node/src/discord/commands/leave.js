@@ -30,7 +30,7 @@ class Leave {
     static builder(builder) {
         builder
             .addStringOption((option) => option
-                .setName("eventId")
+                .setName("eventid")
                 .setDescription("The event ID to leave.")
                 .setRequired(true))
             .setName("leave")
@@ -68,7 +68,7 @@ class Leave {
     static async handle(interaction, user) {
         await interaction.deferReply();
 
-        const eventId = interaction.options.getInteger("eventId", true),
+        const eventId = interaction.options.getInteger("eventid", true),
             member = Discord.findGuildMemberById(user.id);
 
         let sixUser, event;

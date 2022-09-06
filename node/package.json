@@ -24,7 +24,7 @@
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.11",
         "@roncli/node-minify": "roncli/node-minify#v1.1.9",
         "@roncli/node-redis": "roncli/node-redis#v0.1.15",
-        "@root/request": "1.9.0",
+        "@root/request": "1.9.1",
         "@twurple/api": "5.2.3",
         "@twurple/auth": "5.2.3",
         "@twurple/chat": "5.2.3",

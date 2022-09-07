@@ -5,8 +5,6 @@
  * @typedef {typeof import("../twitch")} Twitch
  */
 
-const Log = require("@roncli/node-application-insights-logger");
-
 /** @type {{[x: string]: number}} */
 const lastAnnounced = {};
 
@@ -117,7 +115,7 @@ class Streamers {
         }
 
         if (!this.featured) {
-            await this.feature(member.id, twitchName);
+            this.feature(member.id, twitchName);
         }
     }
 
@@ -131,9 +129,9 @@ class Streamers {
      * Features the streamer by their Discord ID.
      * @param {string} id The Discord ID.
      * @param {string} channel The Twitch channel.
-     * @returns {Promise} A promise that resolves when the streamer has been featured.
+     * @returns {void}
      */
-    async feature(id, channel) {
+    feature(id, channel) {
         this.featured = id;
         this.featuredChannel = channel;
         const index = this.previouslyFeatured.indexOf(id);
@@ -141,12 +139,6 @@ class Streamers {
             this.previouslyFeatured.splice(index, 1);
         }
         this.previouslyFeatured.push(id);
-
-        try {
-            await Twitch.botChatClient.host("sixgaminggg", channel);
-        } catch (err) {
-            Log.error("There was an error while hosting a featured streamer.", {err});
-        }
     }
 
     // ###    ##   # #    ##   # #    ##
@@ -176,7 +168,7 @@ class Streamers {
             } else {
                 const data = Array.from(this.streamers.keys()).map((s) => ({id: s, twitchName: this.streamers.get(s).twitchName, index: this.previouslyFeatured.indexOf(s)})).sort((a, b) => a.index - b.index)[0];
 
-                await this.feature(data.id, data.twitchName);
+                this.feature(data.id, data.twitchName);
             }
         }
     }

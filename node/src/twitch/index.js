@@ -492,35 +492,6 @@ class Twitch {
             });
         });
 
-        channelChatClient.client.onHost(async (channel, target, viewers) => {
-            let user;
-            try {
-                user = (await channelTwitchClient.search.searchChannels(target)).data.find((c) => c.displayName === target);
-            } catch (err) {} finally {}
-
-            eventEmitter.emit("host", {
-                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
-                user: user ? user.name : target,
-                name: target,
-                viewerCount: viewers
-            });
-        });
-
-        channelChatClient.client.onHosted(async (channel, byChannel, auto, viewers) => {
-            let user;
-            try {
-                user = (await channelTwitchClient.search.searchChannels(byChannel)).data.find((c) => c.displayName === byChannel);
-            } catch (err) {} finally {}
-
-            eventEmitter.emit("hosted", {
-                channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,
-                user: user ? user.name : byChannel,
-                name: byChannel.charAt(0) === "#" ? byChannel.substring(1) : byChannel,
-                auto,
-                viewerCount: viewers
-            });
-        });
-
         channelChatClient.client.onMessage((channel, user, message, msg) => {
             eventEmitter.emit("message", {
                 channel: channel.charAt(0) === "#" ? channel.substring(1) : channel,

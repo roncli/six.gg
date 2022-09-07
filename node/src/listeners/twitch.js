@@ -4,8 +4,6 @@
  * @typedef {import("../../types/node/twitchListenerTypes").ErrorEvent} TwitchListenerTypes.ErrorEvent
  * @typedef {import("../../types/node/twitchListenerTypes").FollowEvent} TwitchListenerTypes.FollowEvent
  * @typedef {import("../../types/node/twitchListenerTypes").GiftPrimeEvent} TwitchListenerTypes.GiftPrimeEvent
- * @typedef {import("../../types/node/twitchListenerTypes").HostEvent} TwitchListenerTypes.HostEvent
- * @typedef {import("../../types/node/twitchListenerTypes").HostedEvent} TwitchListenerTypes.HostedEvent
  * @typedef {import("../../types/node/twitchListenerTypes").MessageEvent} TwitchListenerTypes.MessageEvent
  * @typedef {import("../../types/node/twitchListenerTypes").RaidedEvent} TwitchListenerTypes.RaidedEvent
  * @typedef {import("../../types/node/twitchListenerTypes").RedemptionEvent} TwitchListenerTypes.RedemptionEvent
@@ -25,7 +23,6 @@
 
 const Log = require("@roncli/node-application-insights-logger"),
     Discord = require("../discord"),
-    DiscordListener = require("./discord"),
     Twitch = require("../twitch");
 
 //              #    ###    #                #  #
@@ -144,83 +141,6 @@ class TwitchListener {
     static giftPrime(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
             Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `${ev.name} has gifted ${ev.gift}, a Prime gift, to the community!`);
-        }
-    }
-
-    // #                   #
-    // #                   #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // #  #   ##   ###      ##
-    /**
-     * Handles when a channel gets hosted.
-     * @param {TwitchListenerTypes.HostEvent} ev The host event.
-     * @returns {Promise} A promise that resolves when the event has been processed.
-     */
-    static async host(ev) {
-        const user = await Twitch.botTwitchClient.users.getUserByName(ev.user);
-        if (!user) {
-            return;
-        }
-
-        if (user.name === DiscordListener.streamers.featuredChannel) {
-            return;
-        }
-
-        const channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
-        if (!channel) {
-            return;
-        }
-
-        const stream = await Twitch.botTwitchClient.streams.getStreamByUserId(user.id);
-
-        const message = Discord.embedBuilder({
-            timestamp: new Date(),
-            thumbnail: {
-                url: user.profilePictureUrl,
-                width: 300,
-                height: 300
-            },
-            url: `https://twitch.tv/${user.name}`,
-            description: `Six Gaming has hosted ${ev.user} on Twitch!  Watch at https://twitch.tv/${user.name}`,
-            fields: [
-                {
-                    name: "Stream Title",
-                    value: channel.title
-                }
-            ]
-        });
-
-        if (stream) {
-            const game = await stream.getGame();
-
-            if (game && game.name) {
-                message.addFields({
-                    name: "Now Playing",
-                    value: game.name,
-                    inline: false
-                });
-            }
-        }
-
-        await Discord.richQueue(message, Discord.findTextChannelByName("live-stream-announcements"));
-    }
-
-    // #                   #             #
-    // #                   #             #
-    // ###    ##    ###   ###    ##    ###
-    // #  #  #  #  ##      #    # ##  #  #
-    // #  #  #  #    ##    #    ##    #  #
-    // #  #   ##   ###      ##   ##    ###
-    /**
-     * Handles when the current channel is hosted.
-     * @param {TwitchListenerTypes.HostedEvent} ev The hosted event.
-     * @returns {void}
-     */
-    static hosted(ev) {
-        if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks for the host, ${ev.name}!  Everyone, be sure to visit https://twitch.tv/${ev.user} to check out their stream!`);
         }
     }
 

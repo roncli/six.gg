@@ -35,7 +35,7 @@ class MembersView {
                 <div class="header">Location</div>
                 ${members.sort((a, b) => (a.guildMember.displayName || a.guildMember.user.username || "").localeCompare(b.guildMember.displayName || b.guildMember.user.username || "")).map((user) => /* html */`
                     <div>
-                        <img class="avatar" src="${user.guildMember.user.displayAvatarURL({size: 32, format: "png"})}" />
+                        <img class="avatar" src="${user.guildMember.user.displayAvatarURL({size: 32, extension: "png"})}" />
                     </div>
                     <div>
                         ${user.user ? /* html */`

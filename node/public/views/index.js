@@ -55,7 +55,7 @@ class IndexView {
                                     </li>
                                     <li class="login">
                                         <a href="/me">
-                                            <img src="${guildMember.user.displayAvatarURL({size: 32, format: "png"})}" />
+                                            <img src="${guildMember.user.displayAvatarURL({size: 32, extension: "png"})}" />
                                             ${IndexView.Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
                                         </a>
                                     </li>

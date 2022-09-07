@@ -34,7 +34,7 @@ class EventView {
             <div id="event">
                 <div>
                     <span title="Organizer">👤</span>
-                    <img src="${guildMember.user.displayAvatarURL({size: 16, format: "png"})}" />
+                    <img src="${guildMember.user.displayAvatarURL({size: 16, extension: "png"})}" />
                     <a href="/member/${eventUser.id}/${encodeURIComponent(eventUser.guildMember.nick || eventUser.discord.username || "")}">${EventView.Encoding.htmlEncode(eventUser.guildMember.nick || eventUser.discord.username || "")}</a>
                 </div>
                 <div><span title="Start Date">📅</span> ${event.start.toLocaleString("en-US", {timeZone: user && user.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone, weekday: "short", month: "numeric", day: "numeric", year: "numeric", hour12: true, hour: "numeric", minute: "2-digit", timeZoneName: "short"})}</div>
@@ -65,7 +65,7 @@ class EventView {
                 <div id="attendees">
                     ${attendees.map((a) => /* html */`
                         <div>
-                            <img src="${a.guildMember.user.displayAvatarURL({size: 16, format: "png"})}" />
+                            <img src="${a.guildMember.user.displayAvatarURL({size: 16, extension: "png"})}" />
                             <a href="/member/${a.user.id}/${encodeURIComponent(a.user.guildMember.nick || a.user.discord.username || "")}">${EventView.Encoding.htmlEncode(a.user.guildMember.nick || a.user.discord.username || "")}</a>
                         </div>
                     `).join("")}

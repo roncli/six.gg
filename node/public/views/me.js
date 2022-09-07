@@ -30,7 +30,7 @@ class MeView {
         const {user, guildMember, timezones} = data;
         return /* html */`
             <div class="section">
-                <img src="${guildMember.user.displayAvatarURL({size: 64, format: "png"})}" />
+                <img src="${guildMember.user.displayAvatarURL({size: 64, extension: "png"})}" />
                 ${MeView.Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
             </div>
             <div class="section">Connections</div>

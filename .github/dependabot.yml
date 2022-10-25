@@ -20,7 +20,7 @@ updates:
       timezone: "America/Los_Angeles"
     ignore:
       - dependency-name: "node"
-        versions: [">= 17.0"]
+        versions: [">= 19.0"]
   - package-ecosystem: "docker"
     directory: /nginx/
     schedule:
@@ -35,7 +35,7 @@ updates:
       timezone: "America/Los_Angeles"
     ignore:
       - dependency-name: "node"
-        versions: [">= 17.0"]
+        versions: [">= 19.0"]
   - package-ecosystem: "docker"
     directory: /redis/
     schedule:

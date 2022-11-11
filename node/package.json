@@ -25,7 +25,7 @@
         "@roncli/node-minify": "roncli/node-minify#v1.1.11",
         "@roncli/node-redis": "roncli/node-redis#v0.1.17",
         "@root/request": "1.9.2",
-        "@twurple/api": "5.2.5",
+        "@twurple/api": "5.2.7",
         "@twurple/auth": "5.2.7",
         "@twurple/chat": "5.2.5",
         "@twurple/eventsub": "5.2.5",

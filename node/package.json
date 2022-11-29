@@ -44,7 +44,7 @@
         "tzdata": "1.0.35"
     },
     "devDependencies": {
-        "@babel/core": "7.20.2",
+        "@babel/core": "7.20.5",
         "@babel/eslint-parser": "7.19.1",
         "@types/express": "4.17.14",
         "@types/generic-pool": "3.1.11",

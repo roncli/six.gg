@@ -20,7 +20,7 @@
     "dependencies": {
         "@fullcalendar/core": "6.0.1",
         "@fullcalendar/daygrid": "6.0.1",
-        "@fullcalendar/list": "6.0.0",
+        "@fullcalendar/list": "6.0.1",
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.13",
         "@roncli/node-minify": "roncli/node-minify#v1.1.11",
         "@roncli/node-redis": "roncli/node-redis#v0.1.17",

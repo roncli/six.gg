@@ -18,7 +18,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@fullcalendar/core": "6.0.1",
+        "@fullcalendar/core": "6.0.2",
         "@fullcalendar/daygrid": "6.0.1",
         "@fullcalendar/list": "6.0.1",
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v1.0.13",

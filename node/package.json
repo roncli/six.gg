@@ -28,7 +28,7 @@
         "@twurple/api": "5.2.7",
         "@twurple/auth": "5.2.7",
         "@twurple/chat": "5.2.7",
-        "@twurple/eventsub": "5.2.7",
+        "@twurple/eventsub": "5.3.0",
         "@twurple/pubsub": "5.2.7",
         "compression": "1.7.4",
         "cookie-parser": "1.4.6",

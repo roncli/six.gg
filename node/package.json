@@ -39,7 +39,7 @@
         "html-minifier-terser": "7.1.0",
         "igdb-api-node": "5.0.2",
         "mongodb": "4.13.0",
-        "node-schedule": "2.1.0",
+        "node-schedule": "2.1.1",
         "timezonecomplete": "5.12.4",
         "tzdata": "1.0.36"
     },

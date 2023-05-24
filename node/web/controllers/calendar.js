@@ -56,7 +56,7 @@ class Calendar extends RouterBase {
         res.status(200).send(await Common.page(
             "",
             {
-                css: ["/css/fullcalendar/common.css", "/css/fullcalendar/daygrid.css", "/css/fullcalendar.css", "/css/modal.css", "/css/calendar.css"],
+                css: ["/css/fullcalendar.css", "/css/modal.css", "/css/calendar.css"],
                 js: ["/js/fullcalendar/core.js", "/js/fullcalendar/daygrid.js", "/js/common/modal.js", "/js/common/template.js", "/js/calendar.js"]
             },
             CalendarView.get({timezone: user && user.timezone ? user.timezone : process.env.DEFAULT_TIMEZONE, defaultTimezone: !(user && user.timezone)}),

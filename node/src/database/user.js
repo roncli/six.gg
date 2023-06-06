@@ -340,7 +340,7 @@ class UserDb {
             const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
                 "discord.id": user.id,
                 "discord.username": user.username,
-                "discord.discriminator": user.discriminator,
+                "discord.discriminator": user.discriminator || "0000",
                 "guildMember.nick": guildMember.nickname,
                 "guildMember.joinedAt": guildMember.joinedAt,
                 connections: connections.filter((c) => c.verified && !c.revoked && c.visibility !== 0).map((c) => ({
@@ -357,7 +357,7 @@ class UserDb {
                 discord: {
                     id: user.id,
                     username: user.username,
-                    discriminator: user.discriminator
+                    discriminator: user.discriminator || "0000"
                 },
                 guildMember: {
                     nick: guildMember.nickname,

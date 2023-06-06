@@ -40,7 +40,7 @@ declare namespace DiscordOAuthTypes {
         id: string
         avatar: string | null | undefined
         username: string
-        discriminator: string
+        discriminator?: string
         bot?: boolean
         email?: string
         flags?: number

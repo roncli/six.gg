@@ -6,7 +6,7 @@ declare namespace UserTypes {
         discord: {
             id: string
             username: string
-            discriminator: string
+            discriminator?: string
             avatar?: string
         }
         guildMember: {
@@ -27,7 +27,7 @@ declare namespace UserTypes {
         discord: {
             id: string
             username: string
-            discriminator: string
+            discriminator?: string
             avatar?: string
         }
         guildMember: {

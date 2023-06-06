@@ -2,8 +2,8 @@ import MongoDb from "mongodb"
 
 declare namespace EncryptionTypes {
     type EncryptedData = {
-        salt: Buffer
-        encrypted: Buffer
+        salt: Uint8Array
+        encrypted: Uint8Array
     }
 
     type EncryptedMongoData = {

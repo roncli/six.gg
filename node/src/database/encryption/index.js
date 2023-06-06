@@ -161,7 +161,7 @@ class Encryption {
     //  ###                                                               #
     /**
      * Salts the key to generate a new salted key.
-     * @param {Buffer} salt The salt.
+     * @param {Uint8Array} salt The salt.
      * @returns {Buffer} The key.
      */
     static getSaltedKey(salt) {

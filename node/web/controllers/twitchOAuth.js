@@ -4,6 +4,7 @@
  */
 
 const Common = require("../includes/common"),
+    Discord = require("../../src/discord"),
     Log = require("@roncli/node-application-insights-logger"),
     NotFoundView = require("../../public/views/404"),
     request = require("@root/request"),
@@ -59,7 +60,12 @@ class TwitchOAuth extends RouterBase {
     static async get(req, res) {
         const user = await User.getCurrent(req);
 
-        if (!user || !user.discord || user.discord.username !== process.env.DISCORD_ADMIN_USERNAME || user.discord.discriminator !== process.env.DISCORD_ADMIN_DISCRIMINATOR) {
+        let member;
+        if (user && user.discord && user.discord.id) {
+            member = Discord.findGuildMemberById(user.discord.id);
+        }
+
+        if (!user || !user.discord || !member || !Discord.isOwner(member)) {
             res.status(404).send(await Common.page(
                 "",
                 {css: ["/css/error.css"]},

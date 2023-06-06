@@ -25,6 +25,9 @@ let readied = false;
 /** @type {DiscordJs.Guild} */
 let guild;
 
+/** @type {DiscordJs.Role} */
+let theEvilOverlordRole;
+
 const eventEmitter = new events.EventEmitter();
 
 //  ####     #                                    #
@@ -140,6 +143,8 @@ class Discord {
             Log.verbose("Connected to Discord.");
 
             guild = discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);
+
+            theEvilOverlordRole = guild.roles.cache.find((r) => r.name === "The Evil Overlord");
 
             const files = await fs.readdir(path.join(__dirname, "commands")),
                 simulate = new DiscordJs.SlashCommandBuilder(),
@@ -409,7 +414,7 @@ class Discord {
     //  ##   #      ##    # #    ##   ##   #  #   ##   ###    ##
     /**
      * Creates a new role on the Discord server.
-     * @param {DiscordJs.CreateRoleOptions} [data] The role data.
+     * @param {DiscordJs.RoleCreateOptions} [data] The role data.
      * @returns {Promise<DiscordJs.Role>} A promise that returns the created role.
      */
     static createRole(data) {
@@ -630,11 +635,11 @@ class Discord {
     // ###   ###     ##   ####  #  #   ##   #
     /**
      * Determines whether the user is the owner.
-     * @param {DiscordJs.GuildMember | DiscordJs.APIInteractionGuildMember} member The user to check.
+     * @param {DiscordJs.GuildMember} member The user to check.
      * @returns {boolean} Whether the user is the owner.
      */
     static isOwner(member) {
-        return member && member.user.username === process.env.DISCORD_ADMIN_USERNAME && member.user.discriminator === process.env.DISCORD_ADMIN_DISCRIMINATOR;
+        return !!(member && theEvilOverlordRole.members.find((m) => m.id === member.id));
     }
 }
 

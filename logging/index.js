@@ -89,6 +89,9 @@ class Index {
                     if (data.size) {
                         properties.originalSize = data.size;
                     }
+                    if (data.durationMillis) {
+                        properties.durationMillis = data.durationMillis;
+                    }
 
                     if (severityEnum[severity] >= 3) {
                         appInsights.defaultClient.trackException({exception: new Error(message), severity: severityEnum[severity], time: date, properties});

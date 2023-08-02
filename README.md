@@ -22,6 +22,9 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.3.3 - 8/1/2023
+* Package updates.
+
 ### v2.3.2 - 6/6/2023
 * Updates required for phasing out of Discord discriminator.
 * Package updates.

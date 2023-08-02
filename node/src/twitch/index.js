@@ -233,7 +233,7 @@ class Twitch {
             }
         });
 
-        channelAuthProvider.addUserForToken({
+        await channelAuthProvider.addUserForToken({
             accessToken: channelAccessToken,
             refreshToken: channelRefreshToken,
             expiresIn: void 0,
@@ -261,7 +261,7 @@ class Twitch {
             }
         });
 
-        botAuthProvider.addUserForToken({
+        await botAuthProvider.addUserForToken({
             accessToken: botAccessToken,
             refreshToken: botRefreshToken,
             expiresIn: void 0,

@@ -1,7 +1,7 @@
-const ClientCredentialsAuthProvider = require("@twurple/auth").ClientCredentialsAuthProvider,
+const AppTokenAuthProvider = require("@twurple/auth").AppTokenAuthProvider,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
-    EventSubMiddleware = require("@twurple/eventsub").EventSubMiddleware,
+    EventSubMiddleware = require("@twurple/eventsub-http").EventSubMiddleware,
     express = require("express"),
     HotRouter = require("hot-router"),
     Log = require("@roncli/node-application-insights-logger"),
@@ -92,7 +92,7 @@ process.on("unhandledRejection", (reason) => {
     // Setup Twurple EventSub.
     const eventSub = new EventSubMiddleware({
         apiClient: new TwitchClient({
-            authProvider: new ClientCredentialsAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET),
+            authProvider: new AppTokenAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET),
             logger: {
                 colors: false
             }

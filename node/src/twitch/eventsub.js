@@ -1,5 +1,5 @@
 /**
- * @typedef {import("@twurple/eventsub").EventSubMiddleware} EventSubMiddleware
+ * @typedef {import("@twurple/eventsub-http").EventSubMiddleware} EventSubMiddleware
  */
 
 //  #####                        #      ###          #

@@ -22,6 +22,10 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.3.4 - 8/9/2023
+* Don't log 1006 websocket errors from Twurple.
+* Package updates.
+
 ### v2.3.3 - 8/1/2023
 * Package updates.
 

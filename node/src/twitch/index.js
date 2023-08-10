@@ -481,6 +481,10 @@ class Twitch {
         });
 
         channelChatClient.client.onDisconnect((manually, reason) => {
+            if (reason.message === "[1006] ") {
+                // Ignore network disconnects.
+                return;
+            }
             if (reason) {
                 Log.error("The streamer's Twitch chat disconnected.", {err: reason});
             }
@@ -614,6 +618,10 @@ class Twitch {
         });
 
         botChatClient.client.onDisconnect((manually, reason) => {
+            if (reason.message === "[1006] ") {
+                // Ignore network disconnects.
+                return;
+            }
             if (reason) {
                 Log.error("The bot's Twitch chat disconnected.", {err: reason});
             }

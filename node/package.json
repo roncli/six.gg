@@ -27,7 +27,7 @@
         "@root/request": "1.9.2",
         "@twurple/api": "7.0.1",
         "@twurple/auth": "7.0.2",
-        "@twurple/chat": "7.0.1",
+        "@twurple/chat": "7.0.2",
         "@twurple/eventsub-http": "7.0.2",
         "@twurple/pubsub": "7.0.1",
         "compression": "1.7.4",

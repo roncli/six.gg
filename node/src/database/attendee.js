@@ -41,7 +41,7 @@ class AttendeeDb {
             userId: MongoDb.Long.fromNumber(data.userId)
         }}, {upsert: true, returnDocument: "after"});
 
-        data._id = result.value._id.toHexString();
+        data._id = result._id.toHexString();
 
         await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:event:${data.eventId}:attendees:updated`]);
 

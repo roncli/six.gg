@@ -337,7 +337,7 @@ class UserDb {
         /** @type {UserTypes.UserMongoData} */
         let userResult;
         if (await db.collection("user").findOne({"discord.id": user.id})) {
-            const result = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
+            userResult = await db.collection("user").findOneAndUpdate({"discord.id": user.id}, {$set: {
                 "discord.id": user.id,
                 "discord.username": user.username,
                 "discord.discriminator": user.discriminator || "0000",
@@ -349,8 +349,6 @@ class UserDb {
                     type: c.type
                 }))
             }}, {returnDocument: "after"});
-
-            userResult = result.value;
         } else {
             userResult = {
                 _id: void 0,
@@ -392,7 +390,7 @@ class UserDb {
             "refreshToken.salt": new MongoDb.Binary(encryptedTokens.refreshToken.salt),
             "refreshToken.encrypted": new MongoDb.Binary(encryptedTokens.refreshToken.encrypted),
             expires
-        }}, {upsert: true, returnDocument: "after"});
+        }}, {upsert: true, returnDocument: "after", includeResultMetadata: true});
 
         await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`, `${process.env.REDIS_PREFIX}:invalidate:user:${Db.fromLong(userResult._id)}:updated`]);
 

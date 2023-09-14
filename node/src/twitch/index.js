@@ -481,8 +481,8 @@ class Twitch {
         });
 
         channelChatClient.client.onDisconnect((manually, reason) => {
-            if (reason.message === "[1006] ") {
-                // Ignore network disconnects.
+            if (!reason || reason.message === "[1006] ") {
+                // Ignore network disconnects, or disconnects without a reason.
                 return;
             }
             if (reason) {

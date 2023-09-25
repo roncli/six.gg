@@ -50,6 +50,6 @@
         "@types/generic-pool": "3.8.1",
         "@types/html-minifier-terser": "7.0.0",
         "@types/node": "20.6.5",
-        "@types/node-schedule": "2.1.0"
+        "@types/node-schedule": "2.1.1"
     }
 }

@@ -29,7 +29,7 @@
         "@twurple/auth": "7.0.4",
         "@twurple/chat": "7.0.3",
         "@twurple/eventsub-http": "7.0.4",
-        "@twurple/pubsub": "7.0.3",
+        "@twurple/pubsub": "7.0.4",
         "compression": "1.7.4",
         "cookie-parser": "1.4.6",
         "discord-oauth2": "2.11.0",

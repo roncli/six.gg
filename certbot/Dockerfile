@@ -1,5 +1,5 @@
 # Get certbot latest.
-FROM certbot/certbot:v2.7.2
+FROM certbot/certbot:v2.7.3
 
 # Create /var/certbot directory.
 RUN mkdir -p /var/certbot

@@ -1,5 +1,5 @@
 # Get Node LTS Alpine.
-FROM node:18.18.2-alpine
+FROM node:20.9.0-alpine
 
 # Create /var/www directory.
 RUN mkdir -p /var/www

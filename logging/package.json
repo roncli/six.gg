@@ -18,14 +18,14 @@
     },
     "license": "MIT",
     "dependencies": {
-        "applicationinsights": "2.7.3",
-        "dockerode": "3.3.5",
+        "applicationinsights": "2.9.1",
+        "dockerode": "4.0.0",
         "graygelf": "2.0.0"
     },
     "devDependencies": {
-        "@babel/core": "7.22.19",
-        "@babel/eslint-parser": "7.22.15",
-        "@types/dockerode": "3.3.19",
-        "@types/node": "20.6.0"
+        "@babel/core": "7.23.3",
+        "@babel/eslint-parser": "7.23.3",
+        "@types/dockerode": "3.3.20",
+        "@types/node": "20.9.0"
     }
 }

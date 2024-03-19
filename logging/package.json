@@ -24,7 +24,7 @@
     },
     "devDependencies": {
         "@babel/core": "7.24.1",
-        "@babel/eslint-parser": "7.23.10",
+        "@babel/eslint-parser": "7.24.1",
         "@types/dockerode": "3.3.26",
         "@types/node": "20.11.29"
     }

@@ -1,5 +1,5 @@
 # Get Node LTS Alpine.
-FROM node:20.19.0-alpine
+FROM node:22.14.0-alpine
 
 # Create /var/www directory.
 RUN mkdir -p /var/logging

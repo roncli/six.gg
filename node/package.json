@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@babel/core": "7.24.6",
-        "@babel/eslint-parser": "7.24.5",
+        "@babel/eslint-parser": "7.27.0",
         "@types/express": "5.0.1",
         "@types/generic-pool": "3.8.1",
         "@types/html-minifier-terser": "7.0.2",

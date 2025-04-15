@@ -32,7 +32,7 @@
         "@twurple/pubsub": "7.0.10",
         "compression": "1.7.4",
         "cookie-parser": "1.4.6",
-        "discord-oauth2": "2.11.0",
+        "discord-oauth2": "2.12.1",
         "discord.js": "14.18.0",
         "express": "5.1.0",
         "hot-router": "1.0.2",

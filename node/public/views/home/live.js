@@ -3,24 +3,12 @@
  * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
  */
 
-//  #        #                  #   #    #
-//  #                           #   #
-//  #       ##    #   #   ###   #   #   ##     ###   #   #
-//  #        #    #   #  #   #   # #     #    #   #  #   #
-//  #        #     # #   #####   # #     #    #####  # # #
-//  #        #     # #   #       # #     #    #      # # #
-//  #####   ###     #     ###     #     ###    ###    # #
+// MARK: class LiveView
 /**
  * Class that represenets the live view for the home page.
  */
 class LiveView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} data The page data.

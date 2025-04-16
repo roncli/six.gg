@@ -1,21 +1,9 @@
-//  #####           #     #            #      ####            ##                        #      #   #    #
-//    #                   #            #      #   #          #  #                       #      #   #
-//    #    #   #   ##    ####    ###   # ##   #   #   ###    #     # ##    ###    ###   # ##   #   #   ##     ###   #   #
-//    #    #   #    #     #     #   #  ##  #  ####   #   #  ####   ##  #  #   #  #      ##  #   # #     #    #   #  #   #
-//    #    # # #    #     #     #      #   #  # #    #####   #     #      #####   ###   #   #   # #     #    #####  # # #
-//    #    # # #    #     #  #  #   #  #   #  #  #   #       #     #      #          #  #   #   # #     #    #      # # #
-//    #     # #    ###     ##    ###   #   #  #   #   ###    #     #       ###   ####   #   #    #     ###    ###    # #
+// MARK: class TwitchRefreshView
 /**
  * A class that represents the Twitch refresh view.
  */
 class TwitchRefreshView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {string} clientId The client ID.

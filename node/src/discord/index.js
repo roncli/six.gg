@@ -30,23 +30,12 @@ let theEvilOverlordRole;
 
 const eventEmitter = new events.EventEmitter();
 
-//  ####     #                                    #
-//   #  #                                         #
-//   #  #   ##     ###    ###    ###   # ##    ## #
-//   #  #    #    #      #   #  #   #  ##  #  #  ##
-//   #  #    #     ###   #      #   #  #      #   #
-//   #  #    #        #  #   #  #   #  #      #  ##
-//  ####    ###   ####    ###    ###   #       ## #
+// MARK: class Discord
 /**
  * A static class that handles all Discord.js interctions.
  */
 class Discord {
-    //       #                             ##
-    //       #                              #
-    //  ##   ###    ###  ###   ###    ##    #     ###
-    // #     #  #  #  #  #  #  #  #  # ##   #    ##
-    // #     #  #  # ##  #  #  #  #  ##     #      ##
-    //  ##   #  #   # #  #  #  #  #   ##   ###   ###
+    // MARK: static get channels
     /**
      * Returns the channels on the server.
      * @returns {DiscordJs.Collection<string, DiscordJs.GuildChannel | DiscordJs.ThreadChannel>} The channels.
@@ -59,12 +48,7 @@ class Discord {
         return new DiscordJs.Collection();
     }
 
-    //                   #
-    //                   #
-    // # #    ##   # #   ###    ##   ###    ###
-    // ####  # ##  ####  #  #  # ##  #  #  ##
-    // #  #  ##    #  #  #  #  ##    #       ##
-    // #  #   ##   #  #  ###    ##   #     ###
+    // MARK: static get members
     /**
      * Returns the members on the server.
      * @returns {DiscordJs.Collection<string, DiscordJs.GuildMember>} The members.
@@ -77,12 +61,7 @@ class Discord {
         return new DiscordJs.Collection();
     }
 
-    //                          #
-    //                          #
-    //  ##   # #    ##   ###   ###    ###
-    // # ##  # #   # ##  #  #   #    ##
-    // ##    # #   ##    #  #   #      ##
-    //  ##    #     ##   #  #    ##  ###
+    // MARK: static get events
     /**
      * Returns the EventEmitter for Discord events.
      * @returns {events.EventEmitter} The EventEmitter object.
@@ -91,12 +70,7 @@ class Discord {
         return eventEmitter;
     }
 
-    //  #
-    //
-    // ##     ##    ##   ###
-    //  #    #     #  #  #  #
-    //  #    #     #  #  #  #
-    // ###    ##    ##   #  #
+    // MARK: static get icon
     /**
      * Returns the guild's icon.
      * @returns {string} The URL of the icon.
@@ -109,12 +83,7 @@ class Discord {
         return void 0;
     }
 
-    //  #       #
-    //          #
-    // ##     ###
-    //  #    #  #
-    //  #    #  #
-    // ###    ###
+    // MARK: static get id
     /**
      * Returns the server ID.
      * @returns {string} The ID of the server.
@@ -127,13 +96,7 @@ class Discord {
         return void 0;
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###   #  #  ###
-    // ##      #    #  #  #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #  #  #
-    // ###      ##   # #  #       ##   ###  ###
-    //                                      #
+    // MARK: static startup
     /**
      * Sets up Discord events.  Should only ever be called once.
      * @returns {void}
@@ -214,12 +177,7 @@ class Discord {
         });
     }
 
-    //                                      #
-    //                                      #
-    //  ##    ##   ###   ###    ##    ##   ###
-    // #     #  #  #  #  #  #  # ##  #      #
-    // #     #  #  #  #  #  #  ##    #      #
-    //  ##    ##   #  #  #  #   ##    ##     ##
+    // MARK: static async connect
     /**
      * Connects to Discord.
      * @returns {Promise} A promise that resolves once Discord is connected.
@@ -234,12 +192,7 @@ class Discord {
         }
     }
 
-    //  #            ##                                  #             #
-    //              #  #                                 #             #
-    // ##     ###   #      ##   ###   ###    ##    ##   ###    ##    ###
-    //  #    ##     #     #  #  #  #  #  #  # ##  #      #    # ##  #  #
-    //  #      ##   #  #  #  #  #  #  #  #  ##    #      #    ##    #  #
-    // ###   ###     ##    ##   #  #  #  #   ##    ##     ##   ##    ###
+    // MARK: static isConnected
     /**
      * Determines whether the bot is connected to Discord.
      * @returns {boolean} Whether the bot is connected to Discord.
@@ -248,11 +201,7 @@ class Discord {
         return discord && discord.ws && guild ? discord.ws.status === 0 : false;
     }
 
-    //  ###  #  #   ##   #  #   ##
-    // #  #  #  #  # ##  #  #  # ##
-    // #  #  #  #  ##    #  #  ##
-    //  ###   ###   ##    ###   ##
-    //    #
+    // MARK: static async queue
     /**
      * Queues a message to be sent.
      * @param {string} message The message to be sent.
@@ -271,12 +220,7 @@ class Discord {
         return msg;
     }
 
-    //          #   #     #
-    //          #         #
-    //  ##    ###  ##    ###
-    // # ##  #  #   #     #
-    // ##    #  #   #     #
-    //  ##    ###  ###     ##
+    // MARK: static async edit
     /**
      * Edits a message.
      * @param {DiscordJs.Message} message The posted message to edit.
@@ -287,12 +231,7 @@ class Discord {
         await Discord.richEdit(message, new DiscordJs.EmbedBuilder({description: text}));
     }
 
-    //             #              #  ###          #    ##       #
-    //             #              #  #  #               #       #
-    //  ##   # #   ###    ##    ###  ###   #  #  ##     #     ###   ##   ###
-    // # ##  ####  #  #  # ##  #  #  #  #  #  #   #     #    #  #  # ##  #  #
-    // ##    #  #  #  #  ##    #  #  #  #  #  #   #     #    #  #  ##    #
-    //  ##   #  #  ###    ##    ###  ###    ###  ###   ###    ###   ##   #
+    // MARK: static embedBuilder
     /**
      * Gets a new DiscordJs EmbedBuilder object.
      * @param {DiscordJs.EmbedData} [options] The options to pass.
@@ -314,13 +253,7 @@ class Discord {
         return embed;
     }
 
-    //        #          #      ##
-    //                   #     #  #
-    // ###   ##     ##   ###   #  #  #  #   ##   #  #   ##
-    // #  #   #    #     #  #  #  #  #  #  # ##  #  #  # ##
-    // #      #    #     #  #  ## #  #  #  ##    #  #  ##
-    // #     ###    ##   #  #   ##    ###   ##    ###   ##
-    //                            #
+    // MARK: static async richQueue
     /**
      * Queues a rich embed message to be sent.
      * @param {DiscordJs.EmbedBuilder} embed The message to be sent.
@@ -353,12 +286,7 @@ class Discord {
         return msg;
     }
 
-    //        #          #     ####     #   #     #
-    //                   #     #        #         #
-    // ###   ##     ##   ###   ###    ###  ##    ###
-    // #  #   #    #     #  #  #     #  #   #     #
-    // #      #    #     #  #  #     #  #   #     #
-    // #     ###    ##   #  #  ####   ###  ###     ##
+    // MARK: static async richEdit
     /**
      * Edits a rich embed message.
      * @param {DiscordJs.Message} message The posted message to edit.
@@ -385,12 +313,7 @@ class Discord {
         await message.edit({embeds: [embed]});
     }
 
-    //                          #           ##   #                             ##
-    //                          #          #  #  #                              #
-    //  ##   ###    ##    ###  ###    ##   #     ###    ###  ###   ###    ##    #
-    // #     #  #  # ##  #  #   #    # ##  #     #  #  #  #  #  #  #  #  # ##   #
-    // #     #     ##    # ##   #    ##    #  #  #  #  # ##  #  #  #  #  ##     #
-    //  ##   #      ##    # #    ##   ##    ##   #  #   # #  #  #  #  #   ##   ###
+    // MARK: static createChannel
     /**
      * Creates a new channel on the Discord server.
      * @param {string} name The name of the channel.
@@ -406,12 +329,7 @@ class Discord {
         return guild.channels.create({name, type, permissionOverwrites: overwrites, reason});
     }
 
-    //                          #          ###         ##
-    //                          #          #  #         #
-    //  ##   ###    ##    ###  ###    ##   #  #   ##    #     ##
-    // #     #  #  # ##  #  #   #    # ##  ###   #  #   #    # ##
-    // #     #     ##    # ##   #    ##    # #   #  #   #    ##
-    //  ##   #      ##    # #    ##   ##   #  #   ##   ###    ##
+    // MARK: static createRole
     /**
      * Creates a new role on the Discord server.
      * @param {DiscordJs.RoleCreateOptions} [data] The role data.
@@ -424,13 +342,7 @@ class Discord {
         return guild.roles.create(data);
     }
 
-    //   #    #             #   ##          #                                  ###         #  #
-    //  # #                 #  #  #         #                                  #  #        ## #
-    //  #    ##    ###    ###  #      ###  ###    ##    ###   ##   ###   #  #  ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  #     #  #   #    # ##  #  #  #  #  #  #  #  #  #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  #  #  # ##   #    ##     ##   #  #  #      # #  #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ##    # #    ##   ##   #      ##   #       #   ###     #   #  #   # #  #  #   ##
-    //                                                  ###               #           #
+    // MARK: static findCategoryByName
     /**
      * Finds a Discord category by its name.
      * @param {string} name The name of the category.
@@ -443,13 +355,7 @@ class Discord {
         return /** @type {DiscordJs.CategoryChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildCategory)); // eslint-disable-line no-extra-parens
     }
 
-    //   #    #             #   ##   #                             ##    ###         ###      #
-    //  # #                 #  #  #  #                              #    #  #         #       #
-    //  #    ##    ###    ###  #     ###    ###  ###   ###    ##    #    ###   #  #   #     ###
-    // ###    #    #  #  #  #  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   ###    ###
-    //                                                                          #
+    // MARK: static findChannelById
     /**
      * Finds a Discord channel by its ID.
      * @param {string} id The ID of the channel.
@@ -462,13 +368,7 @@ class Discord {
         return guild.channels.cache.find((c) => c.id === id);
     }
 
-    //   #    #             #   ##   #                             ##    ###         #  #
-    //  # #                 #  #  #  #                              #    #  #        ## #
-    //  #    ##    ###    ###  #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
-    //                                                                          #
+    // MARK: static findChannelByName
     /**
      * Finds a Discord channel by its name.
      * @param {string} name The name of the channel.
@@ -481,13 +381,7 @@ class Discord {
         return guild.channels.cache.find((c) => c.name === name);
     }
 
-    //   #    #             #   ##          #    ##       #  #  #              #                 ###         ###    #                 ##                #  #
-    //  # #                 #  #  #               #       #  ####              #                 #  #        #  #                      #                ## #
-    //  #    ##    ###    ###  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###   ###   #  #  #  #  ##     ###   ###    #     ###  #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #  #  #  #  #  #  #   #    ##     #  #   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #     #  #   # #  #  #   #      ##   #  #   #    # ##   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #     ###     #   ###   ###   ###    ###   ###    # #    #   #  #   # #  #  #   ##
-    //                                                                                                  #                       #                  #
+    // MARK: static findGuildMemberByDisplayName
     /**
      * Returns the Discord user in the guild by their display name.
      * @param {string} displayName The display name of the Discord user.
@@ -500,13 +394,7 @@ class Discord {
         return guild.members.cache.find((m) => m.displayName === displayName);
     }
 
-    //   #    #             #   ##          #    ##       #  #  #              #                 ###         ###      #
-    //  # #                 #  #  #               #       #  ####              #                 #  #         #       #
-    //  #    ##    ###    ###  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###   ###   #  #   #     ###
-    // ###    #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #     #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #     ###     #   ###    ###
-    //                                                                                                  #
+    // MARK: static findGuildMemberById
     /**
      * Returns the Discord user in the guild by their Discord ID.
      * @param {string} id The ID of the Discord user.
@@ -519,13 +407,7 @@ class Discord {
         return guild.members.cache.find((m) => m.id === id);
     }
 
-    //   #    #             #  ###         ##          ###         ###      #
-    //  # #                 #  #  #         #          #  #         #       #
-    //  #    ##    ###    ###  #  #   ##    #     ##   ###   #  #   #     ###
-    // ###    #    #  #  #  #  ###   #  #   #    # ##  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  # #   #  #   #    ##    #  #   # #   #    #  #
-    //  #    ###   #  #   ###  #  #   ##   ###    ##   ###     #   ###    ###
-    //                                                        #
+    // MARK: static findRoleById
     /**
      * Finds a Discord role by its ID.
      * @param {string} id The ID of the role.
@@ -538,13 +420,7 @@ class Discord {
         return guild.roles.cache.find((r) => r.id === id);
     }
 
-    //   #    #             #  ###         ##          ###         #  #
-    //  # #                 #  #  #         #          #  #        ## #
-    //  #    ##    ###    ###  #  #   ##    #     ##   ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  ###   #  #   #    # ##  #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #  # #   #  #   #    ##    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###  #  #   ##   ###    ##   ###     #   #  #   # #  #  #   ##
-    //                                                        #
+    // MARK: static findRoleByName
     /**
      * Finds a Discord role by its name.
      * @param {string} name The name of the role.
@@ -557,13 +433,7 @@ class Discord {
         return guild.roles.cache.find((r) => r.name === name);
     }
 
-    //   #    #             #  ###                #     ##   #                             ##    ###         #  #
-    //  # #                 #   #                 #    #  #  #                              #    #  #        ## #
-    //  #    ##    ###    ###   #     ##   #  #  ###   #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #   #    # ##   ##    #    #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #   #    ##     ##    #    #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   #     ##   #  #    ##   ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
-    //                                                                                                  #
+    // MARK: static findTextChannelByName
     /**
      * Finds a Discord text channel by its name.
      * @param {string} name The name of the channel.
@@ -576,13 +446,7 @@ class Discord {
         return /** @type {DiscordJs.TextChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildText)); // eslint-disable-line no-extra-parens
     }
 
-    //   #    #             #  #  #                     ###         ###      #
-    //  # #                 #  #  #                     #  #         #       #
-    //  #    ##    ###    ###  #  #   ###    ##   ###   ###   #  #   #     ###
-    // ###    #    #  #  #  #  #  #  ##     # ##  #  #  #  #  #  #   #    #  #
-    //  #     #    #  #  #  #  #  #    ##   ##    #     #  #   # #   #    #  #
-    //  #    ###   #  #   ###   ##   ###     ##   #     ###     #   ###    ###
-    //                                                         #
+    // MARK: static findUserById
     /**
      * Finds a Discord user by user ID.
      * @param {string} id The user ID.
@@ -592,13 +456,7 @@ class Discord {
         return discord.users.fetch(id, {cache: false});
     }
 
-    //   #    #             #  #  #         #                 ##   #                             ##    ###         #  #
-    //  # #                 #  #  #                          #  #  #                              #    #  #        ## #
-    //  #    ##    ###    ###  #  #   ##   ##     ##    ##   #     ###    ###  ###   ###    ##    #    ###   #  #  ## #   ###  # #    ##
-    // ###    #    #  #  #  #  #  #  #  #   #    #     # ##  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  # ##  #  #  ####  # ##
-    //  #     #    #  #  #  #   ##   #  #   #    #     ##    #  #  #  #  # ##  #  #  #  #  ##     #    #  #   # #  # ##  # ##  #  #  ##
-    //  #    ###   #  #   ###   ##    ##   ###    ##    ##    ##   #  #   # #  #  #  #  #   ##   ###   ###     #   #  #   # #  #  #   ##
-    //                                                                                                        #
+    // MARK: static findVoiceChannelByName
     /**
      * Finds a Discord voice channel by its name.
      * @param {string} name The name of the channel.
@@ -611,13 +469,7 @@ class Discord {
         return /** @type {DiscordJs.VoiceChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line no-extra-parens
     }
 
-    //              #    #  #
-    //              #    ## #
-    //  ###   ##   ###   ## #   ###  # #    ##
-    // #  #  # ##   #    # ##  #  #  ####  # ##
-    //  ##   ##     #    # ##  # ##  #  #  ##
-    // #      ##     ##  #  #   # #  #  #   ##
-    //  ###
+    // MARK: static getName
     /**
      * Returns the user's display name if they are a guild member, or a username if they are a user.
      * @param {DiscordJs.GuildMember|DiscordJs.User} user The user to get the name for.
@@ -627,12 +479,7 @@ class Discord {
         return user instanceof DiscordJs.GuildMember ? user.displayName : user.username;
     }
 
-    //  #            ##
-    //              #  #
-    // ##     ###   #  #  #  #  ###    ##   ###
-    //  #    ##     #  #  #  #  #  #  # ##  #  #
-    //  #      ##   #  #  ####  #  #  ##    #
-    // ###   ###     ##   ####  #  #   ##   #
+    // MARK: static isOwner
     /**
      * Determines whether the user is the owner.
      * @param {DiscordJs.GuildMember} member The user to check.

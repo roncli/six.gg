@@ -8,23 +8,12 @@ const Common = require("../includes/common"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//  #   #          #     #                 #  #   #          #       #     ##     ##                             #
-//  #   #          #     #                 #  #   #          #      # #     #      #                             #
-//  ## ##   ###   ####   # ##    ###    ## #  ##  #   ###   ####   #   #    #      #     ###   #   #   ###    ## #
-//  # # #  #   #   #     ##  #  #   #  #  ##  # # #  #   #   #     #   #    #      #    #   #  #   #  #   #  #  ##
-//  #   #  #####   #     #   #  #   #  #   #  #  ##  #   #   #     #####    #      #    #   #  # # #  #####  #   #
-//  #   #  #       #  #  #   #  #   #  #  ##  #   #  #   #   #  #  #   #    #      #    #   #  # # #  #      #  ##
-//  #   #   ###     ##   #   #   ###    ## #  #   #   ###     ##   #   #   ###    ###    ###    # #    ###    ## #
+// MARK: class MethodNotAllowed
 /**
  * A class that represents the 405 page.
  */
 class MethodNotAllowed extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -37,13 +26,7 @@ class MethodNotAllowed extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

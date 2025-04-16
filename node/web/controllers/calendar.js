@@ -8,23 +8,12 @@ const CalendarView = require("../../public/views/calendar"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//   ###           ##                      #
-//  #   #           #                      #
-//  #       ###     #     ###   # ##    ## #   ###   # ##
-//  #          #    #    #   #  ##  #  #  ##      #  ##  #
-//  #       ####    #    #####  #   #  #   #   ####  #
-//  #   #  #   #    #    #      #   #  #  ##  #   #  #
-//   ###    ####   ###    ###   #   #   ## #   ####  #
+// MARK: class Calendar
 /**
  * A class that represents the calendar page.
  */
 class Calendar extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -37,13 +26,7 @@ class Calendar extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

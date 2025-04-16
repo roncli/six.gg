@@ -17,24 +17,12 @@ const crypto = require("crypto"),
 
 const validStates = new Set();
 
-//  #   #
-//  #   #
-//  #   #   ###    ###   # ##
-//  #   #  #      #   #  ##  #
-//  #   #   ###   #####  #
-//  #   #      #  #      #
-//   ###   ####    ###   #
+// MARK: class User
 /**
  * A class that handles all Discord user interactions.
  */
 class User {
-    //              #     ##    ##          #    #     #  #        ##
-    //              #    #  #  #  #         #    #     #  #         #
-    //  ###   ##   ###   #  #  #  #  #  #  ###   ###   #  #  ###    #
-    // #  #  # ##   #    #  #  ####  #  #   #    #  #  #  #  #  #   #
-    //  ##   ##     #    #  #  #  #  #  #   #    #  #  #  #  #      #
-    // #      ##     ##   ##   #  #   ###    ##  #  #   ##   #     ###
-    //  ###
+    // MARK: static getOAuthUrl
     /**
      * Gets the OAuth URL to use, generating a state to ensure that it came from this site.
      * @returns {string} The OAuth URL to use.
@@ -61,13 +49,7 @@ class User {
         });
     }
 
-    //              #    ###         #
-    //              #     #          #
-    //  ###   ##   ###    #     ##   # #    ##   ###
-    // #  #  # ##   #     #    #  #  ##    # ##  #  #
-    //  ##   ##     #     #    #  #  # #   ##    #  #
-    // #      ##     ##   #     ##   #  #   ##   #  #
-    //  ###
+    // MARK: static async getToken
     /**
      * Gets a Discord token for a user from the state.
      * @param {string} state The state string.
@@ -99,13 +81,7 @@ class User {
         }
     }
 
-    //              #    #  #
-    //              #    #  #
-    //  ###   ##   ###   #  #   ###    ##   ###
-    // #  #  # ##   #    #  #  ##     # ##  #  #
-    //  ##   ##     #    #  #    ##   ##    #
-    // #      ##     ##   ##   ###     ##   #
-    //  ###
+    // MARK: static async getUser
     /**
      * Gets the user for a token.
      * @param {string} token The access token.
@@ -120,13 +96,7 @@ class User {
         }
     }
 
-    //              #    #  #                      ##                                  #     #
-    //              #    #  #                     #  #                                 #
-    //  ###   ##   ###   #  #   ###    ##   ###   #      ##   ###   ###    ##    ##   ###   ##     ##   ###    ###
-    // #  #  # ##   #    #  #  ##     # ##  #  #  #     #  #  #  #  #  #  # ##  #      #     #    #  #  #  #  ##
-    //  ##   ##     #    #  #    ##   ##    #     #  #  #  #  #  #  #  #  ##    #      #     #    #  #  #  #    ##
-    // #      ##     ##   ##   ###     ##   #      ##    ##   #  #  #  #   ##    ##     ##  ###    ##   #  #  ###
-    //  ###
+    // MARK: static async getUserConnections
     /**
      * Gets the user's connections for a token.
      * @param {string} token The access token.
@@ -141,12 +111,7 @@ class User {
         }
     }
 
-    //               #                      #     ###         #
-    //              # #                     #      #          #
-    // ###    ##    #    ###    ##    ###   ###    #     ##   # #    ##   ###
-    // #  #  # ##  ###   #  #  # ##  ##     #  #   #    #  #  ##    # ##  #  #
-    // #     ##     #    #     ##      ##   #  #   #    #  #  # #   ##    #  #
-    // #      ##    #    #      ##   ###    #  #   #     ##   #  #   ##   #  #
+    // MARK: static async refreshToken
     /**
      * Refreshes an access token.
      * @param {string} token The refresh token.
@@ -165,12 +130,7 @@ class User {
         }
     }
 
-    //                         #           ###         #
-    //                         #            #          #
-    // ###    ##   # #    ##   # #    ##    #     ##   # #    ##   ###
-    // #  #  # ##  # #   #  #  ##    # ##   #    #  #  ##    # ##  #  #
-    // #     ##    # #   #  #  # #   ##     #    #  #  # #   ##    #  #
-    // #      ##    #     ##   #  #   ##    #     ##   #  #   ##   #  #
+    // MARK: static async revokeToken
     /**
      * Revokes an access token.
      * @param {string} token The token.

@@ -2,23 +2,12 @@ const AttendeeDb = require("../database/attendee"),
     Event = require("./event"),
     Exception = require("../errors/exception");
 
-//    #     #      #                       #
-//   # #    #      #                       #
-//  #   #  ####   ####    ###   # ##    ## #   ###    ###
-//  #   #   #      #     #   #  ##  #  #  ##  #   #  #   #
-//  #####   #      #     #####  #   #  #   #  #####  #####
-//  #   #   #  #   #  #  #      #   #  #  ##  #      #
-//  #   #    ##     ##    ###   #   #   ## #   ###    ###
+// MARK: class Attendee
 /**
  * A class that represents an attendee of an event.
  */
 class Attendee {
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: static async add
     /**
      * Adds an attendee to an event.
      * @param {number} eventId The event ID.
@@ -41,10 +30,7 @@ class Attendee {
         return true;
     }
 
-    // ###    ##   # #    ##   # #    ##
-    // #  #  # ##  ####  #  #  # #   # ##
-    // #     ##    #  #  #  #  # #   ##
-    // #      ##   #  #   ##    #     ##
+    // MARK: static async remove
     /**
      * Removes an attendee from an event.
      * @param {number} eventId The event ID.

@@ -1,21 +1,9 @@
-//  #####           #     #            #       ###     #            #     #      #   #    #
-//    #                   #            #      #   #   # #           #     #      #   #
-//    #    #   #   ##    ####    ###   # ##   #   #  #   #  #   #  ####   # ##   #   #   ##     ###   #   #
-//    #    #   #    #     #     #   #  ##  #  #   #  #   #  #   #   #     ##  #   # #     #    #   #  #   #
-//    #    # # #    #     #     #      #   #  #   #  #####  #   #   #     #   #   # #     #    #####  # # #
-//    #    # # #    #     #  #  #   #  #   #  #   #  #   #  #  ##   #  #  #   #   # #     #    #      # # #
-//    #     # #    ###     ##    ###   #   #   ###   #   #   ## #    ##   #   #    #     ###    ###    # #
+// MARK: class TwitchOAuthView
 /**
  * A class that represents the Twitch OAuth view.
  */
 class TwitchOAuthView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

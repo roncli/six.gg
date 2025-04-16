@@ -20,23 +20,12 @@ setTimeout(() => {
     Discord = require("../discord");
 }, 0);
 
-//  #####                        #
-//  #                            #
-//  #      #   #   ###   # ##   ####
-//  ####   #   #  #   #  ##  #   #
-//  #       # #   #####  #   #   #
-//  #       # #   #      #   #   #  #
-//  #####    #     ###   #   #    ##
+// MARK: class Event
 /**
  * A class that represents a calendar event.
  */
 class Event {
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: static async add
     /**
      * Adds an event.
      * @param {EventTypes.EventData} data The event data.
@@ -95,13 +84,7 @@ class Event {
         return new Event(data);
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Gets an event by ID.
      * @param {number} id The event ID.
@@ -123,13 +106,7 @@ class Event {
         return new Event(event);
     }
 
-    //              #    ###         ###          #          ###
-    //              #    #  #        #  #         #          #  #
-    //  ###   ##   ###   ###   #  #  #  #   ###  ###    ##   #  #   ###  ###    ###   ##
-    // #  #  # ##   #    #  #  #  #  #  #  #  #   #    # ##  ###   #  #  #  #  #  #  # ##
-    //  ##   ##     #    #  #   # #  #  #  # ##   #    ##    # #   # ##  #  #   ##   ##
-    // #      ##     ##  ###     #   ###    # #    ##   ##   #  #   # #  #  #  #      ##
-    //  ###                     #                                               ###
+    // MARK: static async getByDateRange
     /**
      * Gets events by a date range.
      * @param {Date} start The start date.
@@ -152,13 +129,7 @@ class Event {
         return events && events.map((e) => new Event(e)) || [];
     }
 
-    //              #     #      #
-    //              #           # #
-    // ###    ##   ###   ##     #    #  #
-    // #  #  #  #   #     #    ###   #  #
-    // #  #  #  #   #     #     #     # #
-    // #  #   ##     ##  ###    #      #
-    //                                #
+    // MARK: static async notify
     /**
      * Sets up notifications about upcoming events.
      * @returns {Promise<void>} A promise that resolves when notifications are setup.
@@ -186,13 +157,7 @@ class Event {
         }
     }
 
-    //              #     #      #         ####                     #     ##    #                 #     #
-    //              #           # #        #                        #    #  #   #                 #
-    // ###    ##   ###   ##     #    #  #  ###   # #    ##   ###   ###    #    ###    ###  ###   ###   ##    ###    ###
-    // #  #  #  #   #     #    ###   #  #  #     # #   # ##  #  #   #      #    #    #  #  #  #   #     #    #  #  #  #
-    // #  #  #  #   #     #     #     # #  #     # #   ##    #  #   #    #  #   #    # ##  #      #     #    #  #   ##
-    // #  #   ##     ##  ###    #      #   ####   #     ##   #  #    ##   ##     ##   # #  #       ##  ###   #  #  #
-    //                                #                                                                             ###
+    // MARK: static async notifyEventStarting
     /**
      * Notifies attendees that an event is starting.
      * @param {number} id The event ID.
@@ -224,10 +189,7 @@ class Event {
         }
     }
 
-    // ###    ##   # #    ##   # #    ##
-    // #  #  # ##  ####  #  #  # #   # ##
-    // #     ##    #  #  #  #  # #   ##
-    // #      ##   #  #   ##    #     ##
+    // MARK: static async remove
     /**
      * Removes an event from the database.
      * @param {number} eventId The event ID.
@@ -263,12 +225,7 @@ class Event {
         return true;
     }
 
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new event.
      * @param {EventTypes.EventData} event The event.

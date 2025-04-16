@@ -2,23 +2,12 @@ const Discord = require("../index"),
     DiscordJs = require("discord.js"),
     pjson = require("../../../package.json");
 
-//  #   #                         #
-//  #   #
-//  #   #   ###   # ##    ###    ##     ###   # ##
-//   # #   #   #  ##  #  #        #    #   #  ##  #
-//   # #   #####  #       ###     #    #   #  #   #
-//   # #   #      #          #    #    #   #  #   #
-//    #     ###   #      ####    ###    ###   #   #
+// MARK: class Version
 /**
  * A command that returns the version of the bot.
  */
 class Version {
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -29,12 +18,7 @@ class Version {
             .setDescription("Provides the version number and development information about the bot.");
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.

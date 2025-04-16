@@ -1,21 +1,9 @@
-//  #####    #
-//    #
-//    #     ##    ## #    ###
-//    #      #    # # #  #   #
-//    #      #    # # #  #####
-//    #      #    # # #  #
-//    #     ###   #   #   ###
+// MARK: class Time
 /**
  * A class that represents time functions.
  */
 class Time {
-    //              #    #                       ##    ###                ###    #
-    //              #    #                        #     #                  #
-    //  ###   ##   ###   #      ##    ##    ###   #     #     ###    ##    #    ##    # #    ##
-    // #  #  # ##   #    #     #  #  #     #  #   #     #    ##     #  #   #     #    ####  # ##
-    //  ##   ##     #    #     #  #  #     # ##   #     #      ##   #  #   #     #    #  #  ##
-    // #      ##     ##  ####   ##    ##    # #  ###   ###   ###     ##    #    ###   #  #   ##
-    //  ###
+    // MARK: static getLocalIsoTime
     /**
      * Gets the local ISO time for a timezone.
      * @param {Date} time The time.

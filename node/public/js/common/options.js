@@ -2,26 +2,12 @@
  * @typedef {import("../../../types/browser/viewTypes").Option} ViewTypes.Option
  */
 
-//   ###           #       #
-//  #   #          #
-//  #   #  # ##   ####    ##     ###   # ##    ###
-//  #   #  ##  #   #       #    #   #  ##  #  #
-//  #   #  ##  #   #       #    #   #  #   #   ###
-//  #   #  # ##    #  #    #    #   #  #   #      #
-//   ###   #        ##    ###    ###   #   #  ####
-//         #
-//         #
+// MARK: class Options
 /**
  * A class that provides options functions.
  */
 class Options {
-    //                                      #           ##          #     #
-    //                                      #          #  #         #
-    //  ###   ##   ###    ##   ###    ###  ###    ##   #  #  ###   ###   ##     ##   ###    ###
-    // #  #  # ##  #  #  # ##  #  #  #  #   #    # ##  #  #  #  #   #     #    #  #  #  #  ##
-    //  ##   ##    #  #  ##    #     # ##   #    ##    #  #  #  #   #     #    #  #  #  #    ##
-    // #      ##   #  #   ##   #      # #    ##   ##    ##   ###     ##  ###    ##   #  #  ###
-    //  ###                                                  #
+    // MARK: generateOptions
     /**
      * Generates an HTML string of options.
      * @param {ViewTypes.Option[]} options The options.

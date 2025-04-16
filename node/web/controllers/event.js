@@ -10,23 +10,12 @@ const Common = require("../includes/common"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//  #####                        #      ###                  #                    ##     ##
-//  #                            #     #   #                 #                     #      #
-//  #      #   #   ###   # ##   ####   #       ###   # ##   ####   # ##    ###     #      #     ###   # ##
-//  ####   #   #  #   #  ##  #   #     #      #   #  ##  #   #     ##  #  #   #    #      #    #   #  ##  #
-//  #       # #   #####  #   #   #     #      #   #  #   #   #     #      #   #    #      #    #####  #
-//  #       # #   #      #   #   #  #  #   #  #   #  #   #   #  #  #      #   #    #      #    #      #
-//  #####    #     ###   #   #    ##    ###    ###   #   #    ##   #       ###    ###    ###    ###   #
+// MARK: class EventController
 /**
  * A class that represents the event page.
  */
 class EventController extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -39,13 +28,7 @@ class EventController extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

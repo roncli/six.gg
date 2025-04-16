@@ -5,25 +5,12 @@
 
 const RouterBase = require("hot-router").RouterBase;
 
-//  #                                   #
-//  #                                   #
-//  #       ###    ## #   ###   #   #  ####
-//  #      #   #  #  #   #   #  #   #   #
-//  #      #   #   ##    #   #  #   #   #
-//  #      #   #  #      #   #  #  ##   #  #
-//  #####   ###    ###    ###    ## #    ##
-//                #   #
-//                 ###
+// MARK: class Logout
 /**
  * A class that represents the logout page.
  */
 class Logout extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -36,13 +23,7 @@ class Logout extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

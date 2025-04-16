@@ -11,23 +11,12 @@ const Discord = require("../../src/discord"),
     pjson = require("../../package.json"),
     RouterBase = require("hot-router").RouterBase;
 
-//   ###
-//  #   #
-//  #       ###   ## #   ## #    ###   # ##
-//  #      #   #  # # #  # # #  #   #  ##  #
-//  #      #   #  # # #  # # #  #   #  #   #
-//  #   #  #   #  # # #  # # #  #   #  #   #
-//   ###    ###   #   #  #   #   ###   #   #
+// MARK: class Common
 /**
  * A class that handles common web functions.
  */
 class Common extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -40,11 +29,7 @@ class Common extends RouterBase {
         return route;
     }
 
-    // ###    ###   ###   ##
-    // #  #  #  #  #  #  # ##
-    // #  #  # ##   ##   ##
-    // ###    # #  #      ##
-    // #            ###
+    // MARK: static page
     /**
      * Generates a webpage from the provided HTML using a common template.
      * @param {string} head The HTML to insert into the header.

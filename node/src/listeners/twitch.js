@@ -25,13 +25,7 @@ const Log = require("@roncli/node-application-insights-logger"),
     Discord = require("../discord"),
     Twitch = require("../twitch");
 
-//              #    ###    #                #  #
-//              #     #                      ## #
-//  ###   ##   ###    #    ##     ##   ###   ## #   ###  # #    ##
-// #  #  # ##   #     #     #    # ##  #  #  # ##  #  #  ####  # ##
-//  ##   ##     #     #     #    ##    #     # ##  # ##  #  #  ##
-// #      ##     ##   #    ###    ##   #     #  #   # #  #  #   ##
-//  ###
+// MARK: getTierName
 /**
  * Gets the tier name based on the data from the Twitch API.
  * @param {string} tier The tier from the Twitch API.
@@ -52,23 +46,12 @@ const getTierName = (tier, isPrime) => {
     }
 };
 
-//  #####           #     #            #      #        #            #
-//    #                   #            #      #                     #
-//    #    #   #   ##    ####    ###   # ##   #       ##     ###   ####    ###   # ##    ###   # ##
-//    #    #   #    #     #     #   #  ##  #  #        #    #       #     #   #  ##  #  #   #  ##  #
-//    #    # # #    #     #     #      #   #  #        #     ###    #     #####  #   #  #####  #
-//    #    # # #    #     #  #  #   #  #   #  #        #        #   #  #  #      #   #  #      #
-//    #     # #    ###     ##    ###   #   #  #####   ###   ####     ##    ###   #   #   ###   #
+// MARK: class TwitchListener
 /**
  * A class that handles listening to Twitch events.
  */
 class TwitchListener {
-    //              #     #
-    //              #
-    //  ###   ##   ###   ##     ##   ###
-    // #  #  #      #     #    #  #  #  #
-    // # ##  #      #     #    #  #  #  #
-    //  # #   ##     ##  ###    ##   #  #
+    // MARK: static action
     /**
      * Handles a chat action, ie: when the /me command is used.
      * @param {TwitchListenerTypes.ActionEvent} ev The action event.
@@ -79,12 +62,7 @@ class TwitchListener {
         }
     }
 
-    // #      #     #
-    // #            #
-    // ###   ##    ###    ###
-    // #  #   #     #    ##
-    // #  #   #     #      ##
-    // ###   ###     ##  ###
+    // MARK: static bits
     /**
      * Handles when bits are cheered in the channel.
      * @param {TwitchListenerTypes.BitsEvent} ev The bits event.
@@ -98,10 +76,7 @@ class TwitchListener {
         }
     }
 
-    //  ##   ###   ###    ##   ###
-    // # ##  #  #  #  #  #  #  #  #
-    // ##    #     #     #  #  #
-    //  ##   #     #      ##   #
+    // MARK: static error
     /**
      * Handles an error thrown from Twitch.
      * @param {TwitchListenerTypes.ErrorEvent} ev The error event.
@@ -111,12 +86,7 @@ class TwitchListener {
         Log.error(`An error event was received from Twitch: ${ev.message}`, {err: ev.err});
     }
 
-    //   #         ##    ##
-    //  # #         #     #
-    //  #     ##    #     #     ##   #  #
-    // ###   #  #   #     #    #  #  #  #
-    //  #    #  #   #     #    #  #  ####
-    //  #     ##   ###   ###    ##   ####
+    // MARK: static follow
     /**
      * Handles when the channel is followed.
      * @param {TwitchListenerTypes.FollowEvent} ev The follow event.
@@ -126,13 +96,7 @@ class TwitchListener {
         Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thank you for following Six Gaming, ${ev.name}!`);
     }
 
-    //        #      #    #    ###          #
-    //              # #   #    #  #
-    //  ###  ##     #    ###   #  #  ###   ##    # #    ##
-    // #  #   #    ###    #    ###   #  #   #    ####  # ##
-    //  ##    #     #     #    #     #      #    #  #  ##
-    // #     ###    #      ##  #     #     ###   #  #   ##
-    //  ###
+    // MARK: static giftPrime
     /**
      * Handles when a Prime gift is given.
      * @param {TwitchListenerTypes.GiftPrimeEvent} ev The gift prime event.
@@ -144,41 +108,24 @@ class TwitchListener {
         }
     }
 
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
+    // MARK: static message
     /**
      * Handles when a message is posted in chat.
      * @param {TwitchListenerTypes.MessageEvent} ev The message event.
      * @returns {void}
      */
     static message(ev) {
-        if (ev.channel === process.env.TWITCH_CHANNEL) {
-        }
+        if (ev.channel === process.env.TWITCH_CHANNEL) {}
     }
 
-    //         #     #   ##     #
-    //        # #   # #   #
-    //  ##    #     #     #    ##    ###    ##
-    // #  #  ###   ###    #     #    #  #  # ##
-    // #  #   #     #     #     #    #  #  ##
-    //  ##    #     #    ###   ###   #  #   ##
+    // MARK: static offline
     /**
      * Handles when the stream goes offline.
      * @returns {void}
      */
-    static offline() {
+    static offline() {}
 
-    }
-
-    //              #       #           #
-    //                      #           #
-    // ###    ###  ##     ###   ##    ###
-    // #  #  #  #   #    #  #  # ##  #  #
-    // #     # ##   #    #  #  ##    #  #
-    // #      # #  ###    ###   ##    ###
+    // MARK: static raided
     /**
      * Handles when the stream is raided.
      * @param {TwitchListenerTypes.RaidedEvent} ev The raided event.
@@ -190,27 +137,14 @@ class TwitchListener {
         }
     }
 
-    // //                #                     #     #
-    // //                #                     #
-    // // ###    ##    ###   ##   # #   ###   ###   ##     ##   ###
-    // // #  #  # ##  #  #  # ##  ####  #  #   #     #    #  #  #  #
-    // // #     ##    #  #  ##    #  #  #  #   #     #    #  #  #  #
-    // // #      ##    ###   ##   #  #  ###     ##  ###    ##   #  #
-    // //                               #
-    // /**
-    //  * Handles when channel points are redeemed in the channel.
-    //  * @param {TwitchListenerTypes.RedemptionEvent} ev The redemption event.
-    //  * @returns {void}
-    //  */
-    // static redemption(ev) {
-    // }
+    // MARK: static redemption
+    /**
+     * Handles when channel points are redeemed in the channel.
+     * @returns {void}
+     */
+    static redemption() {}
 
-    //                          #
-    //                          #
-    // ###    ##    ###   #  #  ###
-    // #  #  # ##  ##     #  #  #  #
-    // #     ##      ##   #  #  #  #
-    // #      ##   ###     ###  ###
+    // MARK: static resub
     /**
      * Handles when a sub is renewed.
      * @param {TwitchListenerTypes.ResubEvent} ev The resub event.
@@ -222,28 +156,17 @@ class TwitchListener {
         }
     }
 
-    //        #     #                ##
-    //              #                 #
-    // ###   ##    ###   #  #   ###   #
-    // #  #   #     #    #  #  #  #   #
-    // #      #     #    #  #  # ##   #
-    // #     ###     ##   ###   # #  ###
+    // MARK: static ritual
     /**
      * Handles when a ritual occurs in chat.
      * @param {TwitchListenerTypes.RitualEvent} ev The ritual event.
      * @returns {void}
      */
     static ritual(ev) {
-        if (ev.channel === process.env.TWITCH_CHANNEL) {
-        }
+        if (ev.channel === process.env.TWITCH_CHANNEL) {}
     }
 
-    //         #
-    //         #
-    //  ###   ###   ###    ##    ###  # #
-    // ##      #    #  #  # ##  #  #  ####
-    //   ##    #    #     ##    # ##  #  #
-    // ###      ##  #      ##    # #  #  #
+    // MARK: static async stream
     /**
      * Handles when the stream goes live.
      * @param {TwitchListenerTypes.StreamEvent} ev The stream event.
@@ -288,12 +211,7 @@ class TwitchListener {
         await Discord.richQueue(message, Discord.findTextChannelByName("live-stream-announcements"));
     }
 
-    //              #
-    //              #
-    //  ###   #  #  ###
-    // ##     #  #  #  #
-    //   ##   #  #  #  #
-    // ###     ###  ###
+    // MARK: static sub
     /**
      * Handles a sub to the channel.
      * @param {TwitchListenerTypes.SubEvent} ev The sub event.
@@ -305,12 +223,7 @@ class TwitchListener {
         }
     }
 
-    //              #     ####         #                   #
-    //              #     #            #                   #
-    //  ###   #  #  ###   ###   #  #  ###    ##   ###    ###
-    // ##     #  #  #  #  #      ##    #    # ##  #  #  #  #
-    //   ##   #  #  #  #  #      ##    #    ##    #  #  #  #
-    // ###     ###  ###   ####  #  #    ##   ##   #  #   ###
+    // MARK: static subExtend
     /**
      * Handles when a sub is extended via a sub token.
      * @param {TwitchListenerTypes.SubExtendEvent} ev The sub extend event.
@@ -322,12 +235,7 @@ class TwitchListener {
         }
     }
 
-    //              #      ##    #      #    #
-    //              #     #  #         # #   #
-    //  ###   #  #  ###   #     ##     #    ###
-    // ##     #  #  #  #  # ##   #    ###    #
-    //   ##   #  #  #  #  #  #   #     #     #
-    // ###     ###  ###    ###  ###    #      ##
+    // MARK: static subGift
     /**
      * Handles when a sub is gifted to a user.
      * @param {TwitchListenerTypes.SubGiftEvent} ev The sub gift event.
@@ -339,13 +247,7 @@ class TwitchListener {
         }
     }
 
-    //              #      ##    #      #    #     ##                                  #     #
-    //              #     #  #         # #   #    #  #                                       #
-    //  ###   #  #  ###   #     ##     #    ###   #      ##   # #   # #   #  #  ###   ##    ###   #  #
-    // ##     #  #  #  #  # ##   #    ###    #    #     #  #  ####  ####  #  #  #  #   #     #    #  #
-    //   ##   #  #  #  #  #  #   #     #     #    #  #  #  #  #  #  #  #  #  #  #  #   #     #     # #
-    // ###     ###  ###    ###  ###    #      ##   ##    ##   #  #  #  #   ###  #  #  ###     ##    #
-    //                                                                                             #
+    // MARK: static subGiftCommunity
     /**
      * Handles when subs are gifted to the community.
      * @param {TwitchListenerTypes.SubGiftCommunityEvent} ev The sub gift community event.
@@ -357,13 +259,7 @@ class TwitchListener {
         }
     }
 
-    //              #      ##    #      #    #     ##                                  #     #          ###               ####                                   #
-    //              #     #  #         # #   #    #  #                                       #          #  #              #                                      #
-    //  ###   #  #  ###   #     ##     #    ###   #      ##   # #   # #   #  #  ###   ##    ###   #  #  #  #   ###  #  #  ###    ##   ###   #  #   ###  ###    ###
-    // ##     #  #  #  #  # ##   #    ###    #    #     #  #  ####  ####  #  #  #  #   #     #    #  #  ###   #  #  #  #  #     #  #  #  #  #  #  #  #  #  #  #  #
-    //   ##   #  #  #  #  #  #   #     #     #    #  #  #  #  #  #  #  #  #  #  #  #   #     #     # #  #     # ##   # #  #     #  #  #     ####  # ##  #     #  #
-    // ###     ###  ###    ###  ###    #      ##   ##    ##   #  #  #  #   ###  #  #  ###     ##    #   #      # #    #   #      ##   #     ####   # #  #      ###
-    //                                                                                             #                 #
+    // MARK: static subGiftCommunityPayForward
     /**
      * Handles when a sub gifted to the community was payed forward by the recipient.
      * @param {TwitchListenerTypes.SubGiftCommunityPayForwardEvent} ev The sub gift pay forward event.
@@ -375,13 +271,7 @@ class TwitchListener {
         }
     }
 
-    //              #      ##    #      #    #    ###               ####                                   #
-    //              #     #  #         # #   #    #  #              #                                      #
-    //  ###   #  #  ###   #     ##     #    ###   #  #   ###  #  #  ###    ##   ###   #  #   ###  ###    ###
-    // ##     #  #  #  #  # ##   #    ###    #    ###   #  #  #  #  #     #  #  #  #  #  #  #  #  #  #  #  #
-    //   ##   #  #  #  #  #  #   #     #     #    #     # ##   # #  #     #  #  #     ####  # ##  #     #  #
-    // ###     ###  ###    ###  ###    #      ##  #      # #    #   #      ##   #     ####   # #  #      ###
-    //                                                         #
+    // MARK: static subGiftPayForward
     /**
      * Handles when a sub gifted to a user was payed forward.
      * @param {TwitchListenerTypes.SubGiftPayForwardEvent} ev The sub pay forward event.
@@ -393,13 +283,7 @@ class TwitchListener {
         }
     }
 
-    //              #      ##    #      #    #    #  #                             #
-    //              #     #  #         # #   #    #  #                             #
-    //  ###   #  #  ###   #     ##     #    ###   #  #  ###    ###  ###    ###   ###   ##
-    // ##     #  #  #  #  # ##   #    ###    #    #  #  #  #  #  #  #  #  #  #  #  #  # ##
-    //   ##   #  #  #  #  #  #   #     #     #    #  #  #  #   ##   #     # ##  #  #  ##
-    // ###     ###  ###    ###  ###    #      ##   ##   ###   #     #      # #   ###   ##
-    //                                                  #      ###
+    // MARK: static subGiftUpgrade
     /**
      * Handles when a gifted sub is upgraded to a regular sub.
      * @param {TwitchListenerTypes.SubGiftUpgradeEvent} ev The sub gift upgrade event.
@@ -411,13 +295,7 @@ class TwitchListener {
         }
     }
 
-    //              #     ###          #                #  #                             #           #
-    //              #     #  #                          #  #                             #           #
-    //  ###   #  #  ###   #  #  ###   ##    # #    ##   #  #  ###    ###  ###    ###   ###   ##    ###
-    // ##     #  #  #  #  ###   #  #   #    ####  # ##  #  #  #  #  #  #  #  #  #  #  #  #  # ##  #  #
-    //   ##   #  #  #  #  #     #      #    #  #  ##    #  #  #  #   ##   #     # ##  #  #  ##    #  #
-    // ###     ###  ###   #     #     ###   #  #   ##    ##   ###   #     #      # #   ###   ##    ###
-    //                                                        #      ###
+    // MARK: static subPrimeUpgraded
     /**
      * Handles when a sub prime is upgraded to a regular sub.
      * @param {TwitchListenerTypes.SubPrimeUpgradedEvent} ev The sub prime upgraded event.
@@ -429,20 +307,12 @@ class TwitchListener {
         }
     }
 
-    // //       #      #
-    // //       #
-    // // #  #  ###   ##     ###   ###    ##   ###
-    // // #  #  #  #   #    ##     #  #  # ##  #  #
-    // // ####  #  #   #      ##   #  #  ##    #
-    // // ####  #  #  ###   ###    ###    ##   #
-    // //                          #
-    // /**
-    //  * Handles when the bot is whispered.
-    //  * @param {TwitchListenerTypes.WhisperEvent} ev The whisper event.
-    //  * @returns {void}
-    //  */
-    // static whisper(ev) {
-    // }
+    // MARK: static whisper
+    /**
+     * Handles when the bot is whispered.
+     * @returns {void}
+     */
+    static whisper() {}
 }
 
 module.exports = TwitchListener;

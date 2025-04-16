@@ -3,23 +3,12 @@
  * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
  */
 
-//  #   #
-//  #   #
-//  #   #   ###   ## #    ###
-//  #####  #   #  # # #  #   #
-//  #   #  #   #  # # #  #####
-//  #   #  #   #  # # #  #
-//  #   #   ###   #   #   ###
+// MARK: class Home
 /**
  * A class that provides functions for the home page.
  */
 class Home {
-    // ###    ##   #  #   ##                #                 #    #                    #           #
-    // #  #  #  #  ####  #  #               #                 #    #                    #           #
-    // #  #  #  #  ####  #      ##   ###   ###    ##   ###   ###   #      ##    ###   ###   ##    ###
-    // #  #  #  #  #  #  #     #  #  #  #   #    # ##  #  #   #    #     #  #  #  #  #  #  # ##  #  #
-    // #  #  #  #  #  #  #  #  #  #  #  #   #    ##    #  #   #    #     #  #  # ##  #  #  ##    #  #
-    // ###    ##   #  #   ##    ##   #  #    ##   ##   #  #    ##  ####   ##    # #   ###   ##    ###
+    // MARK: static DOMContentLoaded
     /**
      * Sets up the page.
      * @returns {void}
@@ -56,12 +45,7 @@ class Home {
         calendar.render();
     }
 
-    //             #              #  ###          #     #          #
-    //             #              #   #                 #          #
-    //  ##   # #   ###    ##    ###   #    #  #  ##    ###    ##   ###
-    // # ##  ####  #  #  # ##  #  #   #    #  #   #     #    #     #  #
-    // ##    #  #  #  #  ##    #  #   #    ####   #     #    #     #  #
-    //  ##   #  #  ###    ##    ###   #    ####  ###     ##   ##   #  #
+    // MARK: static embedTwitch
     /**
      * Embeds Twitch into the site.
      * @returns {void}
@@ -109,12 +93,7 @@ class Home {
         });
     }
 
-    //             ##                   #   ##    #
-    //              #                   #  #  #   #
-    // ###    ##    #     ##    ###   ###   #    ###   ###    ##    ###  # #    ###
-    // #  #  # ##   #    #  #  #  #  #  #    #    #    #  #  # ##  #  #  ####  ##
-    // #     ##     #    #  #  # ##  #  #  #  #   #    #     ##    # ##  #  #    ##
-    // #      ##   ###    ##    # #   ###   ##     ##  #      ##    # #  #  #  ###
+    // MARK: static async reloadStreams
     /**
      * Reloads the streams from the API.
      * @returns {Promise} A promise that resolves when the streams have been reloaded.

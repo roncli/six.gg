@@ -1,22 +1,9 @@
-//  #####                               #       #
-//  #                                   #
-//  #      #   #   ###    ###   # ##   ####    ##     ###   # ##
-//  ####    # #   #   #  #   #  ##  #   #       #    #   #  ##  #
-//  #        #    #      #####  ##  #   #       #    #   #  #   #
-//  #       # #   #   #  #      # ##    #  #    #    #   #  #   #
-//  #####  #   #   ###    ###   #        ##    ###    ###   #   #
-//                              #
-//                              #
+// MARK: class Exception
 /**
  * An error class that can include an inner error.
  */
 class Exception extends Error {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * A constructor that creates the exception.
      * @param {string} message The message of the exception.
@@ -28,12 +15,7 @@ class Exception extends Error {
         this.innerError = err;
     }
 
-    //         #                #
-    //         #                #
-    //  ###   ###    ###   ##   # #
-    // ##      #    #  #  #     ##
-    //   ##    #    # ##  #     # #
-    // ###      ##   # #   ##   #  #
+    // MARK: get stack
     /**
      * Return the inner error's stack.
      * @return {string} The inner error's stack.
@@ -45,11 +27,7 @@ class Exception extends Error {
         return this.innerError.stack;
     }
 
-    // # #    ##    ###    ###    ###   ###   ##
-    // ####  # ##  ##     ##     #  #  #  #  # ##
-    // #  #  ##      ##     ##   # ##   ##   ##
-    // #  #   ##   ###    ###     # #  #      ##
-    //                                  ###
+    // MARK: get message
     /**
      * Return this error's and the inner error's message.
      * @return {string} The error message.

@@ -9,25 +9,12 @@ const express = require("express"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//  #   #           #             #
-//  #   #          # #
-//  ## ##   ###   #   #  # ##    ##
-//  # # #  #   #  #   #  ##  #    #
-//  #   #  #####  #####  ##  #    #
-//  #   #  #      #   #  # ##     #
-//  #   #   ###   #   #  #       ###
-//                       #
-//                       #
+// MARK: class MeApi
 /**
  * A class that represents the me API.
  */
 class MeApi extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -42,13 +29,7 @@ class MeApi extends RouterBase {
         return route;
     }
 
-    //                     #
-    //                     #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // ###    ##   ###      ##
-    // #
+    // MARK: static async post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

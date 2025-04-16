@@ -20,24 +20,12 @@ const appInsights = require("applicationinsights"),
 
 const docker = new Docker();
 
-//   ###              #
-//    #               #
-//    #    # ##    ## #   ###   #   #
-//    #    ##  #  #  ##  #   #   # #
-//    #    #   #  #   #  #####    #
-//    #    #   #  #  ##  #       # #
-//   ###   #   #   ## #   ###   #   #
+// MARK: class Index
 /**
  * The primary class for the application.
  */
 class Index {
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###   #  #  ###
-    // ##      #    #  #  #  #   #    #  #  #  #
-    //   ##    #    # ##  #      #    #  #  #  #
-    // ###      ##   # #  #       ##   ###  ###
-    //                                      #
+    // MARK: static startup
     /**
      * Starts up the application.
      * @returns {void}

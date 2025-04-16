@@ -2,24 +2,12 @@
  * @typedef {import("../../types/browser/viewTypes").EventViewParameters} ViewTypes.EventViewParameters
  */
 
-//  #####                        #     #   #    #
-//  #                            #     #   #
-//  #      #   #   ###   # ##   ####   #   #   ##     ###   #   #
-//  ####   #   #  #   #  ##  #   #      # #     #    #   #  #   #
-//  #       # #   #####  #   #   #      # #     #    #####  # # #
-//  #       # #   #      #   #   #  #   # #     #    #      # # #
-//  #####    #     ###   #   #    ##     #     ###    ###    # #
+// MARK: class EventView
 /**
  * A class that represents the event view.
  */
 class EventView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {ViewTypes.EventViewParameters} data The page data.

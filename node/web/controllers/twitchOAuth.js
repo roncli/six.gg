@@ -15,23 +15,12 @@ const Common = require("../includes/common"),
     TwitchOAuthView = require("../../public/views/twitchOAuth"),
     User = require("../../src/models/user");
 
-//  #####           #     #            #       ###     #            #     #
-//    #                   #            #      #   #   # #           #     #
-//    #    #   #   ##    ####    ###   # ##   #   #  #   #  #   #  ####   # ##
-//    #    #   #    #     #     #   #  ##  #  #   #  #   #  #   #   #     ##  #
-//    #    # # #    #     #     #      #   #  #   #  #####  #   #   #     #   #
-//    #    # # #    #     #  #  #   #  #   #  #   #  #   #  #  ##   #  #  #   #
-//    #     # #    ###     ##    ###   #   #   ###   #   #   ## #    ##   #   #
+// MARK: class TwitchOAuth
 /**
  * A class that represets the Twitch OAuth page.
  */
 class TwitchOAuth extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -44,13 +33,7 @@ class TwitchOAuth extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

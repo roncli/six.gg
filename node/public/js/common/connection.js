@@ -1,21 +1,9 @@
-//   ###                                       #       #
-//  #   #                                      #
-//  #       ###   # ##   # ##    ###    ###   ####    ##     ###   # ##
-//  #      #   #  ##  #  ##  #  #   #  #   #   #       #    #   #  ##  #
-//  #      #   #  #   #  #   #  #####  #       #       #    #   #  #   #
-//  #   #  #   #  #   #  #   #  #      #   #   #  #    #    #   #  #   #
-//   ###    ###   #   #  #   #   ###    ###     ##    ###    ###   #   #
+// MARK: class Connection
 /**
  * A class of Discord connection functions.
  */
 class Connection {
-    //              #    #  #        ##
-    //              #    #  #         #
-    //  ###   ##   ###   #  #  ###    #
-    // #  #  # ##   #    #  #  #  #   #
-    //  ##   ##     #    #  #  #      #
-    // #      ##     ##   ##   #     ###
-    //  ###
+    // MARK: static getUrl
     /**
      * Gets the URL for a connection.
      * @param {{name: string, id: string, type: string}} connection The connection.

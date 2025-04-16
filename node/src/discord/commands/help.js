@@ -1,25 +1,12 @@
 const Discord = require("../index"),
     DiscordJs = require("discord.js");
 
-//  #   #          ##
-//  #   #           #
-//  #   #   ###     #    # ##
-//  #####  #   #    #    ##  #
-//  #   #  #####    #    ##  #
-//  #   #  #        #    # ##
-//  #   #   ###    ###   #
-//                       #
-//                       #
+// MARK: class Help
 /**
  * A command that returns a URL containing information about using the bot.
  */
 class Help {
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -30,12 +17,7 @@ class Help {
             .setDescription("Provides a URL to get help with the bot.");
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.

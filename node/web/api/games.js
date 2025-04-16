@@ -12,25 +12,12 @@ const express = require("express"),
 /** @type {{[x: string]: number}} */
 const throttle = {};
 
-//   ###                                 #             #
-//  #   #                               # #
-//  #       ###   ## #    ###    ###   #   #  # ##    ##
-//  #          #  # # #  #   #  #      #   #  ##  #    #
-//  #  ##   ####  # # #  #####   ###   #####  ##  #    #
-//  #   #  #   #  # # #  #          #  #   #  # ##     #
-//   ###    ####  #   #   ###   ####   #   #  #       ###
-//                                            #
-//                                            #
+// MARK: class GamesApi
 /**
  * A class that represents the games API.
  */
 class GamesApi extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -45,13 +32,7 @@ class GamesApi extends RouterBase {
         return route;
     }
 
-    //                     #
-    //                     #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // ###    ##   ###      ##
-    // #
+    // MARK: static async post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

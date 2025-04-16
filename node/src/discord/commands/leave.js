@@ -6,22 +6,12 @@ const Attendee = require("../../models/attendee"),
     User = require("../../models/user"),
     Warning = require("../../errors/warning");
 
-// #
-// #
-// #      ##    ###  # #    ##
-// #     # ##  #  #  # #   # ##
-// #     ##    # ##  # #   ##
-// ####   ##    # #   #     ##
+// MARK: class Leave
 /**
  * A command that allows the user to leave an event.
  */
 class Leave {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -37,12 +27,7 @@ class Leave {
             .setDescription("Leave an event you no longer wish to attend.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -53,12 +38,7 @@ class Leave {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -124,12 +104,7 @@ class Leave {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

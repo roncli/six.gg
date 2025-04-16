@@ -5,23 +5,12 @@
 const appInsights = require("applicationinsights"),
     Dockerode = require("dockerode");
 
-//  ####                 #
-//   #  #                #
-//   #  #   ###    ###   #   #   ###   # ##
-//   #  #  #   #  #   #  #  #   #   #  ##  #
-//   #  #  #   #  #      ###    #####  #
-//   #  #  #   #  #   #  #  #   #      #
-//  ####    ###    ###   #   #   ###   #
+// MARK: class Docker
 /**
  * A class to handle calls to the docker socket.
  */
 class Docker {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new docker socket class.
      */
@@ -29,12 +18,7 @@ class Docker {
         this.dockerode = new Dockerode();
     }
 
-    //         #                 #
-    //         #                 #
-    //  ###   ###    ###  ###   ###
-    // ##      #    #  #  #  #   #
-    //   ##    #    # ##  #      #
-    // ###      ##   # #  #       ##
+    // MARK: async start
     /**
      * Starts docker stats logging.
      * @returns {Promise} A promise that never resolves.  Don't await this method.
@@ -142,13 +126,7 @@ class Docker {
         }
     }
 
-    //              #     ##    #           #
-    //              #    #  #   #           #
-    //  ###   ##   ###    #    ###    ###  ###    ###
-    // #  #  # ##   #      #    #    #  #   #    ##
-    //  ##   ##     #    #  #   #    # ##   #      ##
-    // #      ##     ##   ##     ##   # #    ##  ###
-    //  ###
+    // MARK: async getStats
     /**
      * Gets the container stats.
      * @returns {Promise<{id: string, name: string, read: Date, memory: {used: number, available: number, pct: number}, cpu: number, network: {rxBytes: number, txBytes: number}}[]>} The container stats.
@@ -172,13 +150,7 @@ class Docker {
         return containerStats;
     }
 
-    //              #     ##    #           #           ###          ##                #           #                      ###      #
-    //              #    #  #   #           #           #  #        #  #               #                                   #       #
-    //  ###   ##   ###    #    ###    ###  ###    ###   ###   #  #  #      ##   ###   ###    ###  ##    ###    ##   ###    #     ###
-    // #  #  # ##   #      #    #    #  #   #    ##     #  #  #  #  #     #  #  #  #   #    #  #   #    #  #  # ##  #  #   #    #  #
-    //  ##   ##     #    #  #   #    # ##   #      ##   #  #   # #  #  #  #  #  #  #   #    # ##   #    #  #  ##    #      #    #  #
-    // #      ##     ##   ##     ##   # #    ##  ###    ###     #    ##    ##   #  #    ##   # #  ###   #  #   ##   #     ###    ###
-    //  ###                                                    #
+    // MARK: async getStatsByContainerId
     /**
      * Gets the stats for a single container.
      * @param {string} id The container ID.

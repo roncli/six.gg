@@ -2,26 +2,12 @@ const Event = require("./models/event");
 
 let setup = false;
 
-//  #   #          #       #      ##
-//  #   #          #             #  #
-//  ##  #   ###   ####    ##     #     #   #
-//  # # #  #   #   #       #    ####   #   #
-//  #  ##  #   #   #       #     #     #  ##
-//  #   #  #   #   #  #    #     #      ## #
-//  #   #   ###     ##    ###    #         #
-//                                     #   #
-//                                      ###
+// MARK: class Notify
 /**
  * A class that handles Discord notifications.
  */
 class Notify {
-    //               #                #  #         #     #      #    #                 #     #
-    //               #                ## #         #           # #                     #
-    //  ###    ##   ###   #  #  ###   ## #   ##   ###   ##     #    ##     ##    ###  ###   ##     ##   ###    ###
-    // ##     # ##   #    #  #  #  #  # ##  #  #   #     #    ###    #    #     #  #   #     #    #  #  #  #  ##
-    //   ##   ##     #    #  #  #  #  # ##  #  #   #     #     #     #    #     # ##   #     #    #  #  #  #    ##
-    // ###     ##     ##   ###  ###   #  #   ##     ##  ###    #    ###    ##    # #    ##  ###    ##   #  #  ###
-    //                          #
+    // MARK: static setupNotifications
     /**
      * Setup notifications.
      * @returns {void}

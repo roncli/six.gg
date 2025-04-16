@@ -15,23 +15,12 @@ let streamers;
 /** @type {VoiceChannelManagement} */
 let vcm;
 
-//  ####     #                                    #  #        #            #
-//   #  #                                         #  #                     #
-//   #  #   ##     ###    ###    ###   # ##    ## #  #       ##     ###   ####    ###   # ##    ###   # ##
-//   #  #    #    #      #   #  #   #  ##  #  #  ##  #        #    #       #     #   #  ##  #  #   #  ##  #
-//   #  #    #     ###   #      #   #  #      #   #  #        #     ###    #     #####  #   #  #####  #
-//   #  #    #        #  #   #  #   #  #      #  ##  #        #        #   #  #  #      #   #  #      #
-//  ####    ###   ####    ###    ###   #       ## #  #####   ###   ####     ##    ###   #   #   ###   #
+// MARK: class DiscordListener
 /**
  * A class that handles listening to Discord events.
  */
 class DiscordListener {
-    //         #
-    //         #
-    //  ###   ###   ###    ##    ###  # #    ##   ###    ###
-    // ##      #    #  #  # ##  #  #  ####  # ##  #  #  ##
-    //   ##    #    #     ##    # ##  #  #  ##    #       ##
-    // ###      ##  #      ##    # #  #  #   ##   #     ###
+    // MARK: static get streamers
     /**
      * Returns the streamers object.
      * @returns {Streamers} The streamers object.
@@ -40,13 +29,7 @@ class DiscordListener {
         return streamers;
     }
 
-    //              #                 ##   #                             ##    #  #                                                   #
-    //                               #  #  #                              #    ####                                                   #
-    // # #    ##   ##     ##    ##   #     ###    ###  ###   ###    ##    #    ####   ###  ###    ###   ###   ##   # #    ##   ###   ###
-    // # #   #  #   #    #     # ##  #     #  #  #  #  #  #  #  #  # ##   #    #  #  #  #  #  #  #  #  #  #  # ##  ####  # ##  #  #   #
-    // # #   #  #   #    #     ##    #  #  #  #  # ##  #  #  #  #  ##     #    #  #  # ##  #  #  # ##   ##   ##    #  #  ##    #  #   #
-    //  #     ##   ###    ##    ##    ##   #  #   # #  #  #  #  #   ##   ###   #  #   # #  #  #   # #  #      ##   #  #   ##   #  #    ##
-    //                                                                                                  ###
+    // MARK: static get voiceChannelManagement
     /**
      * Returns the voice channel management object.
      * @returns {VoiceChannelManagement} The voice channel management object.
@@ -55,12 +38,7 @@ class DiscordListener {
         return vcm;
     }
 
-    //  #           #                             #     #                 ##                      #
-    //              #                             #                      #  #                     #
-    // ##    ###   ###    ##   ###    ###   ##   ###   ##     ##   ###   #     ###    ##    ###  ###    ##
-    //  #    #  #   #    # ##  #  #  #  #  #      #     #    #  #  #  #  #     #  #  # ##  #  #   #    # ##
-    //  #    #  #   #    ##    #     # ##  #      #     #    #  #  #  #  #  #  #     ##    # ##   #    ##
-    // ###   #  #    ##   ##   #      # #   ##     ##  ###    ##   #  #   ##   #      ##    # #    ##   ##
+    // MARK: static async interactionCreate
     /**
      * Handles when an interaction is created in Discord.
      * @param {DiscordJs.Interaction<DiscordJs.CacheType>} interaction The interaction.
@@ -98,13 +76,7 @@ class DiscordListener {
         }
     }
 
-    //                                                  #  #           #         #
-    //                                                  #  #           #         #
-    // ###   ###    ##    ###    ##   ###    ##    ##   #  #  ###    ###   ###  ###    ##
-    // #  #  #  #  # ##  ##     # ##  #  #  #     # ##  #  #  #  #  #  #  #  #   #    # ##
-    // #  #  #     ##      ##   ##    #  #  #     ##    #  #  #  #  #  #  # ##   #    ##
-    // ###   #      ##   ###     ##   #  #   ##    ##    ##   ###    ###   # #    ##   ##
-    // #                                                      #
+    // MARK: static async presenceUpdate
     /**
      * Handles when a user's Discord presence is updated.
      * @param {DiscordJs.Presence} oldPresence The old presence state.
@@ -139,13 +111,7 @@ class DiscordListener {
         }
     }
 
-    //                      #
-    //                      #
-    // ###    ##    ###   ###  #  #
-    // #  #  # ##  #  #  #  #  #  #
-    // #     ##    # ##  #  #   # #
-    // #      ##    # #   ###    #
-    //                          #
+    // MARK: static async ready
     /**
      * Handles when Discord is ready.
      * @returns {Promise} A promise that resolves when the event has been processed.
@@ -174,13 +140,7 @@ class DiscordListener {
         }
     }
 
-    //              #                 ##    #           #          #  #           #         #
-    //                               #  #   #           #          #  #           #         #
-    // # #    ##   ##     ##    ##    #    ###    ###  ###    ##   #  #  ###    ###   ###  ###    ##
-    // # #   #  #   #    #     # ##    #    #    #  #   #    # ##  #  #  #  #  #  #  #  #   #    # ##
-    // # #   #  #   #    #     ##    #  #   #    # ##   #    ##    #  #  #  #  #  #  # ##   #    ##
-    //  #     ##   ###    ##    ##    ##     ##   # #    ##   ##    ##   ###    ###   # #    ##   ##
-    //                                                                   #
+    // MARK: static voiceStateUpdate
     /**
      * Handles when a user's voice state changes.
      * @param {DiscordJs.VoiceState} oldState The old voice state.

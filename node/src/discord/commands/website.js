@@ -1,23 +1,12 @@
 const Discord = require("../index"),
     DiscordJs = require("discord.js");
 
-//  #   #         #               #     #
-//  #   #         #                     #
-//  #   #   ###   # ##    ###    ##    ####    ###
-//  # # #  #   #  ##  #  #        #     #     #   #
-//  # # #  #####  #   #   ###     #     #     #####
-//  ## ##  #      ##  #      #    #     #  #  #
-//  #   #   ###   # ##   ####    ###     ##    ###
+// MARK: class Website
 /**
  * A command that returns website URL.
  */
 class Website {
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -28,12 +17,7 @@ class Website {
             .setDescription("Provides a link to Six Gaming's website.");
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.

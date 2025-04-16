@@ -9,23 +9,12 @@ const Common = require("../includes/common"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//   #   #
-//   #   #
-//   #   #   ###   ## #    ###
-//   #####  #   #  # # #  #   #
-//   #   #  #   #  # # #  #####
-//   #   #  #   #  # # #  #
-//   #   #   ###   #   #   ###
+// MARK: class Home
 /**
  * A class that represents the home page.
  */
 class Home extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -38,13 +27,7 @@ class Home extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

@@ -3,24 +3,12 @@
  * @typedef {import("../../types/browser/viewTypes").MeViewParameters} ViewTypes.MeViewParameters
  */
 
-//  #   #         #   #    #
-//  #   #         #   #
-//  ## ##   ###   #   #   ##     ###   #   #
-//  # # #  #   #   # #     #    #   #  #   #
-//  #   #  #####   # #     #    #####  # # #
-//  #   #  #       # #     #    #      # # #
-//  #   #   ###     #     ###    ###    # #
+// MARK: class MeView
 /**
  * A class that represents the me view.
  */
 class MeView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {ViewTypes.MeViewParameters} data The data to render the page with.

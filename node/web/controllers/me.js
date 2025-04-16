@@ -11,23 +11,12 @@ const tzdata = require("tzdata"),
     RouterBase = require("hot-router").RouterBase,
     User = require("../../src/models/user");
 
-//  #   #
-//  #   #
-//  ## ##   ###
-//  # # #  #   #
-//  #   #  #####
-//  #   #  #
-//  #   #   ###
+// MARK: class Me
 /**
  * A class that represets the me page.
  */
 class Me extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -40,13 +29,7 @@ class Me extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

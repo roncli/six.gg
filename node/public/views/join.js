@@ -1,21 +1,9 @@
-//    ###           #           #   #    #
-//      #                       #   #
-//      #   ###    ##    # ##   #   #   ##     ###   #   #
-//      #  #   #    #    ##  #   # #     #    #   #  #   #
-//      #  #   #    #    #   #   # #     #    #####  # # #
-//  #   #  #   #    #    #   #   # #     #    #      # # #
-//   ###    ###    ###   #   #    #     ###    ###    # #
+// MARK: class JoinView
 /**
  * A class that represents the join view.
  */
 class JoinView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

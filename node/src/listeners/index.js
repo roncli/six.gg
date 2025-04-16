@@ -3,24 +3,12 @@ const Discord = require("../discord"),
     Twitch = require("../twitch"),
     TwitchListener = require("./twitch");
 
-//  #        #            #
-//  #                     #
-//  #       ##     ###   ####    ###   # ##    ###   # ##    ###
-//  #        #    #       #     #   #  ##  #  #   #  ##  #  #
-//  #        #     ###    #     #####  #   #  #####  #       ###
-//  #        #        #   #  #  #      #   #  #      #          #
-//  #####   ###   ####     ##    ###   #   #   ###   #      ####
+// MARK: class Listeners
 /**
  * A class that sets up listening to eventEmitters.
  */
 class Listeners {
-    //               #
-    //               #
-    //  ###    ##   ###   #  #  ###
-    // ##     # ##   #    #  #  #  #
-    //   ##   ##     #    #  #  #  #
-    // ###     ##     ##   ###  ###
-    //                          #
+    // MARK: static setup
     /**
      * Sets up the listeners for Discord and Twitch.
      * @returns {void}

@@ -24,13 +24,7 @@ process.on("unhandledRejection", (reason) => {
     Log.error("Unhandled promise rejection caught.", {err: reason instanceof Error ? reason : new Error(util.inspect(reason))});
 });
 
-//         #                 #
-//         #                 #
-//  ###   ###    ###  ###   ###   #  #  ###
-// ##      #    #  #  #  #   #    #  #  #  #
-//   ##    #    # ##  #      #    #  #  #  #
-// ###      ##   # #  #       ##   ###  ###
-//                                      #
+// MARK: async function startup
 /**
  * Starts up the application.
  */

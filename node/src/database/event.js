@@ -8,23 +8,12 @@ const Cache = require("@roncli/node-redis").Cache,
 
     Db = require(".");
 
-//  #####                        #     ####   #
-//  #                            #      #  #  #
-//  #      #   #   ###   # ##   ####    #  #  # ##
-//  ####   #   #  #   #  ##  #   #      #  #  ##  #
-//  #       # #   #####  #   #   #      #  #  #   #
-//  #       # #   #      #   #   #  #   #  #  ##  #
-//  #####    #     ###   #   #    ##   ####   # ##
+// MARK: class EventDb
 /**
  * A class to handle database calls to the event collection.
  */
 class EventDb {
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: static async add
     /**
      * Add an event.
      * @param {EventTypes.EventData} data The event data.
@@ -59,13 +48,7 @@ class EventDb {
         return data;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Gets an event by its event ID.
      * @param {number} id The event ID.
@@ -105,13 +88,7 @@ class EventDb {
         return cache;
     }
 
-    //              #    ###         ###          #          ###
-    //              #    #  #        #  #         #          #  #
-    //  ###   ##   ###   ###   #  #  #  #   ###  ###    ##   #  #   ###  ###    ###   ##
-    // #  #  # ##   #    #  #  #  #  #  #  #  #   #    # ##  ###   #  #  #  #  #  #  # ##
-    //  ##   ##     #    #  #   # #  #  #  # ##   #    ##    # #   # ##  #  #   ##   ##
-    // #      ##     ##  ###     #   ###    # #    ##   ##   #  #   # #  #  #  #      ##
-    //  ###                     #                                               ###
+    // MARK: static async getByDateRange
     /**
      * Get events by date.
      * @param {Date} start The start date.
@@ -160,10 +137,7 @@ class EventDb {
         return cache;
     }
 
-    // ###    ##   # #    ##   # #    ##
-    // #  #  # ##  ####  #  #  # #   # ##
-    // #     ##    #  #  #  #  # #   ##
-    // #      ##   #  #   ##    #     ##
+    // MARK: static async remove
     /**
      * Removes an event.
      * @param {number} id The event ID.

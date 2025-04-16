@@ -1,21 +1,9 @@
-//    #        #      #  #   #    #
-//   # #       #      #  #   #
-//  #   #   ## #   ## #  #   #   ##     ###   #   #
-//  #   #  #  ##  #  ##   # #     #    #   #  #   #
-//  #####  #   #  #   #   # #     #    #####  # # #
-//  #   #  #  ##  #  ##   # #     #    #      # # #
-//  #   #   ## #   ## #    #     ###    ###    # #
+// MARK: class AddView
 /**
  * A class that represents the add modal view.
  */
 class AddView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

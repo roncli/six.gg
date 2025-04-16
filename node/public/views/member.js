@@ -3,24 +3,12 @@
  * @typedef {import("../../types/browser/viewTypes").MemberViewParameters} ViewTypes.MemberViewParameters
  */
 
-//  #   #                #                    #   #    #
-//  #   #                #                    #   #
-//  ## ##   ###   ## #   # ##    ###   # ##   #   #   ##     ###   #   #
-//  # # #  #   #  # # #  ##  #  #   #  ##  #   # #     #    #   #  #   #
-//  #   #  #####  # # #  #   #  #####  #       # #     #    #####  # # #
-//  #   #  #      # # #  ##  #  #      #       # #     #    #      # # #
-//  #   #   ###   #   #  # ##    ###   #        #     ###    ###    # #
+// MARK: class MemberView
 /**
  * A class that represents the me view.
  */
 class MemberView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {ViewTypes.MemberViewParameters} data The data to render the page with.

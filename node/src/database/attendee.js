@@ -8,23 +8,12 @@ const Cache = require("@roncli/node-redis").Cache,
 
     Db = require(".");
 
-//    #     #      #                       #                ####   #
-//   # #    #      #                       #                 #  #  #
-//  #   #  ####   ####    ###   # ##    ## #   ###    ###    #  #  # ##
-//  #   #   #      #     #   #  ##  #  #  ##  #   #  #   #   #  #  ##  #
-//  #####   #      #     #####  #   #  #   #  #####  #####   #  #  #   #
-//  #   #   #  #   #  #  #      #   #  #  ##  #      #       #  #  ##  #
-//  #   #    ##     ##    ###   #   #   ## #   ###    ###   ####   # ##
+// MARK: class AttendeeDb
 /**
  * A class to handle database calls to the attendee collection.
  */
 class AttendeeDb {
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: static async add
     /**
      * Adds an attendee to an event.
      * @param {AttendeeTypes.AttendeeData} data The data to add.
@@ -48,13 +37,7 @@ class AttendeeDb {
         return data;
     }
 
-    //              #    ###         ####                     #    ###      #
-    //              #    #  #        #                        #     #       #
-    //  ###   ##   ###   ###   #  #  ###   # #    ##   ###   ###    #     ###
-    // #  #  # ##   #    #  #  #  #  #     # #   # ##  #  #   #     #    #  #
-    //  ##   ##     #    #  #   # #  #     # #   ##    #  #   #     #    #  #
-    // #      ##     ##  ###     #   ####   #     ##   #  #    ##  ###    ###
-    //  ###                     #
+    // MARK: static async getByEventId
     /**
      * Gets attendees by the event ID.
      * @param {number} id The event ID.
@@ -105,10 +88,7 @@ class AttendeeDb {
         return cache;
     }
 
-    // ###    ##   # #    ##   # #    ##
-    // #  #  # ##  ####  #  #  # #   # ##
-    // #     ##    #  #  #  #  # #   ##
-    // #      ##   #  #   ##    #     ##
+    // MARK: static async remove
     /**
      * Removes an attendee from an event.
      * @param {AttendeeTypes.AttendeeData} attendee The data to remove.

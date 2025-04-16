@@ -1,20 +1,9 @@
-//  #   #             #          ##
-//  #   #             #           #
-//  ## ##   ###    ## #   ###     #
-//  # # #  #   #  #  ##      #    #
-//  #   #  #   #  #   #   ####    #
-//  #   #  #   #  #  ##  #   #    #
-//  #   #   ###    ## #   ####   ###
+// MARK: class Modal
 /**
  * A class to create a modal dialog.
  */
 class Modal {
-    //       ##
-    //        #
-    //  ##    #     ##    ###    ##
-    // #      #    #  #  ##     # ##
-    // #      #    #  #    ##   ##
-    //  ##   ###    ##   ###     ##
+    // MARK: close
     /**
      * Closes the modal dialog.
      * @returns {void}
@@ -23,13 +12,7 @@ class Modal {
         this.el.parentNode.removeChild(this.el);
     }
 
-    //    #   #                 ##
-    //    #                      #
-    //  ###  ##     ###   ###    #     ###  #  #
-    // #  #   #    ##     #  #   #    #  #  #  #
-    // #  #   #      ##   #  #   #    # ##   # #
-    //  ###  ###   ###    ###   ###    # #    #
-    //                    #                  #
+    // MARK: display
     /**
      * Display a modal dialog.
      * @param {string} html The HTML to display.

@@ -10,24 +10,13 @@ let client;
  */
 let db;
 
-//  ####   #
-//   #  #  #
-//   #  #  # ##
-//   #  #  ##  #
-//   #  #  #   #
-//   #  #  ##  #
-//  ####   # ##
+
+// MARK: class Db
 /**
  * A class that handles setting up the database.
  */
 class Db {
-    //   #                     #
-    //  # #                    #
-    //  #    ###    ##   # #   #      ##   ###    ###
-    // ###   #  #  #  #  ####  #     #  #  #  #  #  #
-    //  #    #     #  #  #  #  #     #  #  #  #   ##
-    //  #    #      ##   #  #  ####   ##   #  #  #
-    //                                            ###
+    // MARK: static fromLong
     /**
      * Converts a value from a MongoDb.Long to a number.
      * @param {MongoDb.Long|number} val The number.
@@ -37,13 +26,7 @@ class Db {
         return typeof val === "number" ? val : val.toNumber();
     }
 
-    //  #          #
-    //  #          #
-    // ###    ##   #      ##   ###    ###
-    //  #    #  #  #     #  #  #  #  #  #
-    //  #    #  #  #     #  #  #  #   ##
-    //   ##   ##   ####   ##   #  #  #
-    //                                ###
+    // MARK: static toLong
     /**
      * Converts a value from a number to a MongoDb.Long.
      * @param {MongoDb.Long|number} val The number.
@@ -53,13 +36,7 @@ class Db {
         return typeof val === "number" ? MongoDb.Long.fromNumber(val) : val;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the database object.
      * @returns {Promise<MongoDb.Db>} The database.
@@ -82,12 +59,7 @@ class Db {
         return db;
     }
 
-    //  #       #
-    //          #
-    // ##     ###
-    //  #    #  #
-    //  #    #  #
-    // ###    ###
+    // MARK: static async id
     /**
      * Appends an ID to an object.
      * @param {object} object The object to append the ID to.

@@ -20,24 +20,12 @@ setTimeout(() => {
     Discord = require("../discord");
 }, 0);
 
-//  #   #
-//  #   #
-//  #   #   ###    ###   # ##
-//  #   #  #      #   #  ##  #
-//  #   #   ###   #####  #
-//  #   #      #  #      #
-//   ###   ####    ###   #
+// MARK: class User
 /**
  * A class that represents a website user.
  */
 class User {
-    //              #    ###         ####                     #     ##    #     #                   #
-    //              #    #  #        #                        #    #  #   #     #                   #
-    //  ###   ##   ###   ###   #  #  ###   # #    ##   ###   ###   #  #  ###   ###    ##   ###    ###   ##    ##    ###
-    // #  #  # ##   #    #  #  #  #  #     # #   # ##  #  #   #    ####   #     #    # ##  #  #  #  #  # ##  # ##  ##
-    //  ##   ##     #    #  #   # #  #     # #   ##    #  #   #    #  #   #     #    ##    #  #  #  #  ##    ##      ##
-    // #      ##     ##  ###     #   ####   #     ##   #  #    ##  #  #    ##    ##   ##   #  #   ###   ##    ##   ###
-    //  ###                     #
+    // MARK: static async getByEventAttendees
     /**
      * Gets users that are attending an event by the event ID.
      * @param {number} eventId The event ID.
@@ -61,13 +49,7 @@ class User {
         }));
     }
 
-    //              #    ###          ##          #    ##       #  #  #              #
-    //              #    #  #        #  #               #       #  ####              #
-    //  ###   ##   ###   ###   #  #  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###
-    // #  #  # ##   #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #
-    //  ##   ##     #    #  #   # #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #
-    // #      ##     ##  ###     #    ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #
-    //  ###                     #
+    // MARK: static async getByGuildMember
     /**
      * Gets a user by their Discord ID.
      * @param {DiscordJs.GuildMember} member The Discord ID.
@@ -88,13 +70,7 @@ class User {
         return new User(data, void 0);
     }
 
-    //              #     ##                                  #
-    //              #    #  #                                 #
-    //  ###   ##   ###   #     #  #  ###   ###    ##   ###   ###
-    // #  #  # ##   #    #     #  #  #  #  #  #  # ##  #  #   #
-    //  ##   ##     #    #  #  #  #  #     #     ##    #  #   #
-    // #      ##     ##   ##    ###  #     #      ##   #  #    ##
-    //  ###
+    // MARK: static async getCurrent
     /**
      * Gets the currently logged in user.
      * @param {Express.Request} req The request.
@@ -144,13 +120,7 @@ class User {
         return new User(data.user, data.session);
     }
 
-    //              #    #  #              #
-    //              #    ####              #
-    //  ###   ##   ###   ####   ##   # #   ###    ##   ###
-    // #  #  # ##   #    #  #  # ##  ####  #  #  # ##  #  #
-    //  ##   ##     #    #  #  ##    #  #  #  #  ##    #
-    // #      ##     ##  #  #   ##   #  #  ###    ##   #
-    //  ###
+    // MARK: static async getMember
     /**
      * Gets a member.
      * @param {number} id The user ID.
@@ -181,13 +151,7 @@ class User {
         };
     }
 
-    //              #    #  #              #
-    //              #    ####              #
-    //  ###   ##   ###   ####   ##   # #   ###    ##   ###    ###
-    // #  #  # ##   #    #  #  # ##  ####  #  #  # ##  #  #  ##
-    //  ##   ##     #    #  #  ##    #  #  #  #  ##    #       ##
-    // #      ##     ##  #  #   ##   #  #  ###    ##   #     ###
-    //  ###
+    // MARK: static async getMembers
     /**
      * Gets a list of Six Gaming members.
      * @returns {Promise<{guildMember: DiscordJs.GuildMember, user: User}[]>} A promise that returns the list of members.
@@ -213,12 +177,7 @@ class User {
         });
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: static async set
     /**
      * Sets a currently logged in user.
      * @param {DiscordOAuthTypes.User} user The Discord user.
@@ -239,12 +198,7 @@ class User {
         return new User(data.user, data.session);
     }
 
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates a new user object.
      * @param {UserTypes.UserData} user The user.
@@ -260,12 +214,7 @@ class User {
         this.session = session;
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: async set
     /**
      * Sets the data for a user.
      * @param {object} data The data to set.
@@ -286,12 +235,7 @@ class User {
         }
     }
 
-    //               #    ###    #
-    //               #     #
-    //  ###    ##   ###    #    ##    # #    ##   ####   ##   ###    ##
-    // ##     # ##   #     #     #    ####  # ##    #   #  #  #  #  # ##
-    //   ##   ##     #     #     #    #  #  ##     #    #  #  #  #  ##
-    // ###     ##     ##   #    ###   #  #   ##   ####   ##   #  #   ##
+    // MARK: async setTimezone
     /**
      * Sets the user's timezone.
      * @param {string} [timezone] The user's timezone.

@@ -1,21 +1,9 @@
-//    #    #                     #     #   #    #
-//   # #   #                     #     #   #
-//  #   #  # ##    ###   #   #  ####   #   #   ##     ###   #   #
-//  #   #  ##  #  #   #  #   #   #      # #     #    #   #  #   #
-//  #####  #   #  #   #  #   #   #      # #     #    #####  # # #
-//  #   #  ##  #  #   #  #  ##   #  #   # #     #    #      # # #
-//  #   #  # ##    ###    ## #    ##     #     ###    ###    # #
+// MARK: class AboutView
 /**
  * A class that represents the about view.
  */
 class AboutView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @returns {string} An HTML string of the page.

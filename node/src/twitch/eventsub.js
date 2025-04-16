@@ -2,24 +2,12 @@
  * @typedef {import("@twurple/eventsub-http").EventSubMiddleware} EventSubMiddleware
  */
 
-//  #####                        #      ###          #
-//  #                            #     #   #         #
-//  #      #   #   ###   # ##   ####   #      #   #  # ##
-//  ####   #   #  #   #  ##  #   #      ###   #   #  ##  #
-//  #       # #   #####  #   #   #         #  #   #  #   #
-//  #       # #   #      #   #   #  #  #   #  #  ##  ##  #
-//  #####    #     ###   #   #    ##    ###    ## #  # ##
+// MARK: class EventSub
 /**
  * A class that handles Twitch EventSub.
  */
 class EventSub {
-    //               #
-    //               #
-    //  ###    ##   ###   #  #  ###
-    // ##     # ##   #    #  #  #  #
-    //   ##   ##     #    #  #  #  #
-    // ###     ##     ##   ###  ###
-    //                          #
+    // MARK: static async setup
     /**
      * Performs setup of Twitch EventSub.
      * @param {EventSubMiddleware} eventSub The event sub middleware.

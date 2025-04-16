@@ -12,23 +12,12 @@ setTimeout(() => {
     DiscordListener = require("../../listeners/discord");
 }, 0);
 
-//  ####            #                   #
-//  #   #                               #
-//  #   #  # ##    ##    #   #   ###   ####    ###
-//  ####   ##  #    #    #   #      #   #     #   #
-//  #      #        #     # #    ####   #     #####
-//  #      #        #     # #   #   #   #  #  #
-//  #      #       ###     #     ####    ##    ###
+// MARK: class Private
 /**
  * A command to make a voice channel private.
  */
 class Private {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -40,12 +29,7 @@ class Private {
             .setDescription("Sets your most recently-created voice channel to be private.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -56,12 +40,7 @@ class Private {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -129,12 +108,7 @@ class Private {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

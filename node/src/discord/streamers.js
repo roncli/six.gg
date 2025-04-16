@@ -14,23 +14,12 @@ let Discord;
 /** @type {Twitch} */
 let Twitch;
 
-//   ###    #
-//  #   #   #
-//  #      ####   # ##    ###    ###   ## #    ###   # ##    ###
-//   ###    #     ##  #  #   #      #  # # #  #   #  ##  #  #
-//      #   #     #      #####   ####  # # #  #####  #       ###
-//  #   #   #  #  #      #      #   #  # # #  #      #          #
-//   ###     ##   #       ###    ####  #   #   ###   #      ####
+// MARK: class Streamers
 /**
  * A class that handles streamers listed in Discord.
  */
 class Streamers {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates an instance of the streamers handler.
      * @param {Discord} discord The Discord object.
@@ -58,12 +47,7 @@ class Streamers {
         this.featuredChannel = void 0;
     }
 
-    //          #     #
-    //          #     #
-    //  ###   ###   ###
-    // #  #  #  #  #  #
-    // # ##  #  #  #  #
-    //  # #   ###   ###
+    // MARK: async add
     /**
      * Adds a user to the streamers list.
      * @param {DiscordJs.GuildMember} member The Discord member.
@@ -119,12 +103,7 @@ class Streamers {
         }
     }
 
-    //   #                #
-    //  # #               #
-    //  #     ##    ###  ###   #  #  ###    ##
-    // ###   # ##  #  #   #    #  #  #  #  # ##
-    //  #    ##    # ##   #    #  #  #     ##
-    //  #     ##    # #    ##   ###  #      ##
+    // MARK: feature
     /**
      * Features the streamer by their Discord ID.
      * @param {string} id The Discord ID.
@@ -141,10 +120,7 @@ class Streamers {
         this.previouslyFeatured.push(id);
     }
 
-    // ###    ##   # #    ##   # #    ##
-    // #  #  # ##  ####  #  #  # #   # ##
-    // #     ##    #  #  #  #  # #   ##
-    // #      ##   #  #   ##    #     ##
+    // MARK: async remove
     /**
      * Removes a user from the streamers list.
      * @param {DiscordJs.GuildMember} member The Discord member.

@@ -2,24 +2,12 @@
  * @typedef {import("../../types/browser/viewTypes").CalendarViewParameters} ViewTypes.CalendarViewParameters
  */
 
-//   ###           ##                      #                #   #    #
-//  #   #           #                      #                #   #
-//  #       ###     #     ###   # ##    ## #   ###   # ##   #   #   ##     ###   #   #
-//  #          #    #    #   #  ##  #  #  ##      #  ##  #   # #     #    #   #  #   #
-//  #       ####    #    #####  #   #  #   #   ####  #       # #     #    #####  # # #
-//  #   #  #   #    #    #      #   #  #  ##  #   #  #       # #     #    #      # # #
-//   ###    ####   ###    ###   #   #   ## #   ####  #        #     ###    ###    # #
+// MARK: class CalendarView
 /**
  * A class that represents the calendar view.
  */
 class CalendarView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {ViewTypes.CalendarViewParameters} data The page data.

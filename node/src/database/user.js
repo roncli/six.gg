@@ -18,24 +18,12 @@ const Cache = require("@roncli/node-redis").Cache,
     Db = require("."),
     Encryption = require("./encryption");
 
-//  #   #                       ####   #
-//  #   #                        #  #  #
-//  #   #   ###    ###   # ##    #  #  # ##
-//  #   #  #      #   #  ##  #   #  #  ##  #
-//  #   #   ###   #####  #       #  #  #   #
-//  #   #      #  #      #       #  #  ##  #
-//   ###   ####    ###   #      ####   # ##
+// MARK: class UserDb
 /**
  * A class to handle database calls for the user collection.
  */
 class UserDb {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Gets a user by their user ID.
      * @param {number} id The user ID.
@@ -73,13 +61,7 @@ class UserDb {
         return cache;
     }
 
-    //              #     ##   ##    ##
-    //              #    #  #   #     #
-    //  ###   ##   ###   #  #   #     #
-    // #  #  # ##   #    ####   #     #
-    //  ##   ##     #    #  #   #     #
-    // #      ##     ##  #  #  ###   ###
-    //  ###
+    // MARK: static async getAll
     /**
      * Gets all users from their DiscordIDs, removing any users that aren't in the list.
      * @param {string[]} discordIds The Discord IDs.
@@ -119,13 +101,7 @@ class UserDb {
         return cache;
     }
 
-    //              #    ###          ##          #    ##       #  #  #              #
-    //              #    #  #        #  #               #       #  ####              #
-    //  ###   ##   ###   ###   #  #  #     #  #  ##     #     ###  ####   ##   # #   ###    ##   ###
-    // #  #  # ##   #    #  #  #  #  # ##  #  #   #     #    #  #  #  #  # ##  ####  #  #  # ##  #  #
-    //  ##   ##     #    #  #   # #  #  #  #  #   #     #    #  #  #  #  ##    #  #  #  #  ##    #
-    // #      ##     ##  ###     #    ###   ###  ###   ###    ###  #  #   ##   #  #  ###    ##   #
-    //  ###                     #
+    // MARK: static async getByGuildMember
     /**
      * Gets the user by guild member.
      * @param {DiscordJs.GuildMember} member The guild member.
@@ -163,13 +139,7 @@ class UserDb {
         return cache;
     }
 
-    //              #    ###         ####                     #     ##    #     #                   #
-    //              #    #  #        #                        #    #  #   #     #                   #
-    //  ###   ##   ###   ###   #  #  ###   # #    ##   ###   ###   #  #  ###   ###    ##   ###    ###   ##    ##    ###
-    // #  #  # ##   #    #  #  #  #  #     # #   # ##  #  #   #    ####   #     #    # ##  #  #  #  #  # ##  # ##  ##
-    //  ##   ##     #    #  #   # #  #     # #   ##    #  #   #    #  #   #     #    ##    #  #  #  #  ##    ##      ##
-    // #      ##     ##  ###     #   ####   #     ##   #  #    ##  #  #    ##    ##   ##   #  #   ###   ##    ##   ###
-    //  ###                     #
+    // MARK: static async getByEventAttendees
     /**
      * Gets an array of users that are attending an event.
      * @param {number} eventId The event ID to get the users for.
@@ -232,13 +202,7 @@ class UserDb {
         return cache;
     }
 
-    //              #    ###          ##                        #
-    //              #    #  #        #  #
-    //  ###   ##   ###   ###   #  #   #     ##    ###    ###   ##     ##   ###
-    // #  #  # ##   #    #  #  #  #    #   # ##  ##     ##      #    #  #  #  #
-    //  ##   ##     #    #  #   # #  #  #  ##      ##     ##    #    #  #  #  #
-    // #      ##     ##  ###     #    ##    ##   ###    ###    ###    ##   #  #
-    //  ###                     #
+    // MARK: static async getBySession
     /**
      * Gets the user by the session.
      * @param {string} id The session ID.
@@ -316,12 +280,7 @@ class UserDb {
         };
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: static async set
     /**
      * Sets a currently logged in user.
      * @param {DiscordOAuthTypes.User} user The Discord user.
@@ -414,12 +373,7 @@ class UserDb {
         };
     }
 
-    //               #    ###          #
-    //               #    #  #         #
-    //  ###    ##   ###   #  #   ###  ###    ###
-    // ##     # ##   #    #  #  #  #   #    #  #
-    //   ##   ##     #    #  #  # ##   #    # ##
-    // ###     ##     ##  ###    # #    ##   # #
+    // MARK: static async setData
     /**
      * Sets the data for a user.
      * @param {User} user The user.

@@ -4,23 +4,12 @@ const Discord = require("../index"),
     User = require("../../models/user"),
     Warning = require("../../errors/warning");
 
-//  #####    #
-//    #
-//    #     ##    ## #    ###   #####   ###   # ##    ###
-//    #      #    # # #  #   #     #   #   #  ##  #  #   #
-//    #      #    # # #  #####    #    #   #  #   #  #####
-//    #      #    # # #  #       #     #   #  #   #  #
-//    #     ###   #   #   ###   #####   ###   #   #   ###
+// MARK: class Timezone
 /**
  * A command that sets the user's time zone.
  */
 class Timezone {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -36,12 +25,7 @@ class Timezone {
             .setDescription("Sets your time zone.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -52,12 +36,7 @@ class Timezone {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -161,12 +140,7 @@ class Timezone {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

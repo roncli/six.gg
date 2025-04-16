@@ -12,23 +12,12 @@ setTimeout(() => {
     DiscordListener = require("../../listeners/discord");
 }, 0);
 
-//  ####                          #     #
-//  #   #                               #
-//  #   #   ###   # ##   ## #    ##    ####
-//  ####   #   #  ##  #  # # #    #     #
-//  #      #####  #      # # #    #     #
-//  #      #      #      # # #    #     #  #
-//  #       ###   #      #   #   ###     ##
+// MARK: class Permit
 /**
  * A command that permits a user into a private voice channel.
  */
 class Permit {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -44,12 +33,7 @@ class Permit {
             .setDescription("Permits a user to join your most recently-created private voice channel.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -60,12 +44,7 @@ class Permit {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -140,12 +119,7 @@ class Permit {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

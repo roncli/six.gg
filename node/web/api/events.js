@@ -11,25 +11,12 @@ const Event = require("../../src/models/event"),
     Time = require("../../src/time"),
     User = require("../../src/models/user");
 
-//  #####                        #              #             #
-//  #                            #             # #
-//  #      #   #   ###   # ##   ####    ###   #   #  # ##    ##
-//  ####   #   #  #   #  ##  #   #     #      #   #  ##  #    #
-//  #       # #   #####  #   #   #      ###   #####  ##  #    #
-//  #       # #   #      #   #   #  #      #  #   #  # ##     #
-//  #####    #     ###   #   #    ##   ####   #   #  #       ###
-//                                                   #
-//                                                   #
+// MARK: class EventsApi
 /**
  * A class that represents the events API.
  */
 class EventsApi extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -44,13 +31,7 @@ class EventsApi extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.
@@ -94,13 +75,7 @@ class EventsApi extends RouterBase {
         }
     }
 
-    //                     #
-    //                     #
-    // ###    ##    ###   ###
-    // #  #  #  #  ##      #
-    // #  #  #  #    ##    #
-    // ###    ##   ###      ##
-    // #
+    // MARK: static async post
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

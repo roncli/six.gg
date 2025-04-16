@@ -6,23 +6,12 @@ const Attendee = require("../../models/attendee"),
     User = require("../../models/user"),
     Warning = require("../../errors/warning");
 
-//    ###           #
-//      #
-//      #   ###    ##    # ##
-//      #  #   #    #    ##  #
-//      #  #   #    #    #   #
-//  #   #  #   #    #    #   #
-//   ###    ###    ###   #   #
+// MARK: class Join
 /**
  * A command that allows the user to join an event.
  */
 class Join {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -38,12 +27,7 @@ class Join {
             .setDescription("Join an event you wish to attend.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -54,12 +38,7 @@ class Join {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handle
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -138,12 +117,7 @@ class Join {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

@@ -3,24 +3,12 @@
  * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
  */
 
-//   ###    #                                                      #   #    #
-//  #   #   #                                                      #   #
-//  #      ####   # ##    ###    ###   ## #    ###   # ##    ###   #   #   ##     ###   #   #
-//   ###    #     ##  #  #   #      #  # # #  #   #  ##  #  #       # #     #    #   #  #   #
-//      #   #     #      #####   ####  # # #  #####  #       ###    # #     #    #####  # # #
-//  #   #   #  #  #      #      #   #  # # #  #      #          #   # #     #    #      # # #
-//   ###     ##   #       ###    ####  #   #   ###   #      ####     #     ###    ###    # #
+// MARK: class StreamersView
 /**
  * Class that represenets the streamers view for the home page.
  */
 class StreamersView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered page template.
      * @param {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} data The page data.

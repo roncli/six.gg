@@ -56,23 +56,12 @@ let state;
 
 const eventEmitter = new events.EventEmitter();
 
-//  #####           #     #            #
-//    #                   #            #
-//    #    #   #   ##    ####    ###   # ##
-//    #    #   #    #     #     #   #  ##  #
-//    #    # # #    #     #     #      #   #
-//    #    # # #    #     #  #  #   #  #   #
-//    #     # #    ###     ##    ###   #   #
+// MARK: class Twitch
 /**
  * Handles Twitch integration.
  */
 class Twitch {
-    // #            #     ##   #            #     ##   ##     #                 #
-    // #            #    #  #  #            #    #  #   #                       #
-    // ###    ##   ###   #     ###    ###  ###   #      #    ##     ##   ###   ###
-    // #  #  #  #   #    #     #  #  #  #   #    #      #     #    # ##  #  #   #
-    // #  #  #  #   #    #  #  #  #  # ##   #    #  #   #     #    ##    #  #   #
-    // ###    ##     ##   ##   #  #   # #    ##   ##   ###   ###    ##   #  #    ##
+    // MARK: static get botChatClient
     /**
      * Gets the current Twitch bot chat client.
      * @returns {ChatClient} The current Twitch bot client.
@@ -81,12 +70,7 @@ class Twitch {
         return botChatClient.client;
     }
 
-    // #            #    ###          #     #          #      ##   ##     #                 #
-    // #            #     #                 #          #     #  #   #                       #
-    // ###    ##   ###    #    #  #  ##    ###    ##   ###   #      #    ##     ##   ###   ###
-    // #  #  #  #   #     #    #  #   #     #    #     #  #  #      #     #    # ##  #  #   #
-    // #  #  #  #   #     #    ####   #     #    #     #  #  #  #   #     #    ##    #  #   #
-    // ###    ##     ##   #    ####  ###     ##   ##   #  #   ##   ###   ###    ##   #  #    ##
+    // MARK: static get botTwitchClient
     /**
      * Gets the current Twitch bot client.
      * @returns {TwitchClient} The current Twitch client.
@@ -95,12 +79,7 @@ class Twitch {
         return botTwitchClient;
     }
 
-    //       #                             ##    ###          #     #          #      ##   ##     #                 #
-    //       #                              #     #                 #          #     #  #   #                       #
-    //  ##   ###    ###  ###   ###    ##    #     #    #  #  ##    ###    ##   ###   #      #    ##     ##   ###   ###
-    // #     #  #  #  #  #  #  #  #  # ##   #     #    #  #   #     #    #     #  #  #      #     #    # ##  #  #   #
-    // #     #  #  # ##  #  #  #  #  ##     #     #    ####   #     #    #     #  #  #  #   #     #    ##    #  #   #
-    //  ##   #  #   # #  #  #  #  #   ##   ###    #    ####  ###     ##   ##   #  #   ##   ###   ###    ##   #  #    ##
+    // MARK: static get channelTwitchClient
     /**
      * Gets the current channel Twitch client.
      * @returns {TwitchClient} The current Twitch client.
@@ -109,12 +88,7 @@ class Twitch {
         return channelTwitchClient;
     }
 
-    //         #           #
-    //         #           #
-    //  ###   ###    ###  ###    ##
-    // ##      #    #  #   #    # ##
-    //   ##    #    # ##   #    ##
-    // ###      ##   # #    ##   ##
+    // MARK: static get state
     /**
      * Gets the state.
      * @returns {string} The state.
@@ -123,6 +97,7 @@ class Twitch {
         return state;
     }
 
+    // MARK: static set state
     /**
      * Sets the state.
      * @param {string} value The state.
@@ -131,12 +106,7 @@ class Twitch {
         state = value;
     }
 
-    //                                      #
-    //                                      #
-    //  ##    ##   ###   ###    ##    ##   ###
-    // #     #  #  #  #  #  #  # ##  #      #
-    // #     #  #  #  #  #  #  ##    #      #
-    //  ##    ##   #  #  #  #   ##    ##     ##
+    // MARK: static async connect
     /**
      * Connects to Twitch.
      * @returns {Promise<boolean>} A promise that returns whether the Twitch client is ready.
@@ -187,12 +157,7 @@ class Twitch {
         return !!(channelAuthProvider && botAuthProvider);
     }
 
-    //                          #
-    //                          #
-    //  ##   # #    ##   ###   ###    ###
-    // # ##  # #   # ##  #  #   #    ##
-    // ##    # #   ##    #  #   #      ##
-    //  ##    #     ##   #  #    ##  ###
+    // MARK: static get events
     /**
      * Returns the EventEmitter for Twitch events.
      * @returns {events.EventEmitter} The EventEmitter object.
@@ -201,13 +166,7 @@ class Twitch {
         return eventEmitter;
     }
 
-    // ##                 #
-    //  #
-    //  #     ##    ###  ##    ###
-    //  #    #  #  #  #   #    #  #
-    //  #    #  #   ##    #    #  #
-    // ###    ##   #     ###   #  #
-    //              ###
+    // MARK: static async login
     /**
      * Logs in to Twitch and creates the Twitch client.
      * @returns {Promise} A promise that resolves when login is complete.
@@ -296,13 +255,7 @@ class Twitch {
         await Twitch.setupPubSub();
     }
 
-    // ##                             #
-    //  #                             #
-    //  #     ##    ###   ##   #  #  ###
-    //  #    #  #  #  #  #  #  #  #   #
-    //  #    #  #   ##   #  #  #  #   #
-    // ###    ##   #      ##    ###    ##
-    //              ###
+    // MARK: static async logout
     /**
      * Logs out of Twitch.
      * @returns {Promise} A promise that resolves when the logout is complete.
@@ -319,12 +272,7 @@ class Twitch {
         botChatClient = void 0;
     }
 
-    //               #                      #     ###         #
-    //              # #                     #      #          #
-    // ###    ##    #    ###    ##    ###   ###    #     ##   # #    ##   ###    ###
-    // #  #  # ##  ###   #  #  # ##  ##     #  #   #    #  #  ##    # ##  #  #  ##
-    // #     ##     #    #     ##      ##   #  #   #    #  #  # #   ##    #  #    ##
-    // #      ##    #    #      ##   ###    #  #   #     ##   #  #   ##   #  #  ###
+    // MARK: static async refreshTokens
     /**
      * Refreshes Twitch tokens.
      * @returns {Promise} A promsie that resolves when the tokens are refreshed.
@@ -345,12 +293,7 @@ class Twitch {
         await Twitch.login();
     }
 
-    //                                #      ##                     #      #            #
-    //                                #     #  #                    #                   #
-    //  ###    ##    ###  ###    ##   ###   #      ###  # #    ##   #     ##     ###   ###
-    // ##     # ##  #  #  #  #  #     #  #  # ##  #  #  ####  # ##  #      #    ##      #
-    //   ##   ##    # ##  #     #     #  #  #  #  # ##  #  #  ##    #      #      ##    #
-    // ###     ##    # #  #      ##   #  #   ###   # #  #  #   ##   ####  ###   ###      ##
+    // MARK: static async searchGameList
     /**
      * Searches IGDB for a game.
      * @param {string} search The game to search for.
@@ -363,12 +306,7 @@ class Twitch {
         return res.data;
     }
 
-    //               #     ##    #                            ###           #
-    //               #    #  #   #                             #           # #
-    //  ###    ##   ###    #    ###   ###    ##    ###  # #    #    ###    #     ##
-    // ##     # ##   #      #    #    #  #  # ##  #  #  ####   #    #  #  ###   #  #
-    //   ##   ##     #    #  #   #    #     ##    # ##  #  #   #    #  #   #    #  #
-    // ###     ##     ##   ##     ##  #      ##    # #  #  #  ###   #  #   #     ##
+    // MARK: static async setStreamInfo
     /**
      * Sets the stream's title and game.
      * @param {string} title The title of the stream.
@@ -386,13 +324,7 @@ class Twitch {
         await channelTwitchClient.channels.updateChannelInfo(process.env.TWITCH_CHANNEL_USERID, {title, gameId});
     }
 
-    //               #                ####                     #     ##         #
-    //               #                #                        #    #  #        #
-    //  ###    ##   ###   #  #  ###   ###   # #    ##   ###   ###    #    #  #  ###
-    // ##     # ##   #    #  #  #  #  #     # #   # ##  #  #   #      #   #  #  #  #
-    //   ##   ##     #    #  #  #  #  #     # #   ##    #  #   #    #  #  #  #  #  #
-    // ###     ##     ##   ###  ###   ####   #     ##   #  #    ##   ##    ###  ###
-    //                          #
+    // MARK: static async setupEventSub
     /**
      * Sets up the Twitch EventSub.
      * @returns {Promise} A promise that resolves when the EventSub is setup.
@@ -424,13 +356,7 @@ class Twitch {
         });
     }
 
-    //               #                 ##   #            #
-    //               #                #  #  #            #
-    //  ###    ##   ###   #  #  ###   #     ###    ###  ###
-    // ##     # ##   #    #  #  #  #  #     #  #  #  #   #
-    //   ##   ##     #    #  #  #  #  #  #  #  #  # ##   #
-    // ###     ##     ##   ###  ###    ##   #  #   # #    ##
-    //                          #
+    // MARK: static async setupChat
     /**
      * Sets up the Twitch chat.
      * @returns {Promise} A promise that resolves when the Twitch chat is setup.
@@ -636,13 +562,7 @@ class Twitch {
         }
     }
 
-    //               #                ###         #      ##         #
-    //               #                #  #        #     #  #        #
-    //  ###    ##   ###   #  #  ###   #  #  #  #  ###    #    #  #  ###
-    // ##     # ##   #    #  #  #  #  ###   #  #  #  #    #   #  #  #  #
-    //   ##   ##     #    #  #  #  #  #     #  #  #  #  #  #  #  #  #  #
-    // ###     ##     ##   ###  ###   #      ###  ###    ##    ###  ###
-    //                          #
+    // MARK: static setupPubSub
     /**
      * Sets up the Twitch PubSub subscriptions.
      * @returns {void}

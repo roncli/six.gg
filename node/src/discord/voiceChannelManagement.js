@@ -8,25 +8,12 @@ const DiscordJs = require("discord.js"),
 /** @type {Discord} */
 let Discord;
 
-//  #   #           #                   ###   #                                   ##    #   #                                                           #
-//  #   #                              #   #  #                                    #    #   #                                                           #
-//  #   #   ###    ##     ###    ###   #      # ##    ###   # ##   # ##    ###     #    ## ##   ###   # ##    ###    ## #   ###   ## #    ###   # ##   ####
-//   # #   #   #    #    #   #  #   #  #      ##  #      #  ##  #  ##  #  #   #    #    # # #      #  ##  #      #  #  #   #   #  # # #  #   #  ##  #   #
-//   # #   #   #    #    #      #####  #      #   #   ####  #   #  #   #  #####    #    #   #   ####  #   #   ####   ##    #####  # # #  #####  #   #   #
-//   # #   #   #    #    #   #  #      #   #  #   #  #   #  #   #  #   #  #        #    #   #  #   #  #   #  #   #  #      #      # # #  #      #   #   #  #
-//    #     ###    ###    ###    ###    ###   #   #   ####  #   #  #   #   ###    ###   #   #   ####  #   #   ####   ###    ###   #   #   ###   #   #    ##
-//                                                                                                                  #   #
-//                                                                                                                   ###
+// MARK: class VoiceChannelManagement
 /**
  * A class that manages Discord voice channels.
  */
 class VoiceChannelManagement {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Creates an instance of the voice channel management handler.
      * @param {Discord} discord The Discord object.
@@ -46,12 +33,7 @@ class VoiceChannelManagement {
         this.userCreatedChannels = {};
     }
 
-    //                    ##                      #           ##   #                             ##
-    //                   #  #                     #          #  #  #                              #
-    //  ##    ###  ###   #     ###    ##    ###  ###    ##   #     ###    ###  ###   ###    ##    #
-    // #     #  #  #  #  #     #  #  # ##  #  #   #    # ##  #     #  #  #  #  #  #  #  #  # ##   #
-    // #     # ##  #  #  #  #  #     ##    # ##   #    ##    #  #  #  #  # ##  #  #  #  #  ##     #
-    //  ##    # #  #  #   ##   #      ##    # #    ##   ##    ##   #  #   # #  #  #  #  #   ##   ###
+    // MARK: canCreateChannel
     /**
      * Determine if the user can create a channel.
      * @param {DiscordJs.GuildMember} member The guild member trying to create a channel.
@@ -61,12 +43,7 @@ class VoiceChannelManagement {
         return !this.userCreatedChannels[member.id];
     }
 
-    //                          #
-    //                          #
-    //  ##   ###    ##    ###  ###    ##
-    // #     #  #  # ##  #  #   #    # ##
-    // #     #     ##    # ##   #    ##
-    //  ##   #      ##    # #    ##   ##
+    // MARK: create
     /**
      * Creates a voice channel for a member.
      * @param {DiscordJs.GuildMember} member The guild member.
@@ -91,13 +68,7 @@ class VoiceChannelManagement {
         return channel;
     }
 
-    //              #     ##                      #             #   ##   #                             ##
-    //              #    #  #                     #             #  #  #  #                              #
-    //  ###   ##   ###   #     ###    ##    ###  ###    ##    ###  #     ###    ###  ###   ###    ##    #
-    // #  #  # ##   #    #     #  #  # ##  #  #   #    # ##  #  #  #     #  #  #  #  #  #  #  #  # ##   #
-    //  ##   ##     #    #  #  #     ##    # ##   #    ##    #  #  #  #  #  #  # ##  #  #  #  #  ##     #
-    // #      ##     ##   ##   #      ##    # #    ##   ##    ###   ##   #  #   # #  #  #  #  #   ##   ###
-    //  ###
+    // MARK: getCreatedChannel
     /**
      * Gets the member's most recent created channel.
      * @param {DiscordJs.GuildMember} member The guild member.
@@ -113,13 +84,7 @@ class VoiceChannelManagement {
         return Discord.findVoiceChannelByName(vcm.lastCreatedChannel[member.id]) || void 0;
     }
 
-    //                   #     ####               #          #  #         #                 ##   #                             ##
-    //                   #     #                  #          #  #                          #  #  #                              #
-    // # #    ###  ###   # #   ###   # #   ###   ###   #  #  #  #   ##   ##     ##    ##   #     ###    ###  ###   ###    ##    #
-    // ####  #  #  #  #  ##    #     ####  #  #   #    #  #  #  #  #  #   #    #     # ##  #     #  #  #  #  #  #  #  #  # ##   #
-    // #  #  # ##  #     # #   #     #  #  #  #   #     # #   ##   #  #   #    #     ##    #  #  #  #  # ##  #  #  #  #  ##     #
-    // #  #   # #  #     #  #  ####  #  #  ###     ##    #    ##    ##   ###    ##    ##    ##   #  #   # #  #  #  #  #   ##   ###
-    //                                     #            #
+    // MARK: markEmptyVoiceChannel
     /**
      * Marks a voice channel as either empty or not, queuing it for deleting in 5 minutes.
      * @param {DiscordJs.VoiceChannel | DiscordJs.StageChannel} channel The voice channel.

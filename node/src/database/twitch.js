@@ -9,24 +9,12 @@ const MongoDb = require("mongodb"),
     Db = require("."),
     Encryption = require("./encryption");
 
-//  #####           #     #            #      ####   #
-//    #                   #            #       #  #  #
-//    #    #   #   ##    ####    ###   # ##    #  #  # ##
-//    #    #   #    #     #     #   #  ##  #   #  #  ##  #
-//    #    # # #    #     #     #      #   #   #  #  #   #
-//    #    # # #    #     #  #  #   #  #   #   #  #  ##  #
-//    #     # #    ###     ##    ###   #   #  ####   # ##
+// MARK: class TwitchDb
 /**
  * A class to handle database calls for the twitch collection.
  */
 class TwitchDb {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static async get
     /**
      * Gets the Twitch variables.
      * @returns {Promise<TwitchTypes.Tokens>} A promise that returns the Twitch variables.
@@ -68,12 +56,7 @@ class TwitchDb {
         };
     }
 
-    //               #
-    //               #
-    //  ###    ##   ###
-    // ##     # ##   #
-    //   ##   ##     #
-    // ###     ##     ##
+    // MARK: static async set
     /**
      * Sets the Twitch variables.
      * @param {TwitchTypes.Tokens} tokens The tokens to set.

@@ -8,25 +8,12 @@ const DiscordListener = require("../../src/listeners/discord"),
     Log = require("@roncli/node-application-insights-logger"),
     RouterBase = require("hot-router").RouterBase;
 
-//  #        #                    #             #
-//  #                            # #
-//  #       ##    #   #   ###   #   #  # ##    ##
-//  #        #    #   #  #   #  #   #  ##  #    #
-//  #        #     # #   #####  #####  ##  #    #
-//  #        #     # #   #      #   #  # ##     #
-//  #####   ###     #     ###   #   #  #       ###
-//                                     #
-//                                     #
+// MARK: class LiveApi
 /**
  * A class that represents the live API.
  */
 class LiveApi extends RouterBase {
-    //                    #
-    //                    #
-    // ###    ##   #  #  ###    ##
-    // #  #  #  #  #  #   #    # ##
-    // #     #  #  #  #   #    ##
-    // #      ##    ###    ##   ##
+    // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
      * @returns {RouterBase.Route} The route parameters.
@@ -41,13 +28,7 @@ class LiveApi extends RouterBase {
         return route;
     }
 
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Processes the request.
      * @param {Express.Request} req The request.

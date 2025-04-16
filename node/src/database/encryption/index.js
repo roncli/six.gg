@@ -10,39 +10,19 @@ const crypto = require("crypto"),
     keyLength = 32,
     saltLength = 16;
 
-//              #    #  #
-//              #    # #
-//  ###   ##   ###   ##     ##   #  #
-// #  #  # ##   #    ##    # ##  #  #
-//  ##   ##     #    # #   ##     # #
-// #      ##     ##  #  #   ##     #
-//  ###                           #
+// MARK: getKey
 /**
  * Gets the encryption key.
  * @returns {Buffer} The buffer containing the encryption key.
  */
 const getKey = () => Buffer.from(process.env.ENCRYPTION_KEY, "hex");
 
-//  #####                                      #       #
-//  #                                          #
-//  #      # ##    ###   # ##   #   #  # ##   ####    ##     ###   # ##
-//  ####   ##  #  #   #  ##  #  #   #  ##  #   #       #    #   #  ##  #
-//  #      #   #  #      #      #  ##  ##  #   #       #    #   #  #   #
-//  #      #   #  #   #  #       ## #  # ##    #  #    #    #   #  #   #
-//  #####  #   #   ###   #          #  #        ##    ###    ###   #   #
-//                              #   #  #
-//                               ###   #
+// MARK: class Encryption
 /**
  * Encryption library.  Based loosely on https://stackoverflow.com/a/53573115/214137.
  */
 class Encryption {
-    //    #                                 #
-    //    #                                 #
-    //  ###   ##    ##   ###   #  #  ###   ###
-    // #  #  # ##  #     #  #  #  #  #  #   #
-    // #  #  ##    #     #      # #  #  #   #
-    //  ###   ##    ##   #       #   ###     ##
-    //                          #    #
+    // MARK: static decrypt
     /**
      * Decrypts the data with the associated key.
      * @param {Buffer} ciphertext - The encrypted text to be decrypted.
@@ -62,13 +42,7 @@ class Encryption {
         return Buffer.concat([messagetext, decipher.final()]).toString("utf-8");
     }
 
-    //    #                                 #    #  #   #     #    #      ##         ##     #
-    //    #                                 #    #  #         #    #     #  #         #     #
-    //  ###   ##    ##   ###   #  #  ###   ###   #  #  ##    ###   ###    #     ###   #    ###
-    // #  #  # ##  #     #  #  #  #  #  #   #    ####   #     #    #  #    #   #  #   #     #
-    // #  #  ##    #     #      # #  #  #   #    ####   #     #    #  #  #  #  # ##   #     #
-    //  ###   ##    ##   #       #   ###     ##  #  #  ###     ##  #  #   ##    # #  ###     ##
-    //                          #    #
+    // MARK: static decryptWithSalt
     /**
      * Decrypts the data with a salted key.
      * @param {EncryptionTypes.EncryptedData} encryptedData The encrypted data to be decrypted.
@@ -88,13 +62,7 @@ class Encryption {
         return Buffer.concat([messagetext, decipher.final()]).toString("utf-8");
     }
 
-    //                                      #
-    //                                      #
-    //  ##   ###    ##   ###   #  #  ###   ###
-    // # ##  #  #  #     #  #  #  #  #  #   #
-    // ##    #  #  #     #      # #  #  #   #
-    //  ##   #  #   ##   #       #   ###     ##
-    //                          #    #
+    // MARK: static encrypt
     /**
      * Encrypts the text with the associated key.
      * @param {string} messagetext The clear text message to be encrypted.
@@ -112,13 +80,7 @@ class Encryption {
         return Buffer.concat([initVector, encryptedMessage, cipher.getAuthTag()]);
     }
 
-    //                                      #    #  #   #     #    #      ##         ##     #
-    //                                      #    #  #         #    #     #  #         #     #
-    //  ##   ###    ##   ###   #  #  ###   ###   #  #  ##    ###   ###    #     ###   #    ###
-    // # ##  #  #  #     #  #  #  #  #  #   #    ####   #     #    #  #    #   #  #   #     #
-    // ##    #  #  #     #      # #  #  #   #    ####   #     #    #  #  #  #  # ##   #     #
-    //  ##   #  #   ##   #       #   ###     ##  #  #  ###     ##  #  #   ##    # #  ###     ##
-    //                          #    #
+    // MARK: static encryptWithSalt
     /**
      * Encrypts the text with a salted key.
      * @param {string} messagetext The clear text message to be encrypted.
@@ -137,13 +99,7 @@ class Encryption {
         return {salt, encrypted: Buffer.concat([initVector, encryptedMessage, cipher.getAuthTag()])};
     }
 
-    //              #     ##         ##     #
-    //              #    #  #         #     #
-    //  ###   ##   ###    #     ###   #    ###
-    // #  #  # ##   #      #   #  #   #     #
-    //  ##   ##     #    #  #  # ##   #     #
-    // #      ##     ##   ##    # #  ###     ##
-    //  ###
+    // MARK: static getSalt
     /**
      * Gets a random salt to help prevent rainbow table attacks.
      * @returns {Buffer} The buffer containing the salt.
@@ -152,13 +108,7 @@ class Encryption {
         return crypto.randomBytes(saltLength);
     }
 
-    //              #     ##         ##     #             #  #  #
-    //              #    #  #         #     #             #  # #
-    //  ###   ##   ###    #     ###   #    ###    ##    ###  ##     ##   #  #
-    // #  #  # ##   #      #   #  #   #     #    # ##  #  #  ##    # ##  #  #
-    //  ##   ##     #    #  #  # ##   #     #    ##    #  #  # #   ##     # #
-    // #      ##     ##   ##    # #  ###     ##   ##    ###  #  #   ##     #
-    //  ###                                                               #
+    // MARK: static getSaltedKey
     /**
      * Salts the key to generate a new salted key.
      * @param {Uint8Array} salt The salt.

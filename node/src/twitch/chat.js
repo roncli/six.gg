@@ -4,23 +4,12 @@
 
 const ChatClient = require("@twurple/chat").ChatClient;
 
-//   ###   #              #
-//  #   #  #              #
-//  #      # ##    ###   ####
-//  #      ##  #      #   #
-//  #      #   #   ####   #
-//  #   #  #   #  #   #   #  #
-//   ###   #   #   ####    ##
+// MARK: class Chat
 /**
  * A class that handles Twitch chat.
  */
 class Chat {
-    //                           #                       #
-    //                           #                       #
-    //  ##    ##   ###    ###   ###   ###   #  #   ##   ###    ##   ###
-    // #     #  #  #  #  ##      #    #  #  #  #  #      #    #  #  #  #
-    // #     #  #  #  #    ##    #    #     #  #  #      #    #  #  #
-    //  ##    ##   #  #  ###      ##  #      ###   ##     ##   ##   #
+    // MARK: constructor
     /**
      * Performs setup of Twitch chat.
      * @param {AuthProvider} authProvider The auth provider.

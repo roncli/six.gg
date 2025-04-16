@@ -12,23 +12,12 @@ setTimeout(() => {
     DiscordListener = require("../../listeners/discord");
 }, 0);
 
-//    #        #      #   ###   #                                   ##
-//   # #       #      #  #   #  #                                    #
-//  #   #   ## #   ## #  #      # ##    ###   # ##   # ##    ###     #
-//  #   #  #  ##  #  ##  #      ##  #      #  ##  #  ##  #  #   #    #
-//  #####  #   #  #   #  #      #   #   ####  #   #  #   #  #####    #
-//  #   #  #  ##  #  ##  #   #  #   #  #   #  #   #  #   #  #        #
-//  #   #   ## #   ## #   ###   #   #   ####  #   #  #   #   ###    ###
+// MARK: class AddChannel
 /**
  * A command that adds a voice channel.
  */
 class AddChannel {
-    // #            #    ##       #
-    // #                  #       #
-    // ###   #  #  ##     #     ###   ##   ###
-    // #  #  #  #   #     #    #  #  # ##  #  #
-    // #  #  #  #   #     #    #  #  ##    #
-    // ###    ###  ###   ###    ###   ##   #
+    // MARK: static builder
     /**
      * The common command builder.
      * @param {DiscordJs.SlashCommandBuilder | DiscordJs.SlashCommandSubcommandBuilder} builder The command builder.
@@ -44,12 +33,7 @@ class AddChannel {
             .setDescription("Adds a voice channel.");
     }
 
-    //                                        #
-    //                                        #
-    //  ##    ##   # #   # #    ###  ###    ###
-    // #     #  #  ####  ####  #  #  #  #  #  #
-    // #     #  #  #  #  #  #  # ##  #  #  #  #
-    //  ##    ##   #  #  #  #   # #  #  #   ###
+    // MARK: static command
     /**
      * The command data.
      * @returns {DiscordJs.SlashCommandBuilder} The command data.
@@ -60,12 +44,7 @@ class AddChannel {
         return builder;
     }
 
-    // #                    #  ##
-    // #                    #   #
-    // ###    ###  ###    ###   #     ##
-    // #  #  #  #  #  #  #  #   #    # ##
-    // #  #  # ##  #  #  #  #   #    ##
-    // #  #   # #  #  #   ###  ###    ##
+    // MARK: static async handler
     /**
      * The command handler.
      * @param {DiscordJs.ChatInputCommandInteraction} interaction The interaction.
@@ -151,12 +130,7 @@ class AddChannel {
         return true;
     }
 
-    //         #                ##           #
-    //                           #           #
-    //  ###   ##    # #   #  #   #     ###  ###    ##
-    // ##      #    ####  #  #   #    #  #   #    # ##
-    //   ##    #    #  #  #  #   #    # ##   #    ##
-    // ###    ###   #  #   ###  ###    # #    ##   ##
+    // MARK: static simulate
     /**
      * Adds a subcommand to the simulate command.
      * @param {DiscordJs.SlashCommandBuilder} simulate The simulate command builder.

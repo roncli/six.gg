@@ -1,23 +1,9 @@
-//  #####                        ##            #
-//    #                           #            #
-//    #     ###   ## #   # ##     #     ###   ####    ###
-//    #    #   #  # # #  ##  #    #        #   #     #   #
-//    #    #####  # # #  ##  #    #     ####   #     #####
-//    #    #      # # #  # ##     #    #   #   #  #  #
-//    #     ###   #   #  #       ###    ####    ##    ###
-//                       #
-//                       #
+// MARK: class Template
 /**
  * A class that provides template functions.
  */
 class Template {
-    // ##                   #  ###                     ##           #
-    //  #                   #   #                       #           #
-    //  #     ##    ###   ###   #     ##   # #   ###    #     ###  ###    ##
-    //  #    #  #  #  #  #  #   #    # ##  ####  #  #   #    #  #   #    # ##
-    //  #    #  #  # ##  #  #   #    ##    #  #  #  #   #    # ##   #    ##
-    // ###    ##    # #   ###   #     ##   #  #  ###   ###    # #    ##   ##
-    //                                           #
+    // MARK: static async loadTemplate
     /**
      * Load a template into memory.
      * @param {string} path The path of the template.
@@ -41,13 +27,7 @@ class Template {
         });
     }
 
-    // ##                   #  ###          #          ###          #          ###                     ##           #
-    //  #                   #  #  #         #           #           #           #                       #           #
-    //  #     ##    ###   ###  #  #   ###  ###    ###   #    ###   ###    ##    #     ##   # #   ###    #     ###  ###    ##
-    //  #    #  #  #  #  #  #  #  #  #  #   #    #  #   #    #  #   #    #  #   #    # ##  ####  #  #   #    #  #   #    # ##
-    //  #    #  #  # ##  #  #  #  #  # ##   #    # ##   #    #  #   #    #  #   #    ##    #  #  #  #   #    # ##   #    ##
-    // ###    ##    # #   ###  ###    # #    ##   # #  ###   #  #    ##   ##    #     ##   #  #  ###   ###    # #    ##   ##
-    //                                                                                           #
+    // MARK: static loadDataIntoTemplate
     /**
      * Loads data into an element.
      * @param {any} data The data to load.

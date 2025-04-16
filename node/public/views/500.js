@@ -1,21 +1,9 @@
-//   ###                                      #####                              #   #    #
-//  #   #                                     #                                  #   #
-//  #       ###   # ##   #   #   ###   # ##   #      # ##   # ##    ###   # ##   #   #   ##     ###   #   #
-//   ###   #   #  ##  #  #   #  #   #  ##  #  ####   ##  #  ##  #  #   #  ##  #   # #     #    #   #  #   #
-//      #  #####  #       # #   #####  #      #      #      #      #   #  #       # #     #    #####  # # #
-//  #   #  #      #       # #   #      #      #      #      #      #   #  #       # #     #    #      # # #
-//   ###    ###   #        #     ###   #      #####  #      #       ###   #        #     ###    ###    # #
+// MARK: class ServerErrorView
 /**
  * A class that represents the 500 view.
  */
 class ServerErrorView {
-    //              #
-    //              #
-    //  ###   ##   ###
-    // #  #  # ##   #
-    //  ##   ##     #
-    // #      ##     ##
-    //  ###
+    // MARK: static get
     /**
      * Gets the rendered server error template.
      * @returns {string} An HTML string of the server error view.

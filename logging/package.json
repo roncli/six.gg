@@ -23,9 +23,12 @@
         "graygelf": "2.0.0"
     },
     "devDependencies": {
-        "@babel/core": "7.26.10",
-        "@babel/eslint-parser": "7.27.0",
+        "@eslint/js": "9.24.0",
+        "@stylistic/eslint-plugin": "4.2.0",
         "@types/dockerode": "3.3.38",
         "@types/node": "22.14.1"
+    },
+    "scripts": {
+        "reinstall": "rmdir /s /q node_modules && npm install"
     }
 }

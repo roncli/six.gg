@@ -3,12 +3,12 @@
         "allowJs": true,
         "checkJs": true,
         "esModuleInterop": true,
-        "lib": ["es2017"],
+        "lib": ["es2022"],
         "module": "commonjs",
         "moduleResolution": "node",
         "outDir": "./.vscode/ts",
         "resolveJsonModule": true,
-        "target": "es2017"
+        "target": "es2022"
     },
     "include": [
         "**/*.js",

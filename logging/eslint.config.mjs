@@ -91,6 +91,7 @@ export default [
             "@stylistic/function-call-argument-newline": "off",
             "@stylistic/linebreak-style": ["error", "windows"],
             "@stylistic/lines-around-comment": "off",
+            "@stylistic/lines-between-class-members": ["error", {enforce: [{blankLine: "never", prev: "field", next: "field"}]}],
             "@stylistic/multiline-comment-style": "off",
             "@stylistic/multiline-ternary": "off",
             "@stylistic/newline-per-chained-call": "off",

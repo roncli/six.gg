@@ -30,8 +30,8 @@ process.on("unhandledRejection", (reason) => {
  */
 (async function startup() {
     // Setup application insights.
-    if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY !== "") {
-        Log.setupApplicationInsights(process.env.APPINSIGHTS_INSTRUMENTATIONKEY, {application: "sixgg", container: "sixgg-node"});
+    if (process.env.APPINSIGHTS_CONNECTIONSTRING !== "") {
+        Log.setupApplicationInsights(process.env.APPINSIGHTS_CONNECTIONSTRING, {application: "sixgg", container: "sixgg-node"});
     }
 
     Log.info("Starting up...");

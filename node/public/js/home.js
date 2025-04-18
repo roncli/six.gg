@@ -66,7 +66,7 @@ class Home {
     // MARK: static async #reloadStreams
     /**
      * Reloads the streams from the API.
-     * @returns {Promise} A promise that resolves when the streams have been reloaded.
+     * @returns {Promise<void>}
      */
     static async #reloadStreams() {
         /** @type {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} */

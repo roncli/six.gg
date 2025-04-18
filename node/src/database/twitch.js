@@ -59,7 +59,7 @@ class TwitchDb {
     /**
      * Sets the Twitch variables.
      * @param {TwitchTypes.Tokens} tokens The tokens to set.
-     * @returns {Promise} A promise that resolves when the tokens are set.
+     * @returns {Promise<void>}
      */
     static async set(tokens) {
         const db = await Db.get();

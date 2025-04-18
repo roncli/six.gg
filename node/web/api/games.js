@@ -37,7 +37,7 @@ class GamesApi extends RouterBase {
      * Processes the request.
      * @param {Express.Request} req The request.
      * @param {Express.Response} res The response.
-     * @returns {Promise} A promises that resolves when the request has been processed.
+     * @returns {Promise<void>}
      */
     static async post(req, res) {
         try {

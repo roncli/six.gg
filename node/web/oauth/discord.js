@@ -31,7 +31,7 @@ class OAuthDiscord extends RouterBase {
      * Processes the request.
      * @param {Express.Request} req The request.
      * @param {Express.Response} res The response.
-     * @returns {Promise} A promise that resolves when the request has been processed.
+     * @returns {Promise<void>}
      */
     static async get(req, res) {
         const code = req.query.code ? req.query.code.toString() : void 0,

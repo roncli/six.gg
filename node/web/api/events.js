@@ -36,7 +36,7 @@ class EventsApi extends RouterBase {
      * Processes the request.
      * @param {Express.Request} req The request.
      * @param {Express.Response} res The response.
-     * @returns {Promise} A promise that resolves when the request is complete.
+     * @returns {Promise<void>}
      */
     static async get(req, res) {
         try {
@@ -80,7 +80,7 @@ class EventsApi extends RouterBase {
      * Processes the request.
      * @param {Express.Request} req The request.
      * @param {Express.Response} res The response.
-     * @returns {Promise} A promise that resolves when the request is complete.
+     * @returns {Promise<void>}
      */
     static async post(req, res) {
         try {

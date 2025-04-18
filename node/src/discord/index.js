@@ -180,7 +180,7 @@ class Discord {
     // MARK: static async connect
     /**
      * Connects to Discord.
-     * @returns {Promise} A promise that resolves once Discord is connected.
+     * @returns {Promise<void>}
      */
     static async connect() {
         Log.verbose("Connecting to Discord...");
@@ -225,7 +225,7 @@ class Discord {
      * Edits a message.
      * @param {DiscordJs.Message} message The posted message to edit.
      * @param {string} text The text to change the posted message to.
-     * @returns {Promise} A promise that resolves when the message is edited.
+     * @returns {Promise<void>}
      */
     static async edit(message, text) {
         await Discord.richEdit(message, new DiscordJs.EmbedBuilder({description: text}));
@@ -291,7 +291,7 @@ class Discord {
      * Edits a rich embed message.
      * @param {DiscordJs.Message} message The posted message to edit.
      * @param {DiscordJs.EmbedBuilder} embed The message to change the posted message to.
-     * @returns {Promise} A promise that resolves when the message is edited.
+     * @returns {Promise<void>}
      */
     static async richEdit(message, embed) {
         embed.setFooter({text: embed.data && embed.data.footer ? embed.data.footer.text : "Six Gaming", iconURL: Discord.icon});

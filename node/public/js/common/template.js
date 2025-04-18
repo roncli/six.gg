@@ -8,7 +8,7 @@ class Template {
      * Load a template into memory.
      * @param {string} path The path of the template.
      * @param {string} className The name of the class.
-     * @returns {Promise} A promise that resolves when the template is loaded.
+     * @returns {Promise<void>}
      */
     static async loadTemplate(path, className) {
         if (window[className]) {

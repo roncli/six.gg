@@ -32,7 +32,7 @@ class Member extends RouterBase {
      * Processes the request.
      * @param {Express.Request} req The request.
      * @param {Express.Response} res The response.
-     * @returns {Promise} A promise that resolves when the request is processed.
+     * @returns {Promise<void>}
      */
     static async get(req, res) {
         const user = await User.getCurrent(req),

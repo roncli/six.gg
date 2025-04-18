@@ -15,7 +15,7 @@ class SessionDb {
     /**
      * Deletes a sessino by its ID.
      * @param {string} id The session ID.
-     * @returns {Promise} A promise that resolves when the session has been deleted.
+     * @returns {Promise<void>}
      */
     static async delete(id) {
         const db = await Db.get();
@@ -27,7 +27,7 @@ class SessionDb {
     /**
      * Updates the session.
      * @param {SessionTypes.SessionData} session The session to update.
-     * @returns {Promise} A promise that resolves when the session has been updated.
+     * @returns {Promise<void>}
      */
     static async update(session) {
         const db = await Db.get();

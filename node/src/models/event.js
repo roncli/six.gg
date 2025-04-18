@@ -132,7 +132,7 @@ class Event {
     // MARK: static async notify
     /**
      * Sets up notifications about upcoming events.
-     * @returns {Promise<void>} A promise that resolves when notifications are setup.
+     * @returns {Promise<void>}
      */
     static async notify() {
         /** @type {EventTypes.EventData[]} */
@@ -161,7 +161,7 @@ class Event {
     /**
      * Notifies attendees that an event is starting.
      * @param {number} id The event ID.
-     * @returns {Promise} A promise that resolves when the notifications are sent.
+     * @returns {Promise<void>}
      */
     static async notifyEventStarting(id) {
         let event;

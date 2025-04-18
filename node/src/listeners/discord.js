@@ -42,7 +42,7 @@ class DiscordListener {
     /**
      * Handles when an interaction is created in Discord.
      * @param {DiscordJs.Interaction<DiscordJs.CacheType>} interaction The interaction.
-     * @returns {Promise} A promise that resolves when the interaction has been handled.
+     * @returns {Promise<void>}
      */
     static async interactionCreate(interaction) {
         if (!interaction.isChatInputCommand()) {
@@ -81,7 +81,7 @@ class DiscordListener {
      * Handles when a user's Discord presence is updated.
      * @param {DiscordJs.Presence} oldPresence The old presence state.
      * @param {DiscordJs.Presence} newPresence The new presence state.
-     * @returns {Promise} A promise that resolves when the event has been processed.
+     * @returns {Promise<void>}
      */
     static async presenceUpdate(oldPresence, newPresence) {
         if (!DiscordListener.#streamers) {
@@ -114,7 +114,7 @@ class DiscordListener {
     // MARK: static async ready
     /**
      * Handles when Discord is ready.
-     * @returns {Promise} A promise that resolves when the event has been processed.
+     * @returns {Promise<void>}
      */
     static async ready() {
         DiscordListener.#vcm = new VoiceChannelManagement(Discord);

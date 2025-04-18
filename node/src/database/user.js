@@ -377,7 +377,7 @@ class UserDb {
      * Sets the data for a user.
      * @param {User} user The user.
      * @param {object} data The data to set.
-     * @returns {Promise} A promise that resolves when the data for the user has been set.
+     * @returns {Promise<void>}
      */
     static async setData(user, data) {
         const db = await Db.get();

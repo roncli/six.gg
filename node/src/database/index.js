@@ -58,7 +58,7 @@ class Db {
      * Appends an ID to an object.
      * @param {object} object The object to append the ID to.
      * @param {string} collection The collection the ID belongs to.
-     * @returns {Promise} A promise that resolves when the ID has been appended.
+     * @returns {Promise<void>}
      */
     static async id(object, collection) {
         if (!Db.#db) {

@@ -54,7 +54,7 @@ class Streamers {
      * @param {DiscordJs.Activity} activity The activity.
      * @param {string} twitchName The Twitch username.
      * @param {boolean} [notify] Whether to notify Discord that the streamer has gone live.
-     * @returns {Promise} A promise that resolves when the streamer has been added.
+     * @returns {Promise<void>}
      */
     async add(member, activity, twitchName, notify) {
         this.streamers.set(member.id, {member, activity, twitchName});
@@ -124,7 +124,7 @@ class Streamers {
     /**
      * Removes a user from the streamers list.
      * @param {DiscordJs.GuildMember} member The Discord member.
-     * @returns {Promise} A promise that resolves when the streamer has been removed.
+     * @returns {Promise<void>}
      */
     async remove(member) {
         this.streamers.delete(member.id);

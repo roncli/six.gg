@@ -170,7 +170,7 @@ class TwitchListener {
     /**
      * Handles when the stream goes live.
      * @param {TwitchListenerTypes.StreamEvent} ev The stream event.
-     * @returns {Promise} A promise that is resolved when the event has been processed.
+     * @returns {Promise<void>}
      */
     static async stream(ev) {
         const user = await Twitch.botTwitchClient.users.getUserByName(process.env.TWITCH_CHANNEL);

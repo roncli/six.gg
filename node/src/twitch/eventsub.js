@@ -11,7 +11,7 @@ class EventSub {
     /**
      * Performs setup of Twitch EventSub.
      * @param {EventSubMiddleware} eventSub The event sub middleware.
-     * @returns {Promise} A promise that resolves when the EventSub are setup.
+     * @returns {Promise<void>}
      */
     static async setup(eventSub) {
         this.client = eventSub;

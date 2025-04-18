@@ -218,7 +218,7 @@ class User {
     /**
      * Sets the data for a user.
      * @param {object} data The data to set.
-     * @returns {Promise} A promise that resolves when the data for the user has been set.
+     * @returns {Promise<void>}
      */
     async set(data) {
         if (!this.timezone) {
@@ -239,7 +239,7 @@ class User {
     /**
      * Sets the user's timezone.
      * @param {string} [timezone] The user's timezone.
-     * @returns {Promise} A promise that resolves when the timezone is set.
+     * @returns {Promise<void>}
      */
     async setTimezone(timezone) {
         if (!timezone) {

@@ -91,7 +91,7 @@ class AttendeeDb {
     /**
      * Removes an attendee from an event.
      * @param {AttendeeTypes.AttendeeData} attendee The data to remove.
-     * @returns {Promise} A promise that resolves when the attendee has been removed from an event.
+     * @returns {Promise<void>}
      */
     static async remove(attendee) {
         const db = await Db.get();

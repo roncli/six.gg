@@ -48,7 +48,7 @@ class VoiceChannelManagement {
      * Creates a voice channel for a member.
      * @param {DiscordJs.GuildMember} member The guild member.
      * @param {string} title The title of the channel.
-     * @returns {Promise} A promise that resolves when the channel has been created.
+     * @returns {Promise<DiscordJs.VoiceChannel>} The created voice channel.
      */
     async create(member, title) {
         const vcm = this;

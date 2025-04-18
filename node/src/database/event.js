@@ -140,7 +140,7 @@ class EventDb {
     /**
      * Removes an event.
      * @param {number} id The event ID.
-     * @returns {Promise} A promise that resolves when the event has been removed.
+     * @returns {Promise<void>}
      */
     static async remove(id) {
         const db = await Db.get();

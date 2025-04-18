@@ -168,7 +168,7 @@ class Twitch {
     // MARK: static async login
     /**
      * Logs in to Twitch and creates the Twitch client.
-     * @returns {Promise} A promise that resolves when login is complete.
+     * @returns {Promise<void>}
      */
     static async login() {
         Twitch.#channelAuthProvider = new TwitchAuth.RefreshingAuthProvider({
@@ -257,7 +257,7 @@ class Twitch {
     // MARK: static async logout
     /**
      * Logs out of Twitch.
-     * @returns {Promise} A promise that resolves when the logout is complete.
+     * @returns {Promise<void>}
      */
     static async logout() {
         try {
@@ -274,7 +274,7 @@ class Twitch {
     // MARK: static async refreshTokens
     /**
      * Refreshes Twitch tokens.
-     * @returns {Promise} A promsie that resolves when the tokens are refreshed.
+     * @returns {Promise<void>}
      */
     static async refreshTokens() {
         try {
@@ -310,7 +310,7 @@ class Twitch {
      * Sets the stream's title and game.
      * @param {string} title The title of the stream.
      * @param {string} game The game.
-     * @returns {Promise} A promise that resolves when the stream's info has been set.
+     * @returns {Promise<void>}
      */
     static async setStreamInfo(title, game) {
         let gameId;
@@ -323,13 +323,13 @@ class Twitch {
         await Twitch.#channelTwitchClient.channels.updateChannelInfo(process.env.TWITCH_CHANNEL_USERID, {title, gameId});
     }
 
-    // MARK: static async setupEventSub
+    // MARK: static setupEventSub
     /**
      * Sets up the Twitch EventSub.
-     * @returns {Promise} A promise that resolves when the EventSub is setup.
+     * @returns {void}
      */
-    static async setupEventSub() {
-        await EventSub.client.onChannelFollow(process.env.TWITCH_CHANNEL_USERID, process.env.TWITCH_CHANNEL_USERID, async (follow) => {
+    static setupEventSub() {
+        EventSub.client.onChannelFollow(process.env.TWITCH_CHANNEL_USERID, process.env.TWITCH_CHANNEL_USERID, async (follow) => {
             Twitch.#eventEmitter.emit("follow", {
                 userId: follow.userId,
                 user: (await follow.getUser()).name,
@@ -338,7 +338,7 @@ class Twitch {
             });
         });
 
-        await EventSub.client.onStreamOnline(process.env.TWITCH_CHANNEL_USERID, async (data) => {
+        EventSub.client.onStreamOnline(process.env.TWITCH_CHANNEL_USERID, async (data) => {
             const stream = await data.getStream();
 
             Twitch.#eventEmitter.emit("stream", {
@@ -350,7 +350,7 @@ class Twitch {
             });
         });
 
-        await EventSub.client.onStreamOffline(process.env.TWITCH_CHANNEL_USERID, () => {
+        EventSub.client.onStreamOffline(process.env.TWITCH_CHANNEL_USERID, () => {
             Twitch.#eventEmitter.emit("offline");
         });
     }
@@ -358,7 +358,7 @@ class Twitch {
     // MARK: static async setupChat
     /**
      * Sets up the Twitch chat.
-     * @returns {Promise} A promise that resolves when the Twitch chat is setup.
+     * @returns {Promise<void>}
      */
     static async setupChat() {
         if (Twitch.#channelChatClient && Twitch.#channelChatClient.client) {

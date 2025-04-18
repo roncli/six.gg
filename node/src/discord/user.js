@@ -134,7 +134,7 @@ class User {
     /**
      * Revokes an access token.
      * @param {string} token The token.
-     * @returns {Promise} A promise that resolves when the access token as been revoked.
+     * @returns {Promise<object>} A promise that returns an empty object if successful.
      */
     static async revokeToken(token) {
         try {

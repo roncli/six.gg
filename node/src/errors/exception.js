@@ -18,7 +18,7 @@ class Exception extends Error {
     // MARK: get stack
     /**
      * Return the inner error's stack.
-     * @return {string} The inner error's stack.
+     * @returns {string} The inner error's stack.
      */
     get stack() {
         if (!this.innerError) {
@@ -30,7 +30,7 @@ class Exception extends Error {
     // MARK: get message
     /**
      * Return this error's and the inner error's message.
-     * @return {string} The error message.
+     * @returns {string} The error message.
      */
     get message() {
         if (!this.innerError) {

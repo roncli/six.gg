@@ -2,10 +2,9 @@
  * @typedef {import("../../types/node/sessionTypes").SessionData} SessionTypes.SessionData
  */
 
-const MongoDb = require("mongodb"),
-
-    Db = require("."),
-    Encryption = require("./encryption");
+const Db = require("."),
+    Encryption = require("./encryption"),
+    MongoDb = require("mongodb");
 
 // MARK: class SessionDb
 /**

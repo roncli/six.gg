@@ -79,5 +79,5 @@ class AboutView {
 if (typeof module === "undefined") {
     window.AboutView = AboutView;
 } else {
-    module.exports = AboutView; // eslint-disable-line no-undef
+    module.exports = AboutView;
 }

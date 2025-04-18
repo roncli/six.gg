@@ -55,7 +55,7 @@ class EventsApi extends RouterBase {
 
                 startDate = new Date(new tc.DateTime(start, tz).toIsoString());
                 endDate = new Date(new tc.DateTime(end, tz).toIsoString());
-            } catch (err) {
+            } catch {
                 res.status(400).json({error: "Bad request, invalid date or timezone provided."});
                 return;
             }
@@ -107,7 +107,7 @@ class EventsApi extends RouterBase {
             try {
                 startDate = new Date(start);
                 endDate = new Date(end);
-            } catch (err) {
+            } catch {
                 res.status(400).json({error: "Bad request, invalid date or timezone provided."});
                 return;
             }

@@ -6,22 +6,22 @@
 
 const crypto = require("crypto"),
     DiscordOAuth = require("discord-oauth2"),
-    Log = require("@roncli/node-application-insights-logger"),
-
-    oauth = new DiscordOAuth({
-        clientId: process.env.DISCORD_CLIENTID,
-        clientSecret: process.env.DISCORD_CLIENTSECRET,
-        redirectUri: process.env.DISCORD_REDIRECT_URI,
-        credentials: Buffer.from(`${process.env.DISCORD_CLIENTID}:${process.env.DISCORD_CLIENT_SECRET}`).toString("base64")
-    });
-
-const validStates = new Set();
+    Log = require("@roncli/node-application-insights-logger");
 
 // MARK: class User
 /**
  * A class that handles all Discord user interactions.
  */
 class User {
+    static #oauth = new DiscordOAuth({
+        clientId: process.env.DISCORD_CLIENTID,
+        clientSecret: process.env.DISCORD_CLIENTSECRET,
+        redirectUri: process.env.DISCORD_REDIRECT_URI,
+        credentials: Buffer.from(`${process.env.DISCORD_CLIENTID}:${process.env.DISCORD_CLIENT_SECRET}`).toString("base64")
+    });
+
+    static #validStates = new Set();
+
     // MARK: static getOAuthUrl
     /**
      * Gets the OAuth URL to use, generating a state to ensure that it came from this site.
@@ -32,18 +32,18 @@ class User {
         do {
             state = crypto.randomBytes(16).toString("hex");
 
-            if (validStates.has(state)) {
+            if (User.#validStates.has(state)) {
                 state = void 0;
             }
         } while (!state);
 
-        validStates.add(state);
+        User.#validStates.add(state);
 
         setTimeout(() => {
-            validStates.delete(state);
+            User.#validStates.delete(state);
         }, 300000);
 
-        return oauth.generateAuthUrl({
+        return User.#oauth.generateAuthUrl({
             scope: process.env.DISCORD_USERSCOPES,
             state
         });
@@ -57,18 +57,18 @@ class User {
      * @returns {Promise<DiscordOAuthTypes.TokenRequestResult>} A promise that returns the token.
      */
     static async getToken(state, code) {
-        if (!validStates.has(state)) {
+        if (!User.#validStates.has(state)) {
             return void 0;
         }
 
         try {
-            const token = await oauth.tokenRequest({
+            const token = await User.#oauth.tokenRequest({
                 code,
                 scope: process.env.DISCORD_USERSCOPES,
                 grantType: "authorization_code"
             });
 
-            validStates.delete(state);
+            User.#validStates.delete(state);
 
             return token;
         } catch (err) {
@@ -89,7 +89,7 @@ class User {
      */
     static async getUser(token) {
         try {
-            return await oauth.getUser(token);
+            return await User.#oauth.getUser(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while getting a user.", {err});
             throw new Error("Discord returned an error while getting a user.");
@@ -104,7 +104,7 @@ class User {
      */
     static async getUserConnections(token) {
         try {
-            return await oauth.getUserConnections(token);
+            return await User.#oauth.getUserConnections(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while getting a user's connections.", {err});
             throw new Error("Discord returned an error while getting a user's connections.");
@@ -119,7 +119,7 @@ class User {
      */
     static async refreshToken(token) {
         try {
-            return await oauth.tokenRequest({
+            return await User.#oauth.tokenRequest({
                 refreshToken: token,
                 scope: process.env.DISCORD_USERSCOPES,
                 grantType: "refresh_token"
@@ -138,7 +138,7 @@ class User {
      */
     static async revokeToken(token) {
         try {
-            return await oauth.revokeToken(token);
+            return await User.#oauth.revokeToken(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while revoking a token.", {err});
             throw new Error("Discord returned an error while revoking a token.");

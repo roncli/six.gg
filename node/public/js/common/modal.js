@@ -48,5 +48,5 @@ class Modal {
 if (typeof module === "undefined") {
     window.Modal = Modal;
 } else {
-    module.exports = Modal; // eslint-disable-line no-undef
+    module.exports = Modal;
 }

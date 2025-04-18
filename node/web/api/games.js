@@ -9,14 +9,14 @@ const express = require("express"),
     Twitch = require("../../src/twitch"),
     User = require("../../src/models/user");
 
-/** @type {{[x: string]: number}} */
-const throttle = {};
-
 // MARK: class GamesApi
 /**
  * A class that represents the games API.
  */
 class GamesApi extends RouterBase {
+    /** @type {{[x: string]: number}} */
+    static #throttle = {};
+
     // MARK: static get route
     /**
      * Retrieves the route parameters for the class.
@@ -41,13 +41,13 @@ class GamesApi extends RouterBase {
      */
     static async post(req, res) {
         try {
-            if (throttle[req.ip] && new Date().getTime() < throttle[req.ip]) {
+            if (GamesApi.#throttle[req.ip] && new Date().getTime() < GamesApi.#throttle[req.ip]) {
                 res.status(429).json({error: "You are being throttled.  Try again in one minute."});
-                throttle[req.ip] = new Date().getTime() + 60 * 1000;
+                GamesApi.#throttle[req.ip] = new Date().getTime() + 60 * 1000;
                 return;
             }
 
-            throttle[req.ip] = new Date().getTime() + 250;
+            GamesApi.#throttle[req.ip] = new Date().getTime() + 250;
 
             if (!req.body || !req.body.search) {
                 res.status(400).json({error: "Bad request, you must send a body with a search request in it."});

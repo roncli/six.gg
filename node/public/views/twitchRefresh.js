@@ -32,5 +32,5 @@ class TwitchRefreshView {
 if (typeof module === "undefined") {
     window.TwitchRefreshView = TwitchRefreshView;
 } else {
-    module.exports = TwitchRefreshView; // eslint-disable-line no-undef
+    module.exports = TwitchRefreshView;
 }

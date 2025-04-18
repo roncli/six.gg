@@ -4,10 +4,9 @@
  * @typedef {import("../../types/node/twitchTypes").Tokens} TwitchTypes.Tokens
  */
 
-const MongoDb = require("mongodb"),
-
-    Db = require("."),
-    Encryption = require("./encryption");
+const Db = require("."),
+    Encryption = require("./encryption"),
+    MongoDb = require("mongodb");
 
 // MARK: class TwitchDb
 /**

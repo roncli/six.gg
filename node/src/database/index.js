@@ -1,21 +1,15 @@
 const MongoDb = require("mongodb");
 
-/**
- * @type {MongoDb.MongoClient}
- */
-let client;
-
-/**
- * @type {MongoDb.Db}
- */
-let db;
-
-
 // MARK: class Db
 /**
  * A class that handles setting up the database.
  */
 class Db {
+    /** @type {MongoDb.MongoClient} */
+    static #client;
+    /** @type {MongoDb.Db} */
+    static #db;
+
     // MARK: static fromLong
     /**
      * Converts a value from a MongoDb.Long to a number.
@@ -42,21 +36,21 @@ class Db {
      * @returns {Promise<MongoDb.Db>} The database.
      */
     static async get() {
-        if (!client) {
-            client = new MongoDb.MongoClient(`mongodb://web_sixgg:${process.env.WEB_SIXGG_PASSWORD}@db:27017/sixgg`, {
+        if (!Db.#client) {
+            Db.#client = new MongoDb.MongoClient(`mongodb://web_sixgg:${process.env.WEB_SIXGG_PASSWORD}@db:27017/sixgg`, {
                 authMechanism: "SCRAM-SHA-256",
                 authSource: "admin",
                 promoteLongs: false
             });
         }
 
-        await client.connect();
+        await Db.#client.connect();
 
-        if (!db) {
-            db = client.db("sixgg");
+        if (!Db.#db) {
+            Db.#db = Db.#client.db("sixgg");
         }
 
-        return db;
+        return Db.#db;
     }
 
     // MARK: static async id
@@ -67,11 +61,11 @@ class Db {
      * @returns {Promise} A promise that resolves when the ID has been appended.
      */
     static async id(object, collection) {
-        if (!db) {
+        if (!Db.#db) {
             await Db.get();
         }
 
-        object._id = (await db.collection("counters").findOneAndUpdate({_id: collection}, {$inc: {value: MongoDb.Long.fromNumber(1)}})).value.add(1);
+        object._id = (await Db.#db.collection("counters").findOneAndUpdate({_id: collection}, {$inc: {value: MongoDb.Long.fromNumber(1)}})).value.add(1);
     }
 }
 

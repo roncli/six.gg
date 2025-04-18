@@ -7,6 +7,10 @@
  * A class that represents the home view.
  */
 class HomeView {
+    static #StreamersView = typeof module === "undefined" ? window.StreamersView : require("./home/streamers");
+
+    static #quoteReplaceParse = /"/gm;
+
     // MARK: static get
     /**
      * Gets the rendered page template.
@@ -15,6 +19,7 @@ class HomeView {
      */
     static get(data) {
         const {streamers, timezone, defaultTimezone} = data;
+        const fixedTimezone = timezone.replace(HomeView.#quoteReplaceParse, "\\\"");
 
         return /* html */`
             <div class="section">Upcoming Events</div>
@@ -23,21 +28,17 @@ class HomeView {
             ` : ""}
             <div id="calendar"></div>
             <div id="streamers">
-                ${streamers && streamers.length > 0 ? HomeView.StreamersView.get(streamers) : ""}
+                ${streamers && streamers.length > 0 ? HomeView.#StreamersView.get(streamers) : ""}
             </div>
             <script>
-                window.timezone = "${timezone.replace(/"/gm, "\\\"")}";
+                window.timezone = "${fixedTimezone}";
             </script>
         `;
     }
 }
 
-/** @type {typeof import("./home/streamers")} */
-// @ts-ignore
-HomeView.StreamersView = typeof StreamersView === "undefined" ? require("./home/streamers") : StreamersView; // eslint-disable-line no-undef
-
 if (typeof module === "undefined") {
     window.HomeView = HomeView;
 } else {
-    module.exports = HomeView; // eslint-disable-line no-undef
+    module.exports = HomeView;
 }

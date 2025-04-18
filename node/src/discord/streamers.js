@@ -5,20 +5,20 @@
  * @typedef {typeof import("../twitch")} Twitch
  */
 
-/** @type {{[x: string]: number}} */
-const lastAnnounced = {};
-
-/** @type {Discord} */
-let Discord;
-
-/** @type {Twitch} */
-let Twitch;
-
 // MARK: class Streamers
 /**
  * A class that handles streamers listed in Discord.
  */
 class Streamers {
+    /** @type {Discord} */
+    static #Discord;
+
+    /** @type {{[x: string]: number}} */
+    static #lastAnnounced = {};
+
+    /** @type {Twitch} */
+    static #Twitch;
+
     // MARK: constructor
     /**
      * Creates an instance of the streamers handler.
@@ -26,12 +26,12 @@ class Streamers {
      * @param {Twitch} twitch The Twitch object.
      */
     constructor(discord, twitch) {
-        if (!Discord) {
-            Discord = discord;
+        if (!Streamers.#Discord) {
+            Streamers.#Discord = discord;
         }
 
-        if (!Twitch) {
-            Twitch = twitch;
+        if (!Streamers.#Twitch) {
+            Streamers.#Twitch = twitch;
         }
 
         /** @type {Map<string, {member: DiscordJs.GuildMember, activity: DiscordJs.Activity, twitchName: string}>} */
@@ -59,24 +59,24 @@ class Streamers {
     async add(member, activity, twitchName, notify) {
         this.streamers.set(member.id, {member, activity, twitchName});
 
-        await member.roles.add([Discord.findRoleByName("Live"), Discord.findRoleByName("Streamers")]);
+        await member.roles.add([Streamers.#Discord.findRoleByName("Live"), Streamers.#Discord.findRoleByName("Streamers")]);
 
-        if (!lastAnnounced[member.id]) {
-            lastAnnounced[member.id] = 0;
+        if (!Streamers.#lastAnnounced[member.id]) {
+            Streamers.#lastAnnounced[member.id] = 0;
         }
 
-        if (new Date().getTime() - lastAnnounced[member.id] < 300000) {
-            lastAnnounced[member.id] = new Date().getTime();
+        if (new Date().getTime() - Streamers.#lastAnnounced[member.id] < 300000) {
+            Streamers.#lastAnnounced[member.id] = new Date().getTime();
             return;
         }
 
-        lastAnnounced[member.id] = new Date().getTime();
+        Streamers.#lastAnnounced[member.id] = new Date().getTime();
 
         if (notify) {
-            const user = await Twitch.botTwitchClient.users.getUserByName(twitchName),
-                channel = await Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
+            const user = await Streamers.#Twitch.botTwitchClient.users.getUserByName(twitchName),
+                channel = await Streamers.#Twitch.botTwitchClient.channels.getChannelInfoById(user.id);
 
-            await Discord.richQueue(Discord.embedBuilder({
+            await Streamers.#Discord.richQueue(Streamers.#Discord.embedBuilder({
                 timestamp: new Date(),
                 thumbnail: {
                     url: user.profilePictureUrl,
@@ -95,7 +95,7 @@ class Streamers {
                         value: activity.state
                     }
                 ]
-            }), Discord.findTextChannelByName("live-stream-announcements"));
+            }), Streamers.#Discord.findTextChannelByName("live-stream-announcements"));
         }
 
         if (!this.featured) {
@@ -129,7 +129,7 @@ class Streamers {
     async remove(member) {
         this.streamers.delete(member.id);
 
-        await member.roles.remove(Discord.findRoleByName("Live"));
+        await member.roles.remove(Streamers.#Discord.findRoleByName("Live"));
 
         if (member.id === this.featured) {
             {

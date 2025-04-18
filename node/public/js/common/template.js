@@ -17,10 +17,9 @@ class Template {
 
         const script = document.createElement("script");
 
-        await new Promise((resolve) => {
-            script.onload = () => {
-                resolve();
-            };
+        await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
             script.src = path;
 
             document.head.appendChild(script);
@@ -50,5 +49,5 @@ class Template {
 if (typeof module === "undefined") {
     window.Template = Template;
 } else {
-    module.exports = Template; // eslint-disable-line no-undef
+    module.exports = Template;
 }

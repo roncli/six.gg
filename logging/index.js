@@ -1,10 +1,17 @@
 const appInsights = require("applicationinsights"),
     Docker = require("./src/docker"),
-    gelfserver = require("graygelf/server"),
+    gelfserver = require("graygelf/server");
 
-    logMatch = /(?<ipaddress>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - (?<remoteuser>.+) \[(?<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2})\] (?<servername>.+) (?<serverport>\d+) "(?<request>(?<method>[a-z]+) (?<url>.+)(?<http>http\/[12]\.[01])|.+)" (?<statuscode>\d{3}) (?<bytessent>\d+) (?<requesttime>\d+(?:.\d+)) "(?<referrer>.+)" "(?<useragent>.+)"/i,
-    port = process.env.PORT || 12201,
-    severityEnum = {
+// MARK: class Index
+/**
+ * The primary class for the application.
+ */
+class Index {
+    static #docker = new Docker();
+    static #logMatch = /(?<ipaddress>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - (?<remoteuser>.+) \[(?<date>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}\+\d{2}:\d{2})\] (?<servername>.+) (?<serverport>\d+) "(?<request>(?<method>[a-z]+) (?<url>.+)(?<http>http\/[12]\.[01])|.+)" (?<statuscode>\d{3}) (?<bytessent>\d+) (?<requesttime>\d+(?:.\d+)) "(?<referrer>.+)" "(?<useragent>.+)"/i;
+    static #successMatch = /^[23]/;
+
+    static #severityEnum = Object.freeze({
         F: 4,
         E: 3,
         W: 2,
@@ -15,16 +22,8 @@ const appInsights = require("applicationinsights"),
         D3: 0,
         D4: 0,
         D5: 0
-    },
-    successMatch = /^[23]/;
+    });
 
-const docker = new Docker();
-
-// MARK: class Index
-/**
- * The primary class for the application.
- */
-class Index {
     // MARK: static startup
     /**
      * Starts up the application.
@@ -44,10 +43,10 @@ class Index {
             }
 
             // Check for nginx log.
-            if (logMatch.test(gelf.short_message)) {
-                const {groups: {ipaddress, remoteuser, date, servername, serverport, request, method, url, http, statuscode, bytessent, requesttime, referrer, useragent}} = logMatch.exec(gelf.short_message);
+            if (Index.#logMatch.test(gelf.short_message)) {
+                const {groups: {ipaddress, remoteuser, date, servername, serverport, request, method, url, http, statuscode, bytessent, requesttime, referrer, useragent}} = Index.#logMatch.exec(gelf.short_message);
 
-                appInsights.defaultClient.trackRequest({name: `${method} ${url}`, url: `${serverport === "443" ? "https" : "http"}://${servername}${url}`, duration: +requesttime * 1000, resultCode: statuscode, success: successMatch.test(statuscode), time: new Date(date), properties: {application: "tis.roncli.com", container: gelf._container_name || "tisronclicom-logging", ipaddress, remoteuser, serverport: +serverport, request, http, bytessent: +bytessent, referrer, useragent}});
+                appInsights.defaultClient.trackRequest({name: `${method} ${url}`, url: `${serverport === "443" ? "https" : "http"}://${servername}${url}`, duration: +requesttime * 1000, resultCode: statuscode, success: Index.#successMatch.test(statuscode), time: new Date(date), properties: {application: "tis.roncli.com", container: gelf._container_name || "tisronclicom-logging", ipaddress, remoteuser, serverport: +serverport, request, http, bytessent: +bytessent, referrer, useragent}});
 
                 return;
             }
@@ -81,30 +80,31 @@ class Index {
                         properties.durationMillis = data.durationMillis;
                     }
 
-                    if (severityEnum[severity] >= 3) {
-                        appInsights.defaultClient.trackException({exception: new Error(message), severity: severityEnum[severity], time: date, properties});
+                    if (Index.#severityEnum[severity] >= 3) {
+                        appInsights.defaultClient.trackException({exception: new Error(message), severity: Index.#severityEnum[severity], time: date, properties});
                     } else {
                         // Don't log checkpoints.
                         if (data.ctx === "WTCheckpointThread") {
                             return;
                         }
 
-                        appInsights.defaultClient.trackTrace({message, severity: severityEnum[severity], time: date, properties});
+                        appInsights.defaultClient.trackTrace({message, severity: Index.#severityEnum[severity], time: date, properties});
                     }
 
                     return;
                 }
-            } catch (err) {}
+            } catch {}
 
             // Default log.
             appInsights.defaultClient.trackTrace({message: gelf.short_message, properties: {application: process.env.APPLICATION, container: gelf._container_name || "sixgg-logging"}});
         });
 
+        const port = process.env.PORT || 12201;
         server.listen(port);
         console.log(`Server PID ${process.pid} listening on port ${port}.`);
 
         if (+process.env.APPINSIGHTS_PERFORMANCE_METRICS) {
-            docker.start();
+            Index.#docker.start();
         }
     }
 }

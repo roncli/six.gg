@@ -24,5 +24,5 @@ class NotFoundView {
 if (typeof module === "undefined") {
     window.NotFoundView = NotFoundView;
 } else {
-    module.exports = NotFoundView; // eslint-disable-line no-undef
+    module.exports = NotFoundView;
 }

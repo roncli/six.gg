@@ -28,5 +28,5 @@ class Connection {
 if (typeof module === "undefined") {
     window.Connection = Connection;
 } else {
-    module.exports = Connection; // eslint-disable-line no-undef
+    module.exports = Connection;
 }

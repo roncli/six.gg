@@ -1,25 +1,25 @@
 const Event = require("./models/event");
 
-let setup = false;
-
 // MARK: class Notify
 /**
  * A class that handles Discord notifications.
  */
 class Notify {
+    static #setup = false;
+
     // MARK: static setupNotifications
     /**
      * Setup notifications.
      * @returns {void}
      */
     static setupNotifications() {
-        if (setup) {
+        if (Notify.#setup) {
             return;
         }
 
         Event.notify();
 
-        setup = true;
+        Notify.#setup = true;
     }
 }
 

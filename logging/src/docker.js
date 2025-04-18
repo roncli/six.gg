@@ -29,7 +29,7 @@ class Docker {
 
         let currentMinute = -1;
 
-        while (true) { // eslint-disable-line no-constant-condition
+        while (true) {
             try {
                 const stats = await this.getStats();
 

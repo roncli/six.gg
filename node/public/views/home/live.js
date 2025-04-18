@@ -27,5 +27,5 @@ class LiveView {
 if (typeof module === "undefined") {
     window.LiveView = LiveView;
 } else {
-    module.exports = LiveView; // eslint-disable-line no-undef
+    module.exports = LiveView;
 }

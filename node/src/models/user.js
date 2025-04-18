@@ -99,7 +99,7 @@ class User {
             let token;
             try {
                 token = await DiscordUser.refreshToken(data.session.refreshToken);
-            } catch (err) {
+            } catch {
                 // Delete session, user was invalid.
                 await SessionDb.delete(data.session._id);
 

@@ -7,6 +7,8 @@
  * A class that represents the general website template.
  */
 class IndexView {
+    static #Encoding = typeof module === "undefined" ? window.Encoding : require("../js/common/encoding");
+
     // MARK: static get
     /**
      * Gets the rendered page template.
@@ -44,7 +46,7 @@ class IndexView {
                                     <li class="login">
                                         <a href="/me">
                                             <img src="${guildMember.user.displayAvatarURL({size: 32, extension: "png"})}" />
-                                            ${IndexView.Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
+                                            ${IndexView.#Encoding.htmlEncode(user.guildMember.nick || user.discord.username)}
                                         </a>
                                     </li>
                                     ` : /* html */`
@@ -83,12 +85,8 @@ class IndexView {
     }
 }
 
-/** @type {typeof import("../js/common/encoding")} */
-// @ts-ignore
-IndexView.Encoding = typeof Encoding === "undefined" ? require("../js/common/encoding") : Encoding; // eslint-disable-line no-undef
-
 if (typeof module === "undefined") {
     window.IndexView = IndexView;
 } else {
-    module.exports = IndexView; // eslint-disable-line no-undef
+    module.exports = IndexView;
 }

@@ -5,9 +5,14 @@ const DiscordJs = require("discord.js"),
     Notify = require("../notify"),
     path = require("path"),
     Rest = require("@discordjs/rest"),
-    util = require("util"),
+    util = require("util");
 
-    discord = new DiscordJs.Client({
+// MARK: class Discord
+/**
+ * A static class that handles all Discord.js interctions.
+ */
+class Discord {
+    static #discord = new DiscordJs.Client({
         intents: [
             DiscordJs.GatewayIntentBits.DirectMessages,
             DiscordJs.GatewayIntentBits.Guilds,
@@ -20,29 +25,24 @@ const DiscordJs = require("discord.js"),
         }
     });
 
-let readied = false;
+    static #eventEmitter = new events.EventEmitter();
 
-/** @type {DiscordJs.Guild} */
-let guild;
+    /** @type {DiscordJs.Guild} */
+    static #guild;
 
-/** @type {DiscordJs.Role} */
-let theEvilOverlordRole;
+    static #readied = false;
 
-const eventEmitter = new events.EventEmitter();
+    /** @type {DiscordJs.Role} */
+    static #theEvilOverlordRole;
 
-// MARK: class Discord
-/**
- * A static class that handles all Discord.js interctions.
- */
-class Discord {
     // MARK: static get channels
     /**
      * Returns the channels on the server.
      * @returns {DiscordJs.Collection<string, DiscordJs.GuildChannel | DiscordJs.ThreadChannel>} The channels.
      */
     static get channels() {
-        if (guild) {
-            return guild.channels.cache;
+        if (Discord.#guild) {
+            return Discord.#guild.channels.cache;
         }
 
         return new DiscordJs.Collection();
@@ -54,8 +54,8 @@ class Discord {
      * @returns {DiscordJs.Collection<string, DiscordJs.GuildMember>} The members.
      */
     static get members() {
-        if (guild) {
-            return guild.members.cache.filter((m) => !m.user.bot);
+        if (Discord.#guild) {
+            return Discord.#guild.members.cache.filter((m) => !m.user.bot);
         }
 
         return new DiscordJs.Collection();
@@ -67,7 +67,7 @@ class Discord {
      * @returns {events.EventEmitter} The EventEmitter object.
      */
     static get events() {
-        return eventEmitter;
+        return Discord.#eventEmitter;
     }
 
     // MARK: static get icon
@@ -76,8 +76,8 @@ class Discord {
      * @returns {string} The URL of the icon.
      */
     static get icon() {
-        if (discord && discord.ws && discord.ws.status === 0) {
-            return discord.user.displayAvatarURL();
+        if (Discord.#discord && Discord.#discord.ws && Discord.#discord.ws.status === 0) {
+            return Discord.#discord.user.displayAvatarURL();
         }
 
         return void 0;
@@ -89,8 +89,8 @@ class Discord {
      * @returns {string} The ID of the server.
      */
     static get id() {
-        if (guild) {
-            return guild.id;
+        if (Discord.#guild) {
+            return Discord.#guild.id;
         }
 
         return void 0;
@@ -102,12 +102,12 @@ class Discord {
      * @returns {void}
      */
     static startup() {
-        discord.on("ready", async () => {
+        Discord.#discord.on("ready", async () => {
             Log.verbose("Connected to Discord.");
 
-            guild = discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);
+            Discord.#guild = Discord.#discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);
 
-            theEvilOverlordRole = guild.roles.cache.find((r) => r.name === "The Evil Overlord");
+            Discord.#theEvilOverlordRole = Discord.#guild.roles.cache.find((r) => r.name === "The Evil Overlord");
 
             const files = await fs.readdir(path.join(__dirname, "commands")),
                 simulate = new DiscordJs.SlashCommandBuilder(),
@@ -137,37 +137,37 @@ class Discord {
             try {
                 const rest = new Rest.REST().setToken(process.env.DISCORD_TOKEN);
 
-                await rest.put(DiscordJs.Routes.applicationGuildCommands(process.env.DISCORD_CLIENTID, guild.id), {body: commands});
+                await rest.put(DiscordJs.Routes.applicationGuildCommands(process.env.DISCORD_CLIENTID, Discord.#guild.id), {body: commands});
             } catch (err) {
                 Log.error("Error adding slash commands.", {err});
             }
 
-            eventEmitter.emit("ready");
+            Discord.#eventEmitter.emit("ready");
 
-            if (!readied) {
-                readied = true;
+            if (!Discord.#readied) {
+                Discord.#readied = true;
             }
 
             Notify.setupNotifications();
         });
 
-        discord.on("disconnect", (ev) => {
+        Discord.#discord.on("disconnect", (ev) => {
             Log.error("Disconnected from Discord.", {err: ev instanceof Error ? ev : new Error(util.inspect(ev))});
         });
 
-        discord.on("interactionCreate", (interaction) => {
-            eventEmitter.emit("interactionCreate", interaction);
+        Discord.#discord.on("interactionCreate", (interaction) => {
+            Discord.#eventEmitter.emit("interactionCreate", interaction);
         });
 
-        discord.on("presenceUpdate", (oldPresence, newPresence) => {
-            eventEmitter.emit("presenceUpdate", oldPresence, newPresence);
+        Discord.#discord.on("presenceUpdate", (oldPresence, newPresence) => {
+            Discord.#eventEmitter.emit("presenceUpdate", oldPresence, newPresence);
         });
 
-        discord.on("voiceStateUpdate", (oldState, newState) => {
-            eventEmitter.emit("voiceStateUpdate", oldState, newState);
+        Discord.#discord.on("voiceStateUpdate", (oldState, newState) => {
+            Discord.#eventEmitter.emit("voiceStateUpdate", oldState, newState);
         });
 
-        discord.on("error", (err) => {
+        Discord.#discord.on("error", (err) => {
             if (err.message === "read ECONNRESET") {
                 // Swallow this error, see https://github.com/discordjs/discord.js/issues/3043#issuecomment-465543902
                 return;
@@ -186,7 +186,7 @@ class Discord {
         Log.verbose("Connecting to Discord...");
 
         try {
-            await discord.login();
+            await Discord.#discord.login();
         } catch (err) {
             Log.error("Error connecting to Discord, will automatically retry.", {err});
         }
@@ -198,7 +198,7 @@ class Discord {
      * @returns {boolean} Whether the bot is connected to Discord.
      */
     static isConnected() {
-        return discord && discord.ws && guild ? discord.ws.status === 0 : false;
+        return Discord.#discord && Discord.#discord.ws && Discord.#guild ? Discord.#discord.ws.status === 0 : false;
     }
 
     // MARK: static async queue
@@ -209,7 +209,7 @@ class Discord {
      * @returns {Promise<DiscordJs.Message>} A promise that returns the sent message.
      */
     static async queue(message, channel) {
-        if (channel.id === discord.user.id) {
+        if (channel.id === Discord.#discord.user.id) {
             return void 0;
         }
 
@@ -261,7 +261,7 @@ class Discord {
      * @returns {Promise<DiscordJs.Message>} A promise that returns the sent message.
      */
     static async richQueue(embed, channel) {
-        if (channel.id === discord.user.id) {
+        if (channel.id === Discord.#discord.user.id) {
             return void 0;
         }
 
@@ -323,10 +323,10 @@ class Discord {
      * @returns {Promise<DiscordJs.TextChannel | DiscordJs.NewsChannel | DiscordJs.VoiceChannel | DiscordJs.CategoryChannel | DiscordJs.StageChannel>} The created channel.
      */
     static createChannel(name, type, overwrites, reason) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.channels.create({name, type, permissionOverwrites: overwrites, reason});
+        return Discord.#guild.channels.create({name, type, permissionOverwrites: overwrites, reason});
     }
 
     // MARK: static createRole
@@ -336,10 +336,10 @@ class Discord {
      * @returns {Promise<DiscordJs.Role>} A promise that returns the created role.
      */
     static createRole(data) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.roles.create(data);
+        return Discord.#guild.roles.create(data);
     }
 
     // MARK: static findCategoryByName
@@ -349,10 +349,10 @@ class Discord {
      * @returns {DiscordJs.CategoryChannel} The Discord category.
      */
     static findCategoryByName(name) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.CategoryChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildCategory)); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.CategoryChannel} */(Discord.#guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildCategory)); // eslint-disable-line @stylistic/no-extra-parens
     }
 
     // MARK: static findChannelById
@@ -362,10 +362,10 @@ class Discord {
      * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
      */
     static findChannelById(id) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.channels.cache.find((c) => c.id === id);
+        return Discord.#guild.channels.cache.find((c) => c.id === id);
     }
 
     // MARK: static findChannelByName
@@ -375,10 +375,10 @@ class Discord {
      * @returns {DiscordJs.GuildChannel | DiscordJs.ThreadChannel} The Discord channel.
      */
     static findChannelByName(name) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.channels.cache.find((c) => c.name === name);
+        return Discord.#guild.channels.cache.find((c) => c.name === name);
     }
 
     // MARK: static findGuildMemberByDisplayName
@@ -388,10 +388,10 @@ class Discord {
      * @returns {DiscordJs.GuildMember} The guild member.
      */
     static findGuildMemberByDisplayName(displayName) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.members.cache.find((m) => m.displayName === displayName);
+        return Discord.#guild.members.cache.find((m) => m.displayName === displayName);
     }
 
     // MARK: static findGuildMemberById
@@ -401,10 +401,10 @@ class Discord {
      * @returns {DiscordJs.GuildMember} The guild member.
      */
     static findGuildMemberById(id) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.members.cache.find((m) => m.id === id);
+        return Discord.#guild.members.cache.find((m) => m.id === id);
     }
 
     // MARK: static findRoleById
@@ -414,10 +414,10 @@ class Discord {
      * @returns {DiscordJs.Role} The Discord role.
      */
     static findRoleById(id) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.roles.cache.find((r) => r.id === id);
+        return Discord.#guild.roles.cache.find((r) => r.id === id);
     }
 
     // MARK: static findRoleByName
@@ -427,10 +427,10 @@ class Discord {
      * @returns {DiscordJs.Role} The Discord role.
      */
     static findRoleByName(name) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return guild.roles.cache.find((r) => r.name === name);
+        return Discord.#guild.roles.cache.find((r) => r.name === name);
     }
 
     // MARK: static findTextChannelByName
@@ -440,10 +440,10 @@ class Discord {
      * @returns {DiscordJs.TextChannel} The Discord text channel.
      */
     static findTextChannelByName(name) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.TextChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildText)); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.TextChannel} */(Discord.#guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildText)); // eslint-disable-line @stylistic/no-extra-parens
     }
 
     // MARK: static findUserById
@@ -453,7 +453,7 @@ class Discord {
      * @returns {Promise<DiscordJs.User>} A promise that returns the user.
      */
     static findUserById(id) {
-        return discord.users.fetch(id, {cache: false});
+        return Discord.#discord.users.fetch(id, {cache: false});
     }
 
     // MARK: static findVoiceChannelByName
@@ -463,10 +463,10 @@ class Discord {
      * @returns {DiscordJs.VoiceChannel} The Discord voice channel.
      */
     static findVoiceChannelByName(name) {
-        if (!guild) {
+        if (!Discord.#guild) {
             return void 0;
         }
-        return /** @type {DiscordJs.VoiceChannel} */(guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line no-extra-parens
+        return /** @type {DiscordJs.VoiceChannel} */(Discord.#guild.channels.cache.find((c) => c.name === name && c.type === DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line @stylistic/no-extra-parens
     }
 
     // MARK: static getName
@@ -486,7 +486,7 @@ class Discord {
      * @returns {boolean} Whether the user is the owner.
      */
     static isOwner(member) {
-        return !!(member && theEvilOverlordRole.members.find((m) => m.id === member.id));
+        return !!(member && Discord.#theEvilOverlordRole.members.find((m) => m.id === member.id));
     }
 }
 

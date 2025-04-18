@@ -83,5 +83,5 @@ document.addEventListener("DOMContentLoaded", EventPage.DOMContentLoaded);
 if (typeof module === "undefined") {
     window.EventPage = EventPage;
 } else {
-    module.exports = EventPage; // eslint-disable-line no-undef
+    module.exports = EventPage;
 }

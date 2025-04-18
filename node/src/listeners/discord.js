@@ -5,28 +5,28 @@ const Discord = require("../discord"),
     Streamers = require("../discord/streamers"),
     Twitch = require("../twitch"),
     VoiceChannelManagement = require("../discord/voiceChannelManagement"),
-    Warning = require("../errors/warning"),
-
-    urlParse = /^https:\/\/www.twitch.tv\/(?<user>.+)$/;
-
-/** @type {Streamers} */
-let streamers;
-
-/** @type {VoiceChannelManagement} */
-let vcm;
+    Warning = require("../errors/warning");
 
 // MARK: class DiscordListener
 /**
  * A class that handles listening to Discord events.
  */
 class DiscordListener {
+    /** @type {Streamers} */
+    static #streamers;
+
+    static #urlParse = /^https:\/\/www.twitch.tv\/(?<user>.+)$/;
+
+    /** @type {VoiceChannelManagement} */
+    static #vcm;
+
     // MARK: static get streamers
     /**
      * Returns the streamers object.
      * @returns {Streamers} The streamers object.
      */
     static get streamers() {
-        return streamers;
+        return DiscordListener.#streamers;
     }
 
     // MARK: static get voiceChannelManagement
@@ -35,7 +35,7 @@ class DiscordListener {
      * @returns {VoiceChannelManagement} The voice channel management object.
      */
     static get voiceChannelManagement() {
-        return vcm;
+        return DiscordListener.#vcm;
     }
 
     // MARK: static async interactionCreate
@@ -84,7 +84,7 @@ class DiscordListener {
      * @returns {Promise} A promise that resolves when the event has been processed.
      */
     static async presenceUpdate(oldPresence, newPresence) {
-        if (!streamers) {
+        if (!DiscordListener.#streamers) {
             return;
         }
 
@@ -92,18 +92,18 @@ class DiscordListener {
             const oldActivity = oldPresence && oldPresence.activities && oldPresence.activities.find((p) => p.name === "Twitch") || void 0,
                 activity = newPresence.activities.find((p) => p.name === "Twitch");
 
-            if (activity && urlParse.test(activity.url)) {
+            if (activity && DiscordListener.#urlParse.test(activity.url)) {
                 if (!oldActivity) {
-                    const {groups: {user: twitchName}} = urlParse.exec(activity.url);
+                    const {groups: {user: twitchName}} = DiscordListener.#urlParse.exec(activity.url);
                     try {
-                        await streamers.add(newPresence.member, activity, twitchName, true);
+                        await DiscordListener.#streamers.add(newPresence.member, activity, twitchName, true);
                     } catch (err) {
                         Log.error("There was an error adding a streamer.", {err});
                     }
                 }
             } else {
                 try {
-                    await streamers.remove(newPresence.member);
+                    await DiscordListener.#streamers.remove(newPresence.member);
                 } catch (err) {
                     Log.error("There was an error removing a streamer.", {err});
                 }
@@ -117,12 +117,12 @@ class DiscordListener {
      * @returns {Promise} A promise that resolves when the event has been processed.
      */
     static async ready() {
-        vcm = new VoiceChannelManagement(Discord);
-        streamers = new Streamers(Discord, Twitch);
+        DiscordListener.#vcm = new VoiceChannelManagement(Discord);
+        DiscordListener.#streamers = new Streamers(Discord, Twitch);
 
         Discord.channels.filter((channel) => channel.type === DiscordJs.ChannelType.GuildVoice).forEach((/** @type {DiscordJs.VoiceChannel} */ channel) => {
             if (channel.name !== "\u{1F4AC} General" && channel.members.size === 0) {
-                vcm.markEmptyVoiceChannel(channel, true);
+                DiscordListener.#vcm.markEmptyVoiceChannel(channel, true);
             }
         });
 
@@ -130,9 +130,9 @@ class DiscordListener {
             if (member.presence && member.presence.activities) {
                 const activity = member.presence.activities.find((p) => p.name === "Twitch");
 
-                if (activity && urlParse.test(activity.url)) {
-                    const {groups: {user: twitchName}} = urlParse.exec(activity.url);
-                    await streamers.add(member, activity, twitchName);
+                if (activity && DiscordListener.#urlParse.test(activity.url)) {
+                    const {groups: {user: twitchName}} = DiscordListener.#urlParse.exec(activity.url);
+                    await DiscordListener.#streamers.add(member, activity, twitchName);
                 }
             } else {
                 await member.roles.remove(Discord.findRoleByName("Live"));
@@ -150,13 +150,13 @@ class DiscordListener {
     static voiceStateUpdate(oldState, newState) {
         if (oldState.channel) {
             if (oldState.channel.name !== "\u{1F4AC} General" && oldState.channel.members.size === 0) {
-                vcm.markEmptyVoiceChannel(oldState.channel, true);
+                DiscordListener.#vcm.markEmptyVoiceChannel(oldState.channel, true);
             }
         }
 
         if (newState.channel) {
             if (newState.channel.name !== "\u{1F4AC} General") {
-                vcm.markEmptyVoiceChannel(newState.channel, false);
+                DiscordListener.#vcm.markEmptyVoiceChannel(newState.channel, false);
             }
         }
     }

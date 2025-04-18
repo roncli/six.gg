@@ -21,5 +21,5 @@ class TwitchOAuthView {
 if (typeof module === "undefined") {
     window.TwitchOAuthView = TwitchOAuthView;
 } else {
-    module.exports = TwitchOAuthView; // eslint-disable-line no-undef
+    module.exports = TwitchOAuthView;
 }

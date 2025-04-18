@@ -4,9 +4,8 @@
  */
 
 const Cache = require("@roncli/node-redis").Cache,
-    MongoDb = require("mongodb"),
-
-    Db = require(".");
+    Db = require("."),
+    MongoDb = require("mongodb");
 
 // MARK: class EventDb
 /**

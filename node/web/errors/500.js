@@ -37,7 +37,7 @@ class ServerError extends RouterBase {
         let user;
         try {
             user = await User.getCurrent(req);
-        } catch (err) {}
+        } catch {}
 
         res.status(500).send(await Common.page(
             "",

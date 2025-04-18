@@ -1,24 +1,23 @@
 const AppTokenAuthProvider = require("@twurple/auth").AppTokenAuthProvider,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
+    Discord = require("./src/discord"),
+    EventSub = require("./src/twitch/eventsub"),
     EventSubMiddleware = require("@twurple/eventsub-http").EventSubMiddleware,
+    Exception = require("./src/errors/exception"),
     express = require("express"),
     HotRouter = require("hot-router"),
+    Listeners = require("./src/listeners"),
     Log = require("@roncli/node-application-insights-logger"),
     Minify = require("@roncli/node-minify"),
     path = require("path"),
-    Redis = require("@roncli/node-redis"),
-    TwitchClient = require("@twurple/api").ApiClient,
-    util = require("util"),
-
-    Cache = Redis.Cache,
-
-    Discord = require("./src/discord"),
-    EventSub = require("./src/twitch/eventsub"),
-    Exception = require("./src/errors/exception"),
-    Listeners = require("./src/listeners"),
     Redirects = require("./src/redirects"),
-    Twitch = require("./src/twitch");
+    Redis = require("@roncli/node-redis"),
+    Twitch = require("./src/twitch"),
+    TwitchClient = require("@twurple/api").ApiClient,
+    util = require("util");
+
+const Cache = Redis.Cache;
 
 process.on("unhandledRejection", (reason) => {
     Log.error("Unhandled promise rejection caught.", {err: reason instanceof Error ? reason : new Error(util.inspect(reason))});
@@ -29,6 +28,36 @@ process.on("unhandledRejection", (reason) => {
  * The primary class for the application.
  */
 class Index {
+    // MARK: static async #getMinifyCache
+    /**
+     * Gets a minified cache item.
+     * @param {string} key The key to get the cache item for.
+     * @returns {Promise<string>} The cache item.
+     */
+    static async #getMinifyCache(key) {
+        try {
+            return await Cache.get(key);
+        } catch (err) {
+            Log.error("An error occurred while attempting to get a Minify cache.", {err, properties: {key}});
+            return void 0;
+        }
+    }
+
+    // MARK: static async #setMinifyCache
+    /**
+     * Sets a minified cache item.
+     * @param {string} key The key to set the cache item for.
+     * @param {object} value The cache item.
+     * @returns {Promise<void>}
+     */
+    static async #setMinifyCache(key, value) {
+        try {
+            await Cache.add(key, value, new Date(new Date().getTime() + 86400000));
+        } catch (err) {
+            Log.error("An error occurred while attempting to set a Minify cache.", {err, properties: {key}});
+        }
+    }
+
     // MARK: static async startup
     /**
      * Starts up the application.
@@ -117,19 +146,8 @@ class Index {
             jsRoot: "/js/",
             wwwRoot: path.join(__dirname, "public"),
             caching: process.env.MINIFY_CACHE ? {
-                get: async (key) => {
-                    try {
-                        return await Cache.get(key);
-                    } catch (err) {
-                        Log.error("An error occurred while attempting to get a Minify cache.", {err, properties: {key}});
-                        return void 0;
-                    }
-                },
-                set: (key, value) => {
-                    Cache.add(key, value, new Date(new Date().getTime() + 86400000)).catch((err) => {
-                        Log.error("An error occurred while attempting to set a Minify cache.", {err, properties: {key}});
-                    });
-                },
+                get: Index.#getMinifyCache,
+                set: Index.#setMinifyCache,
                 prefix: process.env.REDIS_PREFIX
             } : void 0,
             redirects: Redirects,

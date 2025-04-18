@@ -5,22 +5,22 @@
 const DiscordJs = require("discord.js"),
     Log = require("@roncli/node-application-insights-logger");
 
-/** @type {Discord} */
-let Discord;
-
 // MARK: class VoiceChannelManagement
 /**
  * A class that manages Discord voice channels.
  */
 class VoiceChannelManagement {
+    /** @type {Discord} */
+    static #Discord;
+
     // MARK: constructor
     /**
      * Creates an instance of the voice channel management handler.
      * @param {Discord} discord The Discord object.
      */
     constructor(discord) {
-        if (!Discord) {
-            Discord = discord;
+        if (!VoiceChannelManagement.#Discord) {
+            VoiceChannelManagement.#Discord = discord;
         }
 
         /** @type {{[x: string]: NodeJS.Timeout}} */
@@ -53,9 +53,9 @@ class VoiceChannelManagement {
     async create(member, title) {
         const vcm = this;
 
-        const channel = /** @type {DiscordJs.VoiceChannel} */(await Discord.createChannel(title, DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line no-extra-parens
+        const channel = /** @type {DiscordJs.VoiceChannel} */(await VoiceChannelManagement.#Discord.createChannel(title, DiscordJs.ChannelType.GuildVoice)); // eslint-disable-line @stylistic/no-extra-parens
 
-        await channel.setParent(Discord.findCategoryByName("Voice"));
+        await channel.setParent(VoiceChannelManagement.#Discord.findCategoryByName("Voice"));
 
         vcm.userCreatedChannels[member.id] = setTimeout(() => {
             delete vcm.userCreatedChannels[member.id];
@@ -81,7 +81,7 @@ class VoiceChannelManagement {
             return void 0;
         }
 
-        return Discord.findVoiceChannelByName(vcm.lastCreatedChannel[member.id]) || void 0;
+        return VoiceChannelManagement.#Discord.findVoiceChannelByName(vcm.lastCreatedChannel[member.id]) || void 0;
     }
 
     // MARK: markEmptyVoiceChannel

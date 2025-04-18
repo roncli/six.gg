@@ -25,32 +25,32 @@ const Log = require("@roncli/node-application-insights-logger"),
     Discord = require("../discord"),
     Twitch = require("../twitch");
 
-// MARK: getTierName
-/**
- * Gets the tier name based on the data from the Twitch API.
- * @param {string} tier The tier from the Twitch API.
- * @param {boolean} isPrime Whether the sub is a Prime sub.
- * @returns {string} The tier name.
- */
-const getTierName = (tier, isPrime) => {
-    switch (tier) {
-        case "2000":
-            return "Tier 2 Subscriber";
-        case "3000":
-            return "Tier 3 Subscriber";
-        case "Prime":
-            return "Prime Subscriber";
-        case "1000":
-        default:
-            return `${isPrime ? "Prime " : ""}Subscriber`;
-    }
-};
-
 // MARK: class TwitchListener
 /**
  * A class that handles listening to Twitch events.
  */
 class TwitchListener {
+    // MARK: static #getTierName
+    /**
+     * Gets the tier name based on the data from the Twitch API.
+     * @param {string} tier The tier from the Twitch API.
+     * @param {boolean} isPrime Whether the sub is a Prime sub.
+     * @returns {string} The tier name.
+     */
+    static #getTierName = (tier, isPrime) => {
+        switch (tier) {
+            case "2000":
+                return "Tier 2 Subscriber";
+            case "3000":
+                return "Tier 3 Subscriber";
+            case "Prime":
+                return "Prime Subscriber";
+            case "1000":
+            default:
+                return `${isPrime ? "Prime " : ""}Subscriber`;
+        }
+    };
+
     // MARK: static action
     /**
      * Handles a chat action, ie: when the /me command is used.
@@ -152,7 +152,7 @@ class TwitchListener {
      */
     static resub(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for continuing to be a ${getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for continuing to be a ${TwitchListener.#getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
 
@@ -219,7 +219,7 @@ class TwitchListener {
      */
     static sub(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for becoming a ${getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for becoming a ${TwitchListener.#getTierName(ev.tier, ev.isPrime)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months${ev.streak && ev.streak === ev.months ? " in a row!" : ""}${ev.streak && ev.streak > 1 && ev.streak !== ev.months ? ` and for ${ev.streak} months in a row!` : ""}!` : ""}`);
         }
     }
 
@@ -231,7 +231,7 @@ class TwitchListener {
      */
     static subExtend(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for becoming a ${getTierName(ev.tier, false)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months!` : ""}`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for becoming a ${TwitchListener.#getTierName(ev.tier, false)}!${ev.months && ev.months > 1 ? `  They have been subscribed for ${ev.months} months!` : ""}`);
         }
     }
 
@@ -243,7 +243,7 @@ class TwitchListener {
      */
     static subGift(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.gifterName} for making ${ev.name} a ${getTierName(ev.tier, false)}!`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.gifterName} for making ${ev.name} a ${TwitchListener.#getTierName(ev.tier, false)}!`);
         }
     }
 
@@ -255,7 +255,7 @@ class TwitchListener {
      */
     static subGiftCommunity(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for making ${ev.giftCount} new ${getTierName(ev.tier, false)}s!${ev.totalGiftCount && ev.giftCount !== ev.totalGiftCount ? `  They have gifted ${ev.totalGiftCount} total subscriptions in the channel!` : ""}`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for making ${ev.giftCount} new ${TwitchListener.#getTierName(ev.tier, false)}s!${ev.totalGiftCount && ev.giftCount !== ev.totalGiftCount ? `  They have gifted ${ev.totalGiftCount} total subscriptions in the channel!` : ""}`);
         }
     }
 
@@ -291,7 +291,7 @@ class TwitchListener {
      */
     static subGiftUpgrade(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for remaining a ${getTierName(ev.tier, false)}, continuing the gift subscription from ${ev.gifter}!`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for remaining a ${TwitchListener.#getTierName(ev.tier, false)}, continuing the gift subscription from ${ev.gifter}!`);
         }
     }
 
@@ -303,7 +303,7 @@ class TwitchListener {
      */
     static subPrimeUpgraded(ev) {
         if (ev.channel === process.env.TWITCH_CHANNEL) {
-            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for upgrading their Prime subscription and becoming a full ${getTierName(ev.tier, false)}!`);
+            Twitch.botChatClient.say(process.env.TWITCH_CHANNEL, `Thanks ${ev.name} for upgrading their Prime subscription and becoming a full ${TwitchListener.#getTierName(ev.tier, false)}!`);
         }
     }
 

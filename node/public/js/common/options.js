@@ -7,6 +7,8 @@
  * A class that provides options functions.
  */
 class Options {
+    static #Encoding = typeof module === "undefined" ? window.Encoding : require("./encoding");
+
     // MARK: generateOptions
     /**
      * Generates an HTML string of options.
@@ -21,18 +23,14 @@ class Options {
                 <option value=""${!selected || selected === "" ? " selected" : ""}></option>
             ` : ""}
             ${options.map((o) => /* html */`
-                <option value="${Options.Encoding.htmlEncode(o.value)}"${selected === o.value ? " selected" : ""}>${Options.Encoding.htmlEncode(o.text || o.value)}</option>
+                <option value="${Options.#Encoding.htmlEncode(o.value)}"${selected === o.value ? " selected" : ""}>${Options.#Encoding.htmlEncode(o.text || o.value)}</option>
             `).join("")}
         `;
     }
 }
 
-/** @type {typeof import("./encoding")} */
-// @ts-ignore
-Options.Encoding = typeof Encoding === "undefined" ? require("./encoding") : Encoding; // eslint-disable-line no-undef
-
 if (typeof module === "undefined") {
     window.Options = Options;
 } else {
-    module.exports = Options; // eslint-disable-line no-undef
+    module.exports = Options;
 }

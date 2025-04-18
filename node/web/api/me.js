@@ -64,7 +64,7 @@ class MeApi extends RouterBase {
 
                 try {
                     new Date().toLocaleString("en-US", {timeZone: req.body.timezone, hour12: true, hour: "numeric", minute: "2-digit", timeZoneName: "short"});
-                } catch (err) {
+                } catch {
                     res.status(400).json({error: "Bad request, the timezone is invalid."});
                     return;
                 }

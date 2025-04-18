@@ -80,7 +80,7 @@ class Timezone {
             let time;
             try {
                 time = new Date().toLocaleString("en-US", {timeZone: timezone, hour12: true, hour: "numeric", minute: "2-digit", timeZoneName: "short"});
-            } catch (err) {
+            } catch {
                 await interaction.editReply({
                     embeds: [
                         Discord.embedBuilder({

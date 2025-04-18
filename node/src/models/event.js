@@ -10,9 +10,6 @@ const AttendeeDb = require("../database/attendee"),
     Schedule = require("node-schedule"),
     User = require("./user");
 
-/** @type {{[x: number]: Schedule.Job}} */
-const upcomingEventJobs = {};
-
 /** @type {typeof import("../discord")} */
 let Discord;
 
@@ -25,6 +22,9 @@ setTimeout(() => {
  * A class that represents a calendar event.
  */
 class Event {
+    /** @type {{[x: number]: Schedule.Job}} */
+    static #upcomingEventJobs = {};
+
     // MARK: static async add
     /**
      * Adds an event.
@@ -152,7 +152,7 @@ class Event {
             const notificationDate = new Date(event.start.getTime() - 1800000);
 
             if (notificationDate > new Date()) {
-                upcomingEventJobs[event._id] = Schedule.scheduleJob(notificationDate, Event.notifyEventStarting.bind(null, event._id));
+                Event.#upcomingEventJobs[event._id] = Schedule.scheduleJob(notificationDate, Event.notifyEventStarting.bind(null, event._id));
             }
         }
     }

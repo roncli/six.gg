@@ -4,9 +4,8 @@
  */
 
 const Cache = require("@roncli/node-redis").Cache,
-    MongoDb = require("mongodb"),
-
-    Db = require(".");
+    Db = require("."),
+    MongoDb = require("mongodb");
 
 // MARK: class AttendeeDb
 /**
@@ -55,7 +54,7 @@ class AttendeeDb {
 
         const db = await Db.get();
 
-        cache = await /** @type {Promise<{discordId: string}[]>} */(db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
+        cache = await /** @type {Promise<{discordId: string}[]>} */(db.collection("attendee").aggregate([ // eslint-disable-line @stylistic/no-extra-parens
             {
                 $match: {eventId: Db.toLong(id)}
             },

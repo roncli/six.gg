@@ -7,6 +7,8 @@
  * A class that represents the calendar view.
  */
 class CalendarView {
+    static #quoteReplaceParse = /"/gm;
+
     // MARK: static get
     /**
      * Gets the rendered page template.
@@ -15,6 +17,8 @@ class CalendarView {
      */
     static get(data) {
         const {timezone, defaultTimezone} = data;
+        const fixedTimezone = timezone.replace(CalendarView.#quoteReplaceParse, "\\\"");
+
         return /* html */`
             <div class="section">Six Gaming Calendar of Events</div>
             ${defaultTimezone ? /* html */`
@@ -22,7 +26,7 @@ class CalendarView {
             ` : ""}
             <div id="calendar"></div>
             <script>
-                window.timezone = "${timezone.replace(/"/gm, "\\\"")}";
+                window.timezone = "${fixedTimezone}";
                 window.defaultTimezone = ${defaultTimezone};
             </script>
         `;
@@ -32,5 +36,5 @@ class CalendarView {
 if (typeof module === "undefined") {
     window.CalendarView = CalendarView;
 } else {
-    module.exports = CalendarView; // eslint-disable-line no-undef
+    module.exports = CalendarView;
 }

@@ -13,10 +13,9 @@
  */
 
 const Cache = require("@roncli/node-redis").Cache,
-    MongoDb = require("mongodb"),
-
     Db = require("."),
-    Encryption = require("./encryption");
+    Encryption = require("./encryption"),
+    MongoDb = require("mongodb");
 
 // MARK: class UserDb
 /**
@@ -157,7 +156,7 @@ class UserDb {
 
         const db = await Db.get();
 
-        const attendees = /** @type {UserTypes.UserMongoData[]} */(await db.collection("attendee").aggregate([ // eslint-disable-line no-extra-parens
+        const attendees = /** @type {UserTypes.UserMongoData[]} */(await db.collection("attendee").aggregate([ // eslint-disable-line @stylistic/no-extra-parens
             {
                 $match: {
                     eventId: MongoDb.Long.fromNumber(eventId)
@@ -212,7 +211,7 @@ class UserDb {
     static async getBySession(id, ip) {
         const db = await Db.get();
 
-        const encryptedData = /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */(await db.collection("session").aggregate([ // eslint-disable-line no-extra-parens
+        const encryptedData = /** @type {{user: UserTypes.UserMongoData, session: SessionTypes.EncryptedMongoSessionData}} */(await db.collection("session").aggregate([ // eslint-disable-line @stylistic/no-extra-parens
             {
                 $match: {
                     _id: new MongoDb.ObjectId(id),

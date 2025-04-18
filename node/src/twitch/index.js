@@ -9,7 +9,6 @@ const Chat = require("./chat"),
     Exception = require("../errors/exception"),
     IGDB = require("igdb-api-node"),
     Log = require("@roncli/node-application-insights-logger"),
-    PubSub = require("./pubsub"),
     TwitchAuth = require("@twurple/auth"),
     TwitchClient = require("@twurple/api").ApiClient,
     TwitchDb = require("../database/twitch");
@@ -53,9 +52,6 @@ class Twitch {
     static #channelChatClient;
 
     static #eventEmitter = new events.EventEmitter();
-
-    /** @type {PubSub} */
-    static #pubsub;
 
     /** @type {string} */
     static #state;
@@ -251,7 +247,6 @@ class Twitch {
         Twitch.#apiAuthProvider = new TwitchAuth.AppTokenAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET);
 
         await Twitch.setupChat();
-        await Twitch.setupPubSub();
     }
 
     // MARK: static async logout
@@ -352,6 +347,29 @@ class Twitch {
 
         EventSub.client.onStreamOffline(process.env.TWITCH_CHANNEL_USERID, () => {
             Twitch.#eventEmitter.emit("offline");
+        });
+
+        EventSub.client.onChannelCheer(process.env.TWITCH_CHANNEL_USERID, (message) => {
+            Twitch.#eventEmitter.emit("bits", {
+                userId: message.userId,
+                user: message.userName,
+                name: message.userDisplayName,
+                bits: message.bits,
+                message: message.message,
+                isAnonymous: message.isAnonymous
+            });
+        });
+
+        EventSub.client.onChannelRedemptionAdd(process.env.TWITCH_CHANNEL_USERID, (message) => {
+            Twitch.#eventEmitter.emit("redemption", {
+                userId: message.userId,
+                user: message.userName,
+                name: message.userDisplayName,
+                message: message.input,
+                date: message.redemptionDate,
+                reward: message.rewardTitle,
+                cost: message.rewardCost
+            });
         });
     }
 
@@ -559,44 +577,6 @@ class Twitch {
         if (!Twitch.#botChatClient.client.isConnected) {
             Twitch.#botChatClient.client.connect();
         }
-    }
-
-    // MARK: static setupPubSub
-    /**
-     * Sets up the Twitch PubSub subscriptions.
-     * @returns {void}
-     */
-    static setupPubSub() {
-        Twitch.#pubsub = new PubSub();
-
-        Twitch.#pubsub.setup(Twitch.#channelTwitchClient._authProvider);
-
-        Twitch.#pubsub.client.onBits(process.env.TWITCH_CHANNEL_USERID, async (message) => {
-            const displayName = message.userId ? (await Twitch.#channelTwitchClient.users.getUserById(message.userId)).displayName : "";
-
-            Twitch.#eventEmitter.emit("bits", {
-                userId: message.userId,
-                user: message.userName,
-                name: displayName,
-                bits: message.bits,
-                totalBits: message.totalBits,
-                message: message.message,
-                isAnonymous: message.isAnonymous
-            });
-        });
-
-        Twitch.#pubsub.client.onRedemption(process.env.TWITCH_CHANNEL_USERID, (message) => {
-            Twitch.#eventEmitter.emit("redemption", {
-                userId: message.userId,
-                user: message.userName,
-                name: message.userDisplayName,
-                message: message.message,
-                date: message.redemptionDate,
-                cost: message.rewardCost,
-                reward: message.rewardTitle,
-                isQueued: message.rewardIsQueued
-            });
-        });
     }
 }
 

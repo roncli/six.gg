@@ -191,7 +191,7 @@ class Index {
 
         app.listen(port, async () => {
             await EventSub.setup(eventSub);
-            await Twitch.setupEventSub();
+            Twitch.setupEventSub();
         });
         Log.info(`Server PID ${process.pid} listening on port ${port}.`);
     }

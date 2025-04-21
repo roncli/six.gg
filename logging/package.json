@@ -19,7 +19,7 @@
     "license": "MIT",
     "dependencies": {
         "applicationinsights": "3.6.0",
-        "dockerode": "4.0.5",
+        "dockerode": "4.0.6",
         "graygelf": "2.0.0"
     },
     "devDependencies": {

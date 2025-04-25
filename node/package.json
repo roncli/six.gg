@@ -48,7 +48,7 @@
         "@types/express": "5.0.1",
         "@types/express-serve-static-core": "5.0.6",
         "@types/html-minifier-terser": "7.0.2",
-        "@types/node": "22.14.1",
+        "@types/node": "22.15.2",
         "@types/node-schedule": "2.1.7",
         "eslint-plugin-jsdoc": "50.6.10"
     },

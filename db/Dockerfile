@@ -1,5 +1,5 @@
 # Get mongo latest.
-FROM mongo:8.0.8
+FROM mongo:8.0.9
 
 # Get packages.
 RUN apt-get update && apt-get -y install cifs-utils && apt-get -y install keyutils

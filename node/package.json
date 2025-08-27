@@ -37,7 +37,7 @@
         "hot-router": "1.0.4",
         "html-minifier-terser": "7.2.0",
         "igdb-api-node": "6.0.5",
-        "mongodb": "6.15.0",
+        "mongodb": "6.19.0",
         "node-schedule": "2.1.1",
         "timezonecomplete": "5.13.1",
         "tzdata": "1.0.44"

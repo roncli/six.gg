@@ -27,7 +27,7 @@
         "@stylistic/eslint-plugin": "5.4.0",
         "@types/dockerode": "3.3.44",
         "@types/node": "24.5.2",
-        "eslint-plugin-jsdoc": "50.6.17"
+        "eslint-plugin-jsdoc": "60.4.0"
     },
     "scripts": {
         "reinstall": "rmdir /s /q node_modules && npm install"

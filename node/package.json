@@ -39,7 +39,7 @@
         "igdb-api-node": "6.0.5",
         "mongodb": "6.20.0",
         "node-schedule": "2.1.1",
-        "timezonecomplete": "5.13.1",
+        "timezonecomplete": "5.15.0",
         "tzdata": "1.0.46"
     },
     "devDependencies": {

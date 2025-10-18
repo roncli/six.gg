@@ -46,7 +46,7 @@
         "@eslint/js": "9.25.1",
         "@stylistic/eslint-plugin": "4.2.0",
         "@types/express": "5.0.1",
-        "@types/express-serve-static-core": "5.0.6",
+        "@types/express-serve-static-core": "5.1.0",
         "@types/html-minifier-terser": "7.0.2",
         "@types/node": "22.15.3",
         "@types/node-schedule": "2.1.7",

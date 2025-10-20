@@ -83,7 +83,7 @@ cp /var/nginx/work/nginx.conf /etc/nginx/nginx.conf
 mkdir -p /var/certbot/work/.well-known
 
 # Create options-ssl-nginx.conf if it doesn't exist.
-if [ ! -f /var/nginx/work/options-ssl-nginx.conf ];
+if [ ! -f /etc/letsencrypt/options-ssl-nginx.conf ];
 then
     echo "Creating options-ssl-nginx.conf..."
     curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > /var/nginx/work/options-ssl-nginx.conf
@@ -91,7 +91,7 @@ then
 fi
 
 # Create ssl-dhparams.pem if it doesn't exist.
-if [ ! -f /var/nginx/work/ssl-dhparams.pem ];
+if [ ! -f /etc/letsencrypt/ssl-dhparams.pem ];
 then
     echo "Creating ssl-dhparams.pem..."
     curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > /var/nginx/work/ssl-dhparams.pem
@@ -99,7 +99,7 @@ then
 fi
 
 # Create dummy certifications if they don't exist.
-if [ ! -f /var/nginx/work/fullchain.pem ];
+if [ ! -f "/etc/letsencrypt/live/$DOMAIN/privkey.pem" ] || [ ! -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ];
 then
     echo "Creating dummy certifications..."
     openssl req -x509 -nodes -newkey rsa:4096 -days 1 -keyout /var/nginx/work/privkey.pem -out /var/nginx/work/fullchain.pem -subj /CN=localhost

@@ -73,6 +73,15 @@ class Index {
 
         Log.info("Starting up...");
 
+        // Setup the database.
+        try {
+            await Db.startup();
+        } catch (err) {
+            // Exit the app.
+            Log.error("Could not setup the database.", {err});
+            process.exit(1);
+        }
+
         // Set title.
         if (process.platform === "win32") {
             process.title = "Six Gaming";

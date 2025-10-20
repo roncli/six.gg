@@ -156,17 +156,6 @@ class Index {
         app.get("/css", Minify.cssHandler);
         app.get("/js", Minify.jsHandler);
 
-        // Setup redirect routes.
-        app.get("*", (req, res, next) => {
-            const redirect = Redirects[req.path];
-            if (!redirect) {
-                next();
-                return;
-            }
-
-            res.status(200).contentType(redirect.contentType).sendFile(`${redirect.path}`);
-        });
-
         // Setup hot-router.
         const router = new HotRouter.Router();
         router.on("error", (data) => {

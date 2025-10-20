@@ -1,19 +1,16 @@
 const AppTokenAuthProvider = require("@twurple/auth").AppTokenAuthProvider,
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
-    Discord = require("./src/discord"),
     EventSub = require("./src/twitch/eventsub"),
     EventSubMiddleware = require("@twurple/eventsub-http").EventSubMiddleware,
     Exception = require("./src/errors/exception"),
     express = require("express"),
     HotRouter = require("hot-router"),
-    Listeners = require("./src/listeners"),
     Log = require("@roncli/node-application-insights-logger"),
     Minify = require("@roncli/node-minify"),
     path = require("path"),
     Redirects = require("./src/redirects"),
     Redis = require("@roncli/node-redis"),
-    Twitch = require("./src/twitch"),
     TwitchClient = require("@twurple/api").ApiClient,
     util = require("util");
 
@@ -69,6 +66,11 @@ class Index {
             Log.setupApplicationInsights(process.env.APPINSIGHTS_CONNECTIONSTRING, {application: "sixgg", container: "sixgg-node"});
         }
 
+        const Db = require("./src/database"),
+            Discord = require("./src/discord"),
+            Listeners = require("./src/listeners"),
+            Twitch = require("./src/twitch");
+
         Log.info("Starting up...");
 
         // Set title.
@@ -81,11 +83,11 @@ class Index {
         // Setup various listeners.
         Listeners.setup();
 
+        // Startup Twitch.
         try {
-            // Startup Twitch.
             await Twitch.connect();
         } catch (err) {
-            // Exit the app, there was likely a problem connecting to the database.
+            // Exit the app.
             Log.error("Could not connect to Twitch.", {err});
             process.exit(1);
         }
@@ -130,7 +132,7 @@ class Index {
             pathPrefix: "/twitch/eventsub",
             secret: process.env.TWITCH_CHANNEL_EVENTSUB_SECRET
         });
-        await eventSub.apply(app);
+        eventSub.apply(/** @type {object} */(app)); // eslint-disable-line @stylistic/no-extra-parens
 
         // Setup public redirects.
         app.use(/^(?!\/tsconfig\.json)/, express.static("public"));

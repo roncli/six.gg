@@ -102,7 +102,7 @@ class Discord {
      * @returns {void}
      */
     static startup() {
-        Discord.#discord.on("ready", async () => {
+        Discord.#discord.on("clientReady", async () => {
             Log.verbose("Connected to Discord.");
 
             Discord.#guild = Discord.#discord.guilds.cache.find((g) => g.name === process.env.DISCORD_GUILD);

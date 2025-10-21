@@ -7,7 +7,6 @@ const Common = require("../includes/common"),
     Discord = require("../../src/discord"),
     Log = require("@roncli/node-application-insights-logger"),
     NotFoundView = require("../../public/views/404"),
-    request = require("@root/request"),
     RouterBase = require("hot-router").RouterBase,
     ServerErrorView = require("../../public/views/500"),
     Twitch = require("../../src/twitch"),
@@ -76,9 +75,10 @@ class TwitchOAuth extends RouterBase {
 
         let response;
         try {
-            response = await request.post({
-                uri: `https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENTID}&client_secret=${process.env.TWITCH_CLIENTSECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${process.env.TWITCH_REDIRECT_URI}`,
-                json: true
+            response = await fetch(`https://id.twitch.tv/oauth2/token?client_id=${process.env.TWITCH_CLIENTID}&client_secret=${process.env.TWITCH_CLIENTSECRET}&code=${code}&grant_type=authorization_code&redirect_uri=${process.env.TWITCH_REDIRECT_URI}`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                signal: AbortSignal.timeout(30000)
             });
         } catch (err) {
             Log.error("Error while obtaining Twitch tokens.", {err, req});
@@ -92,7 +92,7 @@ class TwitchOAuth extends RouterBase {
             return;
         }
 
-        if (response.statusCode !== 200) {
+        if (response.status !== 200) {
             Log.error("Invalid response from Twitch.", {err: new Error("Invalid response from Twitch"), req, properties: {body: response.body}});
             res.status(500).send(await Common.page(
                 "",
@@ -128,9 +128,10 @@ class TwitchOAuth extends RouterBase {
             };
         }
 
-        const accessToken = response.body.access_token,
-            refreshToken = response.body.refresh_token,
-            scope = response.body.scope;
+        const body = await response.json(),
+            accessToken = body.access_token,
+            refreshToken = body.refresh_token,
+            scope = body.scope;
 
         if (scope.filter((s) => process.env.TWITCH_CHANNEL_SCOPES.split(" ").indexOf(s) === -1).length === 0 && process.env.TWITCH_CHANNEL_SCOPES.split(" ").filter((s) => scope.indexOf(s) === -1).length === 0) {
             tokens.channelAccessToken = accessToken;

@@ -12,7 +12,7 @@
  * @typedef {import("../../types/node/userTypes").UserMongoData} UserTypes.UserMongoData
  */
 
-const Cache = require("@roncli/node-redis").Cache,
+const Cache = require("../cache"),
     Db = require("."),
     Encryption = require("./encryption"),
     MongoDb = require("mongodb");
@@ -29,10 +29,10 @@ class UserDb {
      * @returns {Promise<UserTypes.UserData>} A promise that returns the user.
      */
     static async get(id) {
-        const key = `${process.env.REDIS_PREFIX}:db:user:get:${id}`;
+        const key = `db:user:get:${id}`;
 
         /** @type {UserTypes.UserData} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -55,7 +55,7 @@ class UserDb {
             timezone: user.timezone
         };
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:${id}:updated`]);
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000, [`invalidate:user:${id}:updated`]);
 
         return cache;
     }
@@ -72,13 +72,13 @@ class UserDb {
         const result = await db.collection("user").deleteMany({"discord.id": {$nin: discordIds}});
 
         if (result.deletedCount > 0) {
-            await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`]);
+            Cache.invalidate(["invalidate:user:updated"]);
         }
 
-        const key = `${process.env.REDIS_PREFIX}:db;user;getAll`;
+        const key = "db:user:getAll";
 
         /** @type {UserTypes.UserData[]} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -95,7 +95,7 @@ class UserDb {
             timezone: u.timezone
         }));
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:updated`]);
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000, ["invalidate:user:updated"]);
 
         return cache;
     }
@@ -107,10 +107,10 @@ class UserDb {
      * @returns {Promise<UserTypes.UserData>} A promise that returns the user and the session.
      */
     static async getByGuildMember(member) {
-        const key = `${process.env.REDIS_PREFIX}:db:user:getByGuildMember:${member.id}`;
+        const key = `db:user:getByGuildMember:${member.id}`;
 
         /** @type {UserTypes.UserData} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -133,7 +133,7 @@ class UserDb {
             timezone: user.timezone
         };
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:user:${user._id}:updated`]);
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000, [`invalidate:user:${user._id}:updated`]);
 
         return cache;
     }
@@ -145,10 +145,10 @@ class UserDb {
      * @returns {Promise<UserTypes.UserData[]>} A promise that returns a list of users that will be attending the event.
      */
     static async getByEventAttendees(eventId) {
-        const key = `${process.env.REDIS_PREFIX}:db:user:getByEventAttendees:${eventId}`;
+        const key = `db:user:getByEventAttendees:${eventId}`;
 
         /** @type {UserTypes.UserData[]} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -196,7 +196,7 @@ class UserDb {
             guildMember: a.guildMember
         }));
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:event:${eventId}:attendees:updated`]);
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000, [`invalidate:event:${eventId}:attendees:updated`]);
 
         return cache;
     }
@@ -350,7 +350,7 @@ class UserDb {
             expires
         }}, {upsert: true, returnDocument: "after", includeResultMetadata: true});
 
-        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`, `${process.env.REDIS_PREFIX}:invalidate:user:${Db.fromLong(userResult._id)}:updated`]);
+        Cache.invalidate(["invalidate:user:updated", `invalidate:user:${Db.fromLong(userResult._id)}:updated`]);
 
         return {
             user: {
@@ -384,7 +384,7 @@ class UserDb {
 
         await db.collection("user").findOneAndUpdate({_id: MongoDb.Long.fromNumber(user.id)}, {$set: data});
 
-        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:user:updated`, `${process.env.REDIS_PREFIX}:invalidate:user:${user.id}:updated`]);
+        Cache.invalidate(["invalidate:user:updated", `invalidate:user:${user.id}:updated`]);
     }
 }
 

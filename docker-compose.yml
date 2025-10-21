@@ -17,32 +17,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /var/logging/start.sh
 
-  redis:
-    container_name: sixgg-redis
-    build: ./redis
-    depends_on:
-      - logging
-    networks:
-      - six.gg-network
-    logging:
-      driver: "gelf"
-      options:
-        gelf-address: "udp://localhost:12201"
-    environment:
-      REDIS_PASSWORD_FILE: /run/secrets/REDIS_PASSWORD_FILE
-      REDIS_PORT: 6379
-    secrets:
-      - REDIS_PASSWORD_FILE
-    restart: always
-    entrypoint: /var/redis/start.sh
-    privileged: true
-
   node:
     container_name: sixgg-node
     build: ./node
     depends_on:
       - logging
-      - redis
     networks:
       - six.gg-network
     logging:
@@ -66,9 +45,6 @@ services:
       MINIFY_ENABLED: 1
       NODE_ENV: production
       PORT: 3030
-      REDIS_PASSWORD_FILE: /run/secrets/REDIS_PASSWORD_FILE
-      REDIS_PORT: 6379
-      REDIS_PREFIX: six
       SIXGG_DISCORD_URL: https://ronc.li/six-discord
       TWITCH_BOT_ACCESSTOKEN_FILE: /run/secrets/TWITCH_BOT_ACCESSTOKEN_FILE
       TWITCH_BOT_REFRESHTOKEN_FILE: /run/secrets/TWITCH_BOT_REFRESHTOKEN_FILE
@@ -91,7 +67,6 @@ services:
       - DISCORD_CLIENTSECRET_FILE
       - DISCORD_TOKEN_FILE
       - ENCRYPTION_KEY_FILE
-      - REDIS_PASSWORD_FILE
       - TWITCH_BOT_ACCESSTOKEN_FILE
       - TWITCH_BOT_REFRESHTOKEN_FILE
       - TWITCH_CHANNEL_ACCESSTOKEN_FILE
@@ -170,8 +145,6 @@ secrets:
     file: ./secrets/DISCORD_TOKEN_FILE
   ENCRYPTION_KEY_FILE:
     file: ./secrets/ENCRYPTION_KEY_FILE
-  REDIS_PASSWORD_FILE:
-    file: ./secrets/REDIS_PASSWORD_FILE
   TWITCH_BOT_ACCESSTOKEN_FILE:
     file: ./secrets/TWITCH_BOT_ACCESSTOKEN_FILE
   TWITCH_BOT_REFRESHTOKEN_FILE:

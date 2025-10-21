@@ -3,7 +3,7 @@
  * @typedef {import("../../types/node/attendeeTypes").AttendeeMongoData} AttendeeTypes.AttendeeMongoData
  */
 
-const Cache = require("@roncli/node-redis").Cache,
+const Cache = require("../cache"),
     Db = require("."),
     MongoDb = require("mongodb");
 
@@ -31,7 +31,7 @@ class AttendeeDb {
 
         data._id = result._id.toHexString();
 
-        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:event:${data.eventId}:attendees:updated`]);
+        Cache.invalidate([`invalidate:event:${data.eventId}:attendees:updated`]);
 
         return data;
     }
@@ -43,10 +43,10 @@ class AttendeeDb {
      * @returns {Promise<{discordId: string}[]>} A promise that returns the users attending the event.
      */
     static async getByEventId(id) {
-        const key = `${process.env.REDIS_PREFIX}:db:attendee:getByEventId:${id}`;
+        const key = `db:attendee:getByEventId:${id}`;
 
         /** @type {{discordId: string}[]} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -82,7 +82,7 @@ class AttendeeDb {
             }
         ]).toArray());
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000), [`${process.env.REDIS_PREFIX}:invalidate:event:${id}:attendees:updated`]);
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000, [`invalidate:event:${id}:attendees:updated`]);
 
         return cache;
     }
@@ -103,7 +103,7 @@ class AttendeeDb {
 
         await db.collection("attendee").deleteOne(data);
 
-        await Cache.invalidate([`${process.env.REDIS_PREFIX}:invalidate:event:${Db.fromLong(data.eventId)}:attendees:updated`]);
+        Cache.invalidate([`invalidate:event:${Db.fromLong(data.eventId)}:attendees:updated`]);
     }
 }
 

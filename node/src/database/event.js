@@ -3,7 +3,7 @@
  * @typedef {import("../../types/node/eventTypes").EventMongoData} EventTypes.EventMongoData
  */
 
-const Cache = require("@roncli/node-redis").Cache,
+const Cache = require("../cache"),
     Db = require("."),
     MongoDb = require("mongodb");
 
@@ -54,10 +54,10 @@ class EventDb {
      * @returns {Promise<EventTypes.EventData>} A promise that returns the event.
      */
     static async get(id) {
-        const key = `${process.env.REDIS_PREFIX}:db:event:get:${id}`;
+        const key = `db:event:get:${id}`;
 
         /** @type {EventTypes.EventData} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -82,7 +82,7 @@ class EventDb {
             description: event.description
         };
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000);
 
         return cache;
     }
@@ -95,10 +95,10 @@ class EventDb {
      * @returns {Promise<EventTypes.EventData[]>} A promise that returns the matching events.
      */
     static async getByDateRange(start, end) {
-        const key = `${process.env.REDIS_PREFIX}:db:event:getByDateRange:${start.toString()}:${end ? end.toString() : void 0}`;
+        const key = `db:event:getByDateRange:${start.toString()}:${end ? end.toString() : void 0}`;
 
         /** @type {EventTypes.EventData[]} */
-        let cache = await Cache.get(key);
+        let cache = Cache.get(key);
 
         if (cache) {
             return cache;
@@ -131,7 +131,7 @@ class EventDb {
             description: e.description
         }));
 
-        await Cache.add(key, cache, new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
+        Cache.set(key, cache, 7 * 24 * 60 * 60 * 1000);
 
         return cache;
     }

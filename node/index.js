@@ -1,4 +1,5 @@
 const AppTokenAuthProvider = require("@twurple/auth").AppTokenAuthProvider,
+    Cache = require("./src/cache"),
     compression = require("compression"),
     cookieParser = require("cookie-parser"),
     EventSub = require("./src/twitch/eventsub"),
@@ -10,11 +11,8 @@ const AppTokenAuthProvider = require("@twurple/auth").AppTokenAuthProvider,
     Minify = require("@roncli/node-minify"),
     path = require("path"),
     Redirects = require("./src/redirects"),
-    Redis = require("@roncli/node-redis"),
     TwitchClient = require("@twurple/api").ApiClient,
     util = require("util");
-
-const Cache = Redis.Cache;
 
 process.on("unhandledRejection", (reason) => {
     Log.error("Unhandled promise rejection caught.", {err: reason instanceof Error ? reason : new Error(util.inspect(reason))});
@@ -25,15 +23,15 @@ process.on("unhandledRejection", (reason) => {
  * The primary class for the application.
  */
 class Index {
-    // MARK: static async #getMinifyCache
+    // MARK: static #getMinifyCache
     /**
      * Gets a minified cache item.
      * @param {string} key The key to get the cache item for.
-     * @returns {Promise<string>} The cache item.
+     * @returns {string} The cache item.
      */
-    static async #getMinifyCache(key) {
+    static #getMinifyCache(key) {
         try {
-            return await Cache.get(key);
+            return Cache.get(key);
         } catch (err) {
             Log.error("An error occurred while attempting to get a Minify cache.", {err, properties: {key}});
             return void 0;
@@ -45,11 +43,11 @@ class Index {
      * Sets a minified cache item.
      * @param {string} key The key to set the cache item for.
      * @param {object} value The cache item.
-     * @returns {Promise<void>}
+     * @returns {void}
      */
-    static async #setMinifyCache(key, value) {
+    static #setMinifyCache(key, value) {
         try {
-            await Cache.add(key, value, new Date(new Date().getTime() + 86400000));
+            Cache.set(key, value, 86400000);
         } catch (err) {
             Log.error("An error occurred while attempting to set a Minify cache.", {err, properties: {key}});
         }
@@ -105,17 +103,6 @@ class Index {
         Discord.startup();
         await Discord.connect();
 
-        // Setup Redis.
-        Redis.setup({
-            host: "redis",
-            port: +process.env.REDIS_PORT,
-            password: process.env.REDIS_PASSWORD
-        });
-        Redis.eventEmitter.on("error", (err) => {
-            Log.error(`Redis error: ${err.message}`, {err: err.err});
-        });
-        await Cache.flush();
-
         // Setup express app.
         const app = express();
 
@@ -158,8 +145,7 @@ class Index {
             wwwRoot: path.join(__dirname, "public"),
             caching: process.env.MINIFY_CACHE ? {
                 get: Index.#getMinifyCache,
-                set: Index.#setMinifyCache,
-                prefix: process.env.REDIS_PREFIX
+                set: Index.#setMinifyCache
             } : void 0,
             redirects: Redirects,
             disableTagCombining: !process.env.MINIFY_ENABLED

@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
 
   logging:
@@ -18,35 +16,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /var/logging/start.sh
-
-  db:
-    container_name: sixgg-db
-    build: ./db
-    depends_on:
-      - logging
-    networks:
-      - six.gg-network
-    ports:
-      - "27017:27017"
-    logging:
-      driver: "gelf"
-      options:
-        gelf-address: "udp://localhost:12201"
-    environment:
-      MONGO_INITDB_DATABASE: sixgg
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/MONGO_INITDB_ROOT_USERNAME_FILE
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
-      WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
-    secrets:
-      - MONGO_INITDB_ROOT_USERNAME_FILE
-      - MONGO_INITDB_ROOT_PASSWORD_FILE
-      - WEB_SIXGG_PASSWORD_FILE
-    restart: always
-    volumes:
-      - /data/db:/data/db:rw
-      - /mnt/backup:/data/backup:rw
-    entrypoint: /var/mongo/start.sh
-    privileged: true
 
   redis:
     container_name: sixgg-redis
@@ -73,7 +42,6 @@ services:
     build: ./node
     depends_on:
       - logging
-      - db
       - redis
     networks:
       - six.gg-network
@@ -83,6 +51,8 @@ services:
         gelf-address: "udp://localhost:12201"
     environment:
       APPINSIGHTS_CONNECTIONSTRING: /run/secrets/APPINSIGHTS_CONNECTIONSTRING
+      ATLAS_CLUSTER_URL_FILE: /run/secrets/ATLAS_CLUSTER_URL_FILE
+      ATLAS_DATABASE_NAME: sixgg
       DEFAULT_TIMEZONE: America/Los_Angeles
       DISCORD_CLIENTID_FILE: /run/secrets/DISCORD_CLIENTID_FILE
       DISCORD_CLIENTSECRET_FILE: /run/secrets/DISCORD_CLIENTSECRET_FILE
@@ -108,7 +78,7 @@ services:
       TWITCH_CHANNEL_ACCESSTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_ACCESSTOKEN_FILE
       TWITCH_CHANNEL_EVENTSUB_SECRET_FILE: /run/secrets/TWITCH_CHANNEL_EVENTSUB_SECRET_FILE
       TWITCH_CHANNEL_REFRESHTOKEN_FILE: /run/secrets/TWITCH_CHANNEL_REFRESHTOKEN_FILE
-      TWITCH_CHANNEL_SCOPES: channel_editor channel_subscriptions channel_check_subscription chat_login bits:read chat:read chat:edit channel:moderate channel:read:subscriptions whispers:read whispers:edit channel:read:redemptions
+      TWITCH_CHANNEL_SCOPES: bits:read channel:moderate channel:read:redemptions channel:read:subscriptions channel_check_subscription channel_editor channel_subscriptions chat:edit chat:read chat_login moderator:read:followers whispers:edit whispers:read
       TWITCH_CHANNEL_USERID: 116508839
       TWITCH_CLIENTID_FILE: /run/secrets/TWITCH_CLIENTID_FILE
       TWITCH_CLIENTSECRET_FILE: /run/secrets/TWITCH_CLIENTSECRET_FILE
@@ -116,6 +86,7 @@ services:
       WEB_SIXGG_PASSWORD_FILE: /run/secrets/WEB_SIXGG_PASSWORD_FILE
     secrets:
       - APPINSIGHTS_CONNECTIONSTRING
+      - ATLAS_CLUSTER_URL_FILE
       - DISCORD_CLIENTID_FILE
       - DISCORD_CLIENTSECRET_FILE
       - DISCORD_TOKEN_FILE
@@ -189,6 +160,8 @@ volumes:
 secrets:
   APPINSIGHTS_CONNECTIONSTRING:
     file: ./secrets/APPINSIGHTS_CONNECTIONSTRING
+  ATLAS_CLUSTER_URL_FILE:
+    file: ./secrets/ATLAS_CLUSTER_URL_FILE
   DISCORD_CLIENTID_FILE:
     file: ./secrets/DISCORD_CLIENTID_FILE
   DISCORD_CLIENTSECRET_FILE:
@@ -197,10 +170,6 @@ secrets:
     file: ./secrets/DISCORD_TOKEN_FILE
   ENCRYPTION_KEY_FILE:
     file: ./secrets/ENCRYPTION_KEY_FILE
-  MONGO_INITDB_ROOT_PASSWORD_FILE:
-    file: ./secrets/MONGO_INITDB_ROOT_PASSWORD_FILE
-  MONGO_INITDB_ROOT_USERNAME_FILE:
-    file: ./secrets/MONGO_INITDB_ROOT_USERNAME_FILE
   REDIS_PASSWORD_FILE:
     file: ./secrets/REDIS_PASSWORD_FILE
   TWITCH_BOT_ACCESSTOKEN_FILE:

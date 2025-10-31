@@ -30,7 +30,7 @@
         "compression": "1.8.1",
         "cookie-parser": "1.4.7",
         "discord-oauth2": "2.12.1",
-        "discord.js": "14.23.2",
+        "discord.js": "14.24.2",
         "express": "5.1.0",
         "hot-router": "2.0.0-beta.6",
         "html-minifier-terser": "7.2.0",

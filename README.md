@@ -22,6 +22,13 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 
 ## Version History
 
+### v2.3.7 - 11/4/2025
+* Replace MongoDB container with Atlas DB.
+* Replace Redis with in-memory caching.
+* Replace PubSub with EventSub for Twitch.
+* Refactor client-side JavaScript for better maintainability.
+* Package updates.
+
 ### v2.3.6 - 11/15/2023
 * Package updates.
 

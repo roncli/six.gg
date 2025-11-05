@@ -15,6 +15,10 @@ class LiveView {
      * @returns {string} An HTML string of the page.
      */
     static get(data) {
+        if (!data || data.length === 0) {
+            return "";
+        }
+
         return /* html */`
             ${data.map((stream) => /* html */`
                 <div><a href="${stream.activity.url}" target="_blank"><img src="/images/twitch.png"></a></div>

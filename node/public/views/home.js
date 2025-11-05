@@ -28,10 +28,12 @@ class HomeView {
             ` : ""}
             <div id="calendar"></div>
             <div id="streamers">
-                ${streamers && streamers.length > 0 ? HomeView.#StreamersView.get(streamers) : ""}
+                ${HomeView.#StreamersView.get(streamers)}
             </div>
             <script>
-                window.timezone = "${fixedTimezone}";
+                document.addEventListener("DOMContentLoaded", () => {
+                    Home.DOMContentLoaded("${fixedTimezone}");
+                });
             </script>
         `;
     }

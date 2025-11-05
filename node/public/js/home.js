@@ -114,16 +114,17 @@ class Home {
     // MARK: static DOMContentLoaded
     /**
      * Sets up the page.
+     * @param {string} timezone The user's timezone.
      * @returns {void}
      */
-    static DOMContentLoaded() {
+    static DOMContentLoaded(timezone) {
         Home.#streamsInterval = window.setInterval(Home.#reloadStreams, 300000);
 
         Home.#embedTwitch();
 
         const el = document.getElementById("calendar"),
             calendar = new window.FullCalendar.Calendar(el, {
-                timeZone: window.timezone,
+                timeZone: timezone,
                 height: "auto",
                 initialView: "list7Days",
                 views: {
@@ -148,8 +149,6 @@ class Home {
         calendar.render();
     }
 }
-
-document.addEventListener("DOMContentLoaded", Home.DOMContentLoaded);
 
 if (typeof module === "undefined") {
     window.Home = Home;

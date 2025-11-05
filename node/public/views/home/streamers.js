@@ -17,6 +17,10 @@ class StreamersView {
      * @returns {string} An HTML string of the page.
      */
     static get(data) {
+        if (!data || data.length === 0) {
+            return "";
+        }
+
         return /* html */`
             <div class="section">Featured Streamer</div>
             <div id="featured">
@@ -26,7 +30,7 @@ class StreamersView {
             <div id="twitch">
             </div>
             <div id="live">
-                ${data.length === 1 ? "" : StreamersView.#LiveView.get(data.slice(1))}
+                ${StreamersView.#LiveView.get(data.slice(1))}
             </div>
         `;
     }

@@ -26,8 +26,9 @@ class CalendarView {
             ` : ""}
             <div id="calendar"></div>
             <script>
-                window.timezone = "${fixedTimezone}";
-                window.defaultTimezone = ${defaultTimezone};
+                document.addEventListener("DOMContentLoaded", () => {
+                    Calendar.DOMContentLoaded("${fixedTimezone}", ${defaultTimezone});
+                });
             </script>
         `;
     }

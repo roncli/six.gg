@@ -77,7 +77,7 @@ class User {
             }
 
             Log.error("There was a Discord OAuth exception while getting a token.", {err});
-            throw new Error("Discord returned an error while getting a token.");
+            throw new Error("Discord returned an error while getting a token.", {cause: err});
         }
     }
 
@@ -92,7 +92,7 @@ class User {
             return await User.#oauth.getUser(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while getting a user.", {err});
-            throw new Error("Discord returned an error while getting a user.");
+            throw new Error("Discord returned an error while getting a user.", {cause: err});
         }
     }
 
@@ -107,7 +107,7 @@ class User {
             return await User.#oauth.getUserConnections(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while getting a user's connections.", {err});
-            throw new Error("Discord returned an error while getting a user's connections.");
+            throw new Error("Discord returned an error while getting a user's connections.", {cause: err});
         }
     }
 
@@ -126,7 +126,7 @@ class User {
             });
         } catch (err) {
             Log.error("There was a Discord OAuth exception while refreshing a token.", {err});
-            throw new Error("Discord returned an error while refreshing a token.");
+            throw new Error("Discord returned an error while refreshing a token.", {cause: err});
         }
     }
 
@@ -141,7 +141,7 @@ class User {
             return await User.#oauth.revokeToken(token);
         } catch (err) {
             Log.error("There was a Discord OAuth exception while revoking a token.", {err});
-            throw new Error("Discord returned an error while revoking a token.");
+            throw new Error("Discord returned an error while revoking a token.", {cause: err});
         }
     }
 }

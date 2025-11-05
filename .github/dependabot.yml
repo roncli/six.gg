@@ -14,7 +14,7 @@ updates:
       timezone: "America/Los_Angeles"
     ignore:
       - dependency-name: "node"
-        versions: [">= 23.0"]
+        versions: [">= 25.0"]
   - package-ecosystem: "docker"
     directory: /nginx/
     schedule:
@@ -29,7 +29,7 @@ updates:
       timezone: "America/Los_Angeles"
     ignore:
       - dependency-name: "node"
-        versions: [">= 23.0"]
+        versions: [">= 25.0"]
   - package-ecosystem: "npm"
     directory: /logging/
     schedule:

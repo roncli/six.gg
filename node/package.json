@@ -48,7 +48,7 @@
         "@types/html-minifier-terser": "7.0.2",
         "@types/node": "24.10.1",
         "@types/node-schedule": "2.1.8",
-        "eslint-plugin-jsdoc": "61.1.12"
+        "eslint-plugin-jsdoc": "61.2.0"
     },
     "scripts": {
         "reinstall": "rmdir /s /q node_modules && npm install"

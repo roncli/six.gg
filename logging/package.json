@@ -23,7 +23,7 @@
         "graygelf": "2.0.0"
     },
     "devDependencies": {
-        "@eslint/js": "9.39.1",
+        "@eslint/js": "9.39.2",
         "@stylistic/eslint-plugin": "5.6.1",
         "@types/dockerode": "3.3.47",
         "@types/node": "25.0.2",

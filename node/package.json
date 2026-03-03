@@ -41,7 +41,7 @@
         "tzdata": "1.0.48"
     },
     "devDependencies": {
-        "@eslint/js": "9.39.1",
+        "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "5.6.1",
         "@types/express": "5.0.6",
         "@types/express-serve-static-core": "5.1.0",

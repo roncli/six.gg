@@ -24,7 +24,7 @@
         "@roncli/node-application-insights-logger": "roncli/node-application-insights-logger#v2.0.3",
         "@roncli/node-minify": "roncli/node-minify#v1.2.6",
         "@twurple/api": "8.0.3",
-        "@twurple/auth": "7.4.0",
+        "@twurple/auth": "8.0.3",
         "@twurple/chat": "8.0.3",
         "@twurple/eventsub-http": "8.0.3",
         "compression": "1.8.1",

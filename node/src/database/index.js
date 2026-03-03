@@ -47,7 +47,6 @@ class Db {
         }
 
         await Db.#client.connect();
-        await Db.#client.connect();
 
         if (!Db.#db) {
             Db.#db = Db.#client.db(process.env.ATLAS_DATABASE_NAME);

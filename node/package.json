@@ -31,7 +31,7 @@
         "cookie-parser": "1.4.7",
         "discord.js": "14.25.1",
         "express": "5.2.1",
-        "hot-router": "2.0.0-beta.6",
+        "hot-router": "2.0.0-beta.7",
         "html-minifier-terser": "7.2.0",
         "igdb-api-node": "6.0.5",
         "lru-cache": "11.2.2",

@@ -42,7 +42,7 @@
     },
     "devDependencies": {
         "@eslint/js": "10.0.1",
-        "@stylistic/eslint-plugin": "5.6.1",
+        "@stylistic/eslint-plugin": "5.9.0",
         "@types/express": "5.0.6",
         "@types/express-serve-static-core": "5.1.1",
         "@types/html-minifier-terser": "7.0.2",

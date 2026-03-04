@@ -1,0 +1,13 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../.vscode/ts-browser",
+        "strict": true,
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
+        "target": "ES2022"
+    },
+    "include": [
+        "**/*.js",
+        "../types/browser/*.d.ts",
+    ]
+}

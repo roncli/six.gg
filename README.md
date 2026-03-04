@@ -184,7 +184,7 @@ The website and Discord/Twitch bot for Six Gaming.  You can see this site in act
 * Complete redesign with new features.
 
 ### Before v2.0.0
-Versions prior to 2.0.0 were not part of an open source project.  six.gg was rewritten from the ground up, and does not use any of the previously open source code.
+Versions prior to 2.0.0 were not part of an open source project.  six.gg was rewritten from the ground up, and does not use any of the previously closed source code.
 
 ## License Details
 All original code is released without license.  This means that you may not distribute the code without the express written consent of the author.

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "esModuleInterop": true,
+        "lib": ["es2022"],
+        "module": "nodenext",
+        "moduleDetection": "legacy",
+        "moduleResolution": "nodenext",
+        "outDir": "./.vscode/ts",
+        "resolveJsonModule": true,
+        "target": "es2022"
+    },
+    "include": [
+        "**/*.d.ts",
+        "**/*.js"
+    ]
+}

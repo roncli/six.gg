@@ -1,0 +1,193 @@
+/**
+ * @typedef {import("http-errors").HttpError} HttpErrors.HttpError
+ */
+
+const Cache = require("./src/cache"),
+    compression = require("compression"),
+    cookieParser = require("cookie-parser"),
+    EventSub = require("./src/twitch/eventsub"),
+    Exception = require("./src/errors/exception"),
+    express = require("express"),
+    HotRouter = require("hot-router"),
+    Log = require("@roncli/node-application-insights-logger"),
+    Minify = require("@roncli/node-minify"),
+    path = require("path"),
+    Redirects = require("./src/redirects"),
+    TwurpleApi = require("@twurple/api"),
+    TwurpleAuth = require("@twurple/auth"),
+    TwurpleEventSubHttp = require("@twurple/eventsub-http"),
+    util = require("util");
+
+process.on("unhandledRejection", (reason) => {
+    Log.error("Unhandled promise rejection caught.", {err: reason instanceof Error ? reason : new Error(util.inspect(reason))});
+});
+
+// MARK: class Index
+/**
+ * The primary class for the application.
+ */
+class Index {
+    // MARK: static #getMinifyCache
+    /**
+     * Gets a minified cache item.
+     * @param {string} key The key to get the cache item for.
+     * @returns {string} The cache item.
+     */
+    static #getMinifyCache(key) {
+        try {
+            return Cache.get(key);
+        } catch (err) {
+            Log.error("An error occurred while attempting to get a Minify cache.", {err, properties: {key}});
+            return void 0;
+        }
+    }
+
+    // MARK: static async #setMinifyCache
+    /**
+     * Sets a minified cache item.
+     * @param {string} key The key to set the cache item for.
+     * @param {object} value The cache item.
+     * @returns {void}
+     */
+    static #setMinifyCache(key, value) {
+        try {
+            Cache.set(key, value, 86400000);
+        } catch (err) {
+            Log.error("An error occurred while attempting to set a Minify cache.", {err, properties: {key}});
+        }
+    }
+
+    // MARK: static async startup
+    /**
+     * Starts up the application.
+     * @returns {Promise<void>}
+     */
+    static async startup() {
+        // Setup application insights.
+        if (process.env.APPINSIGHTS_CONNECTIONSTRING !== "") {
+            Log.setupApplicationInsights(process.env.APPINSIGHTS_CONNECTIONSTRING, {application: "sixgg", container: "sixgg-node"});
+        }
+
+        const Db = require("./src/database"),
+            Discord = require("./src/discord"),
+            Listeners = require("./src/listeners"),
+            Twitch = require("./src/twitch");
+
+        Log.info("Starting up...");
+
+        // Setup the database.
+        try {
+            await Db.startup();
+        } catch (err) {
+            // Exit the app.
+            Log.error("Could not setup the database.", {err});
+            process.exit(1);
+        }
+
+        // Set title.
+        if (process.platform === "win32") {
+            process.title = "Six Gaming";
+        } else {
+            process.stdout.write("\x1b]2;Six Gaming\x1b\x5c");
+        }
+
+        // Setup various listeners.
+        Listeners.setup();
+
+        // Startup Twitch.
+        try {
+            await Twitch.connect();
+        } catch (err) {
+            // Exit the app.
+            Log.error("Could not connect to Twitch.", {err});
+            process.exit(1);
+        }
+
+        // Startup Discord.
+        Discord.startup();
+        await Discord.connect();
+
+        // Setup express app.
+        const app = express();
+
+        // Remove powered by.
+        app.disable("x-powered-by");
+
+        // Initialize middleware stack.
+        app.use(compression());
+        app.use(cookieParser());
+
+        // Trust proxy to get correct IP from web server.
+        app.enable("trust proxy");
+
+        // Setup Twurple EventSub.
+        const eventSub = new TwurpleEventSubHttp.EventSubMiddleware({
+            apiClient: new TwurpleApi.ApiClient({
+                authProvider: new TwurpleAuth.AppTokenAuthProvider(process.env.TWITCH_CLIENTID, process.env.TWITCH_CLIENTSECRET),
+                logger: {
+                    colors: false
+                }
+            }),
+            hostName: "six.gg",
+            pathPrefix: "/twitch/eventsub",
+            secret: process.env.TWITCH_CHANNEL_EVENTSUB_SECRET
+        });
+        eventSub.apply(/** @type {object} */(app));
+
+        // Setup public redirects.
+        app.use(/^(?!\/tsconfig\.json)/, express.static("public"));
+
+        // Setup Discord redirect.
+        app.get("/discord", (_req, res) => {
+            res.redirect(process.env.SIXGG_DISCORD_URL);
+        });
+
+        // Setup minification.
+        Minify.setup({
+            cssRoot: "/css/",
+            jsRoot: "/js/",
+            wwwRoot: path.join(__dirname, "public"),
+            caching: process.env.MINIFY_CACHE ? {
+                get: Index.#getMinifyCache,
+                set: Index.#setMinifyCache
+            } : void 0,
+            redirects: Redirects,
+            disableTagCombining: !process.env.MINIFY_ENABLED
+        });
+        app.get("/css", Minify.cssHandler);
+        app.get("/js", Minify.jsHandler);
+
+        // Setup hot-router.
+        const router = new HotRouter.Router();
+        router.on("error", (data) => {
+            if (data.err && data.err instanceof Exception) {
+                Log.error(data.message, {err: data.err.innerError, req: data.req});
+            } else {
+                Log.error(data.message, {err: data.err, req: data.req});
+            }
+        });
+        try {
+            await router.setRoutes(path.join(__dirname, "web"), app, {hot: false});
+        } catch (err) {
+            Log.critical("Could not set up routes.", {err});
+        }
+
+        app.use((/** @type {HttpErrors.HttpError} */err, /** @type {express.Request} */req, /** @type {express.Response} */res, /** @type {express.NextFunction} */next) => {
+            router.error(err, req, res, next);
+        });
+
+        // Startup web server.
+        const port = process.env.PORT || 3030;
+
+        app.listen(port, async () => {
+            await EventSub.setup(eventSub);
+            Twitch.setupEventSub();
+        });
+        Log.info(`Server PID ${process.pid} listening on port ${port}.`);
+    }
+}
+
+Index.startup().catch((err) => {
+    Log.error("Failed to start the application.", {err});
+    process.exit(1);
+});

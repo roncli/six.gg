@@ -1,0 +1,179 @@
+/**
+ * @typedef {import("discord.js").Activity} DiscordJs.Activity
+ * @typedef {import("discord.js").GuildMember} DiscordJs.GuildMember
+ */
+
+// MARK: class Home
+/**
+ * A class that provides functions for the home page.
+ */
+class Home {
+    static #Template = typeof module === "undefined" ? window.Template : require("./common/template");
+
+    /** @type {any} */
+    static #embed = null;
+
+    /** @type {number | undefined} */
+    static #streamsInterval = void 0;
+
+    static #urlParse = /^https:\/\/www.twitch.tv\/(?<user>.+)$/;
+
+    // MARK: static #embedTwitch
+    /**
+     * Embeds Twitch into the site.
+     * @returns {void}
+     */
+    static #embedTwitch() {
+        const twitch = document.getElementById("twitch");
+
+        if (!twitch) {
+            throw new Error("Twitch element not found.");
+        }
+
+        const el = document.getElementById("name");
+
+        let url;
+        if (el && el.innerText) {
+            url = el.getAttribute("href");
+        }
+
+        if (!url) {
+            return;
+        }
+
+        if (!Home.#urlParse.test(url)) {
+            return;
+        }
+
+        const {user} = /** @type {{[key: string]: string}} */(/** @type {RegExpExecArray} */(Home.#urlParse.exec(url)).groups);
+
+        Home.#embed = null;
+
+        twitch.innerHTML = "";
+
+        Home.#embed = new window.Twitch.Embed("twitch", {
+            width: 1160,
+            height: 460,
+            channel: user,
+            allowfullscreen: true,
+            autoplay: true,
+            layout: "video-with-chat",
+            theme: "light"
+        });
+
+        Home.#embed.addEventListener(window.Twitch.Embed.VIDEO_READY, () => {
+            const player = Home.#embed.getPlayer();
+            player.addEventListener(window.Twitch.Player.ENDED, async () => {
+                clearInterval(Home.#streamsInterval);
+                await Home.#reloadStreams();
+                Home.#streamsInterval = window.setInterval(Home.#reloadStreams, 300000);
+            });
+        });
+    }
+
+    // MARK: static async #reloadStreams
+    /**
+     * Reloads the streams from the API.
+     * @returns {Promise<void>}
+     */
+    static async #reloadStreams() {
+        /** @type {{member: DiscordJs.GuildMember, activity: DiscordJs.Activity}[]} */
+        let data;
+        try {
+            data = await (await fetch("/api/live")).json();
+        } catch {
+            return;
+        }
+
+        const streamers = document.getElementById("streamers");
+
+        if (!streamers) {
+            throw new Error("Streamers element not found.");
+        }
+
+        if (data.length === 0) {
+            streamers.innerHTML = "";
+            return;
+        }
+
+        const el = document.getElementById("name");
+
+        let featured;
+        if (el && el.innerText) {
+            featured = el.innerText;
+        }
+
+        try {
+            await Home.#Template.loadTemplate("/views/home/live.js", "LiveView");
+        } catch {
+            return;
+        }
+
+        if (data[0].member.displayName === featured) {
+            const live = document.getElementById("live");
+
+            if (!live) {
+                throw new Error("Live element not found.");
+            }
+
+            Home.#Template.loadDataIntoTemplate(data.slice(1), live, window.LiveView.get);
+        } else {
+            try {
+                await Home.#Template.loadTemplate("/views/home/streamers.js", "StreamersView");
+            } catch {
+                return;
+            }
+
+            Home.#Template.loadDataIntoTemplate(data, streamers, window.StreamersView.get);
+        }
+    }
+
+    // MARK: static DOMContentLoaded
+    /**
+     * Sets up the page.
+     * @param {string} timezone The user's timezone.
+     * @returns {void}
+     */
+    static DOMContentLoaded(timezone) {
+        Home.#streamsInterval = window.setInterval(Home.#reloadStreams, 300000);
+
+        Home.#embedTwitch();
+
+        const el = document.getElementById("calendar");
+
+        if (!el) {
+            throw new Error("Calendar element not found.");
+        }
+
+        const calendar = new window.FullCalendar.Calendar(el, {
+            timeZone: timezone,
+            height: "auto",
+            initialView: "list7Days",
+            views: {
+                list7Days: {
+                    type: "list",
+                    duration: {days: 7},
+                    titleFormat: {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                }
+            },
+            headerToolbar: {
+                left: "title",
+                center: "",
+                right: ""
+            },
+            events: "/api/events"
+        });
+
+        calendar.render();
+    }
+}
+
+if (typeof module === "undefined") {
+    window.Home = Home;
+} else {
+    module.exports = Home;
+}

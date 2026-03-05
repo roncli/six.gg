@@ -27,7 +27,7 @@ class Home {
         const twitch = document.getElementById("twitch");
 
         if (!twitch) {
-            throw new Error("Twitch element not found.");
+            return;
         }
 
         const el = document.getElementById("name");

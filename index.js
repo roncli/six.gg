@@ -64,7 +64,7 @@ class Index {
      */
     static async startup() {
         // Setup application insights.
-        if (process.env.APPINSIGHTS_CONNECTIONSTRING !== "") {
+        if (process.env.APPINSIGHTS_CONNECTIONSTRING) {
             Log.setupApplicationInsights(process.env.APPINSIGHTS_CONNECTIONSTRING, {application: "sixgg", container: "sixgg-node"});
         }
 

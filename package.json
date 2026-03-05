@@ -61,6 +61,7 @@
     "scripts": {
         "reinstall": "(if exist node_modules rmdir /s /q node_modules) & npm install",
         "run": "node .",
+        "runenv": "node --env-file=.env .",
         "test": "jest --coverage"
     }
 }

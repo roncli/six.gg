@@ -2,7 +2,6 @@ const DiscordJs = require("discord.js"),
     events = require("events"),
     fs = require("fs/promises"),
     Log = require("@roncli/node-application-insights-logger"),
-    Notify = require("../notify"),
     path = require("path"),
     Rest = require("@discordjs/rest"),
     util = require("util");
@@ -147,8 +146,6 @@ class Discord {
             if (!Discord.#readied) {
                 Discord.#readied = true;
             }
-
-            Notify.setupNotifications();
         });
 
         Discord.#discord.on("disconnect", (ev) => {

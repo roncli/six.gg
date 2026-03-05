@@ -3,19 +3,13 @@
  */
 
 const AttendeeDb = require("../database/attendee"),
+    Discord = require("../discord"),
     Encoding = require("../../public/js/common/encoding"),
     EventDb = require("../database/event"),
     Exception = require("../errors/exception"),
     Log = require("@roncli/node-application-insights-logger"),
     Schedule = require("node-schedule"),
     User = require("./user");
-
-/** @type {typeof import("../discord")} */
-let Discord;
-
-setTimeout(() => {
-    Discord = require("../discord");
-}, 0);
 
 // MARK: class Event
 /**

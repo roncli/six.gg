@@ -2,6 +2,7 @@ const Discord = require("../discord"),
     DiscordJs = require("discord.js"),
     Exception = require("../errors/exception"),
     Log = require("@roncli/node-application-insights-logger"),
+    Notify = require("../notify"),
     Streamers = require("../discord/streamers"),
     Twitch = require("../twitch"),
     VoiceChannelManagement = require("../discord/voiceChannelManagement"),
@@ -117,6 +118,8 @@ class DiscordListener {
      * @returns {Promise<void>}
      */
     static async ready() {
+        Notify.setupNotifications();
+
         DiscordListener.#vcm = new VoiceChannelManagement(Discord);
         DiscordListener.#streamers = new Streamers(Discord, Twitch);
 

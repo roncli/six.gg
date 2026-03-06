@@ -42,7 +42,7 @@
     },
     "devDependencies": {
         "@eslint/js": "10.0.1",
-        "@stylistic/eslint-plugin": "5.9.0",
+        "@stylistic/eslint-plugin": "5.10.0",
         "@types/compression": "1.8.1",
         "@types/cookie-parser": "1.4.10",
         "@types/express": "5.0.6",

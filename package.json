@@ -34,7 +34,7 @@
         "hot-router": "2.0.0-beta.7",
         "html-minifier-terser": "7.2.0",
         "igdb-api-node": "6.0.5",
-        "lru-cache": "11.2.6",
+        "lru-cache": "11.2.7",
         "mongodb": "7.1.0",
         "node-schedule": "2.1.1",
         "timezonecomplete": "5.15.0",

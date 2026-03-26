@@ -50,7 +50,7 @@
         "@types/html-minifier-terser": "7.0.2",
         "@types/node": "25.5.0",
         "@types/node-schedule": "2.1.8",
-        "eslint-plugin-jsdoc": "62.8.0",
+        "eslint-plugin-jsdoc": "62.8.1",
         "globals": "17.4.0",
         "jest": "30.3.0",
         "node-mocks-http": "1.17.2"

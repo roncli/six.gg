@@ -25,7 +25,7 @@
         "@roncli/node-minify": "roncli/node-minify#v1.3.1",
         "@twurple/api": "8.0.3",
         "@twurple/auth": "8.1.4",
-        "@twurple/chat": "8.0.3",
+        "@twurple/chat": "8.1.4",
         "@twurple/eventsub-http": "8.1.4",
         "compression": "1.8.1",
         "cookie-parser": "1.4.7",

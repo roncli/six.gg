@@ -51,7 +51,7 @@
         "@types/node": "26.0.0",
         "@types/node-schedule": "2.1.8",
         "eslint-plugin-jsdoc": "63.0.7",
-        "globals": "17.6.0",
+        "globals": "17.7.0",
         "jest": "30.4.2",
         "node-mocks-http": "1.17.2"
     },

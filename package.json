@@ -27,7 +27,7 @@
         "@twurple/auth": "8.1.4",
         "@twurple/chat": "8.1.4",
         "@twurple/eventsub-http": "8.1.4",
-        "compression": "1.8.1",
+        "compression": "1.8.2",
         "cookie-parser": "1.4.7",
         "discord.js": "14.27.0",
         "express": "5.2.1",
